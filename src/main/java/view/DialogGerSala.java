@@ -5,6 +5,7 @@
  */
 package view;
 
+import controller.fichario.SalaFichario;
 import java.awt.Color;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -12,7 +13,6 @@ import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.border.Border;
-import logic.SalaLogic;
 import model.Sala;
 
 /**
@@ -23,7 +23,7 @@ public class DialogGerSala extends javax.swing.JDialog {
 
     private ArrayList<Sala> listSala;
     private Border borderDefalt;
-    private SalaLogic salaLogic;
+    private SalaFichario fixSala;
 
     /**
      * Creates new form DialogGerSala
@@ -35,11 +35,17 @@ public class DialogGerSala extends javax.swing.JDialog {
         borderDefalt = tfQtdPoltronas.getBorder();
 
         cbxEscolher.setVisible(false);
-        jiformativo2.setVisible(false);
+        jiformativo.setVisible(false);
 
         pnIncluir.setVisible(false);
 
-        salaLogic = new SalaLogic();
+        try {
+            fixSala = new SalaFichario();
+        } catch (SQLException sqlex) //Retorna um erro caso exista erro de query SQL
+        {
+            JOptionPane.showMessageDialog(null, "Erro de conexão, ERRO: " + sqlex.getMessage(), "ERROR SALA", JOptionPane.ERROR_MESSAGE);
+            sqlex.printStackTrace();
+        }
     }
 
     /**
@@ -60,7 +66,7 @@ public class DialogGerSala extends javax.swing.JDialog {
         jiformativo1 = new javax.swing.JLabel();
         btnConcluido = new javax.swing.JButton();
         cbxEscolher = new javax.swing.JComboBox<>();
-        jiformativo2 = new javax.swing.JLabel();
+        jiformativo = new javax.swing.JLabel();
         pnIncluir = new javax.swing.JPanel();
         lbNumero = new javax.swing.JLabel();
         tfNumero = new javax.swing.JTextField();
@@ -69,7 +75,7 @@ public class DialogGerSala extends javax.swing.JDialog {
         btnIncluir = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
         CheckBoxVipSim = new javax.swing.JCheckBox();
-        lbCrm1 = new javax.swing.JLabel();
+        lbVip = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -127,9 +133,9 @@ public class DialogGerSala extends javax.swing.JDialog {
             }
         });
 
-        jiformativo2.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        jiformativo2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jiformativo2.setText("Escolha o nome do Medico:");
+        jiformativo.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        jiformativo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jiformativo.setText("Escolha o número da sala:");
 
         pnIncluir.setBackground(new java.awt.Color(250, 250, 250));
 
@@ -169,8 +175,8 @@ public class DialogGerSala extends javax.swing.JDialog {
 
         CheckBoxVipSim.setText("Sim");
 
-        lbCrm1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        lbCrm1.setText("VIP?");
+        lbVip.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        lbVip.setText("VIP?");
 
         javax.swing.GroupLayout pnIncluirLayout = new javax.swing.GroupLayout(pnIncluir);
         pnIncluir.setLayout(pnIncluirLayout);
@@ -192,7 +198,7 @@ public class DialogGerSala extends javax.swing.JDialog {
                     .addGroup(pnIncluirLayout.createSequentialGroup()
                         .addComponent(lbNumero, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lbCrm1, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lbVip, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(70, 70, 70))
                     .addGroup(pnIncluirLayout.createSequentialGroup()
                         .addComponent(tfNumero, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -206,7 +212,7 @@ public class DialogGerSala extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbNumero)
-                    .addComponent(lbCrm1))
+                    .addComponent(lbVip))
                 .addGap(5, 5, 5)
                 .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tfNumero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -230,6 +236,7 @@ public class DialogGerSala extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addGap(26, 26, 26)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnConcluido)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(rbIncluir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -237,12 +244,11 @@ public class DialogGerSala extends javax.swing.JDialog {
                             .addComponent(rbExcluir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(rbAlterar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(rbConsultar))
-                        .addGap(26, 26, 26)
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jiformativo2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(cbxEscolher, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(btnConcluido))
-                .addGap(18, 18, 18)
+                            .addComponent(jiformativo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cbxEscolher, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addGap(25, 25, 25)
                 .addComponent(pnIncluir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
@@ -253,22 +259,21 @@ public class DialogGerSala extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(jiformativo1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jiformativo1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(rbIncluir)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(rbExcluir)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(rbAlterar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(rbConsultar))
+                                .addComponent(rbExcluir))
+                            .addComponent(jiformativo, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(23, 23, 23)
-                                .addComponent(jiformativo2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGap(18, 18, 18)
                                 .addComponent(cbxEscolher, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(3, 3, 3)
+                        .addComponent(rbAlterar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(rbConsultar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnConcluido))
                     .addComponent(pnIncluir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -280,7 +285,7 @@ public class DialogGerSala extends javax.swing.JDialog {
 
     private void rbIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbIncluirActionPerformed
         cbxEscolher.setVisible(false);
-        jiformativo2.setVisible(false);
+        jiformativo.setVisible(false);
         configSala();
 
         pnIncluir.setVisible(true);
@@ -289,31 +294,31 @@ public class DialogGerSala extends javax.swing.JDialog {
     }//GEN-LAST:event_rbIncluirActionPerformed
 
     private void rbExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbExcluirActionPerformed
-        if (salaLogic.qtdSala() > 0) {
+        if (qtdSala() > 0) {
             restart();
             configSala();
             cbxEscolher.setVisible(true);
-            jiformativo2.setVisible(true);
+            jiformativo.setVisible(true);
             popularJComboBox();
         } else
             JOptionPane.showMessageDialog(this, "A lista está VAZIA!!!", "VAZIA", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_rbExcluirActionPerformed
 
     private void rbAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbAlterarActionPerformed
-        if (salaLogic.qtdSala() > 0) {
+        if (qtdSala() > 0) {
             restart();
             configSala();
             cbxEscolher.setVisible(true);
-            jiformativo2.setVisible(true);
+            jiformativo.setVisible(true);
             popularJComboBox();
         } else
             JOptionPane.showMessageDialog(this, "A lista está VAZIA!!!", "VAZIA", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_rbAlterarActionPerformed
 
     private void rbConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbConsultarActionPerformed
-        if (salaLogic.qtdSala() > 0) {
+        if (qtdSala() > 0) {
             cbxEscolher.setVisible(true);
-            jiformativo2.setVisible(true);
+            jiformativo.setVisible(true);
 
             btnIncluir.setVisible(false);
             btnCancelar.setVisible(false);
@@ -342,6 +347,8 @@ public class DialogGerSala extends javax.swing.JDialog {
 
                 tfNumero.setEditable(true);
                 tfQtdPoltronas.setEditable(true);
+                CheckBoxVipSim.setEnabled(true);
+                //CheckBoxVipSim.setEditable(true);
             } else if (rbExcluir.isSelected()) {
                 btnCancelar.setVisible(true);
                 btnIncluir.setVisible(true);
@@ -349,18 +356,25 @@ public class DialogGerSala extends javax.swing.JDialog {
 
                 tfNumero.setEditable(false);
                 tfQtdPoltronas.setEditable(false);
+                CheckBoxVipSim.setEnabled(false);
+                //CheckBoxVipSim.setEditable(false);
             } else if (rbConsultar.isSelected()) {
                 btnCancelar.setVisible(false);
                 btnIncluir.setVisible(false);
 
                 tfNumero.setEditable(false);
                 tfQtdPoltronas.setEditable(false);
+                CheckBoxVipSim.setEnabled(false);
+                //CheckBoxVipSim.setEditable(false);
             }
         }
     }//GEN-LAST:event_cbxEscolherActionPerformed
 
     private void btnIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIncluirActionPerformed
-        Sala room = listSala.get(cbxEscolher.getSelectedIndex());
+        Sala room = new Sala();
+        
+        if(!btnIncluir.getText().equals("INCLUIR"))
+            room = listSala.get(cbxEscolher.getSelectedIndex());
 
         room.setNumero(Integer.parseInt(tfNumero.getText()));
         room.setQtdPoltronas(Integer.parseInt(tfQtdPoltronas.getText()));
@@ -369,13 +383,32 @@ public class DialogGerSala extends javax.swing.JDialog {
         switch (btnIncluir.getText()) {
             case "INCLUIR": {
 
-                salaLogic.incluir(room);
+                try {
+                    fixSala.incluir(room);
+                } catch (SQLException sqlex) //Retorna um erro caso exista erro de query SQL
+                {
+                    JOptionPane.showMessageDialog(null, "Erro na query [INCLUIR], ERRO: " + sqlex.getMessage(), "ERROR SALA", JOptionPane.ERROR_MESSAGE);
+                    sqlex.printStackTrace();
+                }
+
             }
             break;
             case "EXCLUIR": {
                 int ConfirmDialog = JOptionPane.showConfirmDialog(this, "Deseja realamente EXCLUIR essa sala???", "EXCLUIR???", JOptionPane.INFORMATION_MESSAGE);
                 if (ConfirmDialog == JOptionPane.YES_OPTION) {
-                    salaLogic.remove(listSala.get(cbxEscolher.getSelectedIndex()));
+
+                    try {
+                        fixSala.remove(room);
+                    } catch (SQLException sqlex)//Retorna um erro caso exista erro de query SQL
+                    {
+                        if (sqlex.getSQLState().equalsIgnoreCase("23503")) {
+                            JOptionPane.showMessageDialog(null, "Não pode ser excluido, pois tem dependente(s): " + sqlex.getMessage(), "ERROR SALA", JOptionPane.ERROR_MESSAGE);
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Erro na query [REMOVER], ERRO: " + sqlex.getMessage(), "ERROR SALA", JOptionPane.ERROR_MESSAGE);
+                        }
+                        sqlex.printStackTrace();
+                    }
+
                 } else {
                     btnCancelarActionPerformed(evt);
                 }
@@ -384,7 +417,15 @@ public class DialogGerSala extends javax.swing.JDialog {
             case "ALTERAR": {
                 int ConfirmDialog = JOptionPane.showConfirmDialog(this, "Deseja realamente ALTERAR essa sala???", "ALTERAR???", JOptionPane.INFORMATION_MESSAGE);
                 if (ConfirmDialog == JOptionPane.YES_OPTION) {
-                    salaLogic.alteracao(room);
+
+                    try {
+                        fixSala.alteracao(room);
+                    } catch (SQLException sqlex) //Retorna um erro caso exista erro de query SQL
+                    {
+                        JOptionPane.showMessageDialog(null, "Erro na query [ALTERAÇÃO], ERRO: " + sqlex.getMessage(), "ERROR SALA", JOptionPane.ERROR_MESSAGE);
+                        sqlex.printStackTrace();
+                    }
+
                 } else {
                     btnCancelarActionPerformed(evt);
                 }
@@ -438,6 +479,8 @@ public class DialogGerSala extends javax.swing.JDialog {
 
         tfNumero.setEditable(true);
         tfQtdPoltronas.setEditable(true);
+        CheckBoxVipSim.setEnabled(true);
+        //CheckBoxVipSim.setEditable(true);
 
         tfNumero.setText("");
         tfQtdPoltronas.setText("");
@@ -452,17 +495,36 @@ public class DialogGerSala extends javax.swing.JDialog {
 
         pnIncluir.setVisible(false);
         cbxEscolher.setVisible(false);
-        jiformativo2.setVisible(false);
+        jiformativo.setVisible(false);
 
         tfNumero.setText("");
         tfQtdPoltronas.setText("");
         CheckBoxVipSim.setSelected(false);
     }
 
+    private int qtdSala() {
+        int cont = 0;
+        try {
+            cont = fixSala.qtdEntidade();
+        } catch (SQLException sqlex) //Retorna um erro caso exista erro de query SQL
+        {
+            JOptionPane.showMessageDialog(null, "Erro na query [QTD SALA], ERRO: " + sqlex.getMessage(), "ERROR SALA", JOptionPane.ERROR_MESSAGE);
+            sqlex.printStackTrace();
+        }
+        return cont;
+    }
+
     private void popularJComboBox() {
         cbxEscolher.setModel(new DefaultComboBoxModel());
 
-        listSala = salaLogic.relatorio();
+        try {
+            listSala = fixSala.relatorio();
+        } catch (SQLException sqlex) //Retorna um erro caso exista erro de query SQL
+        {
+            JOptionPane.showMessageDialog(null, "Erro na query [RELATÓRIO], ERRO: " + sqlex.getMessage(), "ERROR SALA", JOptionPane.ERROR_MESSAGE);
+            sqlex.printStackTrace();
+        }
+        
         for (Sala room : listSala) {
             if (room != null) {
                 cbxEscolher.addItem(Integer.toString(room.getNumero()));
@@ -478,12 +540,12 @@ public class DialogGerSala extends javax.swing.JDialog {
     private javax.swing.JButton btnConcluido;
     private javax.swing.JButton btnIncluir;
     private javax.swing.JComboBox<String> cbxEscolher;
+    private javax.swing.JLabel jiformativo;
     private javax.swing.JLabel jiformativo1;
-    private javax.swing.JLabel jiformativo2;
-    private javax.swing.JLabel lbCrm1;
     private javax.swing.JLabel lbNumero;
     private javax.swing.JLabel lbQtdPoltronas;
     private javax.swing.JLabel lbTitulo;
+    private javax.swing.JLabel lbVip;
     private javax.swing.JPanel pnIncluir;
     private javax.swing.JRadioButton rbAlterar;
     private javax.swing.JRadioButton rbConsultar;

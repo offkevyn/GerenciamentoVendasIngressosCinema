@@ -1,6 +1,5 @@
 package controller.fichario;
 
-import controller.DAO.SalaDAO;
 import java.sql.SQLException;
 import model.Sala;
 
