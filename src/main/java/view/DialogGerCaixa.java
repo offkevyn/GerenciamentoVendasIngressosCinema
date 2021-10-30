@@ -5,45 +5,46 @@
  */
 package view;
 
-import controller.fichario.SalaFichario;
-import java.awt.Color;
+import controller.fichario.CaixaFichario;
+import controller.fichario.FuncionarioFichario;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.border.Border;
+import model.Caixa;
+import model.Funcionario;
 import model.Sala;
 
 /**
  *
  * @author Win10 x64
  */
-public class DialogGerSala extends javax.swing.JDialog {
+public class DialogGerCaixa extends javax.swing.JDialog {
+    private ArrayList<Caixa> listCaixa;
+    private ArrayList<Funcionario> listFunc;
 
-    private ArrayList<Sala> listSala;
-    private Border borderDefalt;
-    private SalaFichario fixSala;
+    private CaixaFichario fixCaixa;
+    private FuncionarioFichario fixFunc;
 
     /**
-     * Creates new form DialogGerSala
+     * Creates new form DialogGerCaixa
      */
-    public DialogGerSala(java.awt.Frame parent, boolean modal) {
+    public DialogGerCaixa(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-
-        borderDefalt = tfQtdPoltronas.getBorder();
-
+        
         cbxEscolher.setVisible(false);
         jiformativo.setVisible(false);
 
         pnIncluir.setVisible(false);
 
         try {
-            fixSala = new SalaFichario();
+            fixCaixa = new CaixaFichario();
+            fixFunc = new FuncionarioFichario();
         } catch (SQLException sqlex) //Retorna um erro caso exista erro de query SQL
         {
-            JOptionPane.showMessageDialog(null, "Erro de conexão, ERRO: " + sqlex.getMessage(), "ERROR SALA", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Erro de conexão, ERRO: " + sqlex.getMessage(), "ERROR CAIXA", JOptionPane.ERROR_MESSAGE);
             sqlex.printStackTrace();
         }
     }
@@ -57,25 +58,23 @@ public class DialogGerSala extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        GroupBtnCrudSala = new javax.swing.ButtonGroup();
+        GroupBtnCrudCaixa = new javax.swing.ButtonGroup();
         lbTitulo = new javax.swing.JLabel();
+        jiformativo1 = new javax.swing.JLabel();
         rbIncluir = new javax.swing.JRadioButton();
         rbExcluir = new javax.swing.JRadioButton();
         rbAlterar = new javax.swing.JRadioButton();
         rbConsultar = new javax.swing.JRadioButton();
-        jiformativo1 = new javax.swing.JLabel();
         btnConcluido = new javax.swing.JButton();
         cbxEscolher = new javax.swing.JComboBox<>();
         jiformativo = new javax.swing.JLabel();
         pnIncluir = new javax.swing.JPanel();
         lbNumero = new javax.swing.JLabel();
         tfNumero = new javax.swing.JTextField();
-        tfQtdPoltronas = new javax.swing.JTextField();
-        lbQtdPoltronas = new javax.swing.JLabel();
         btnIncluir = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
-        CheckBoxVipSim = new javax.swing.JCheckBox();
-        lbVip = new javax.swing.JLabel();
+        cbxFunc = new javax.swing.JComboBox<>();
+        lbFuncionario = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -83,7 +82,11 @@ public class DialogGerSala extends javax.swing.JDialog {
         lbTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lbTitulo.setText("Gerenciamento de Sala");
 
-        GroupBtnCrudSala.add(rbIncluir);
+        jiformativo1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jiformativo1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jiformativo1.setText("MENU");
+
+        GroupBtnCrudCaixa.add(rbIncluir);
         rbIncluir.setText("INCLUIR");
         rbIncluir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -91,7 +94,7 @@ public class DialogGerSala extends javax.swing.JDialog {
             }
         });
 
-        GroupBtnCrudSala.add(rbExcluir);
+        GroupBtnCrudCaixa.add(rbExcluir);
         rbExcluir.setText("EXCLUIR");
         rbExcluir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -99,7 +102,7 @@ public class DialogGerSala extends javax.swing.JDialog {
             }
         });
 
-        GroupBtnCrudSala.add(rbAlterar);
+        GroupBtnCrudCaixa.add(rbAlterar);
         rbAlterar.setText("ALTERAR");
         rbAlterar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -107,17 +110,13 @@ public class DialogGerSala extends javax.swing.JDialog {
             }
         });
 
-        GroupBtnCrudSala.add(rbConsultar);
+        GroupBtnCrudCaixa.add(rbConsultar);
         rbConsultar.setText("CONSULTAR");
         rbConsultar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rbConsultarActionPerformed(evt);
             }
         });
-
-        jiformativo1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jiformativo1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jiformativo1.setText("MENU");
 
         btnConcluido.setText("Concluído");
         btnConcluido.addActionListener(new java.awt.event.ActionListener() {
@@ -135,7 +134,7 @@ public class DialogGerSala extends javax.swing.JDialog {
 
         jiformativo.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         jiformativo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jiformativo.setText("Escolha o número da sala:");
+        jiformativo.setText("Escolha o número do caixa:");
 
         pnIncluir.setBackground(new java.awt.Color(250, 250, 250));
 
@@ -147,15 +146,6 @@ public class DialogGerSala extends javax.swing.JDialog {
                 tfNumeroKeyTyped(evt);
             }
         });
-
-        tfQtdPoltronas.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                tfQtdPoltronasKeyTyped(evt);
-            }
-        });
-
-        lbQtdPoltronas.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        lbQtdPoltronas.setText("Quantidade de poltronas:");
 
         btnIncluir.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         btnIncluir.setText("INCLUIR");
@@ -173,10 +163,15 @@ public class DialogGerSala extends javax.swing.JDialog {
             }
         });
 
-        CheckBoxVipSim.setText("Sim");
+        cbxFunc.setName(""); // NOI18N
+        cbxFunc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxFuncActionPerformed(evt);
+            }
+        });
 
-        lbVip.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        lbVip.setText("VIP?");
+        lbFuncionario.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        lbFuncionario.setText("Funcionário:");
 
         javax.swing.GroupLayout pnIncluirLayout = new javax.swing.GroupLayout(pnIncluir);
         pnIncluir.setLayout(pnIncluirLayout);
@@ -187,40 +182,31 @@ public class DialogGerSala extends javax.swing.JDialog {
                 .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnIncluirLayout.createSequentialGroup()
                         .addComponent(btnIncluir)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 105, Short.MAX_VALUE)
-                        .addComponent(btnCancelar)
-                        .addContainerGap())
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnCancelar))
                     .addGroup(pnIncluirLayout.createSequentialGroup()
-                        .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lbQtdPoltronas)
-                            .addComponent(tfQtdPoltronas, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(pnIncluirLayout.createSequentialGroup()
-                        .addComponent(lbNumero, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lbVip, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(70, 70, 70))
-                    .addGroup(pnIncluirLayout.createSequentialGroup()
-                        .addComponent(tfNumero, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(CheckBoxVipSim)
-                        .addGap(85, 85, 85))))
+                        .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lbNumero, javax.swing.GroupLayout.DEFAULT_SIZE, 52, Short.MAX_VALUE)
+                            .addComponent(tfNumero))
+                        .addGap(18, 18, 18)
+                        .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(cbxFunc, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lbFuncionario, javax.swing.GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnIncluirLayout.setVerticalGroup(
             pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnIncluirLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lbNumero)
-                    .addComponent(lbVip))
-                .addGap(5, 5, 5)
-                .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tfNumero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(CheckBoxVipSim))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lbQtdPoltronas)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tfQtdPoltronas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(pnIncluirLayout.createSequentialGroup()
+                        .addComponent(lbNumero)
+                        .addGap(6, 6, 6)
+                        .addComponent(tfNumero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnIncluirLayout.createSequentialGroup()
+                        .addComponent(lbFuncionario)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cbxFunc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, Short.MAX_VALUE)
                 .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnIncluir, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -232,7 +218,7 @@ public class DialogGerSala extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lbTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, 618, Short.MAX_VALUE)
+            .addComponent(lbTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addGap(26, 26, 26)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -250,7 +236,7 @@ public class DialogGerSala extends javax.swing.JDialog {
                             .addComponent(cbxEscolher, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addGap(25, 25, 25)
                 .addComponent(pnIncluir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -286,8 +272,9 @@ public class DialogGerSala extends javax.swing.JDialog {
     private void rbIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbIncluirActionPerformed
         cbxEscolher.setVisible(false);
         jiformativo.setVisible(false);
+        configCaixa();
         
-        configSala();
+        popularJComboBoxFunc();
 
         pnIncluir.setVisible(true);
 
@@ -295,38 +282,39 @@ public class DialogGerSala extends javax.swing.JDialog {
     }//GEN-LAST:event_rbIncluirActionPerformed
 
     private void rbExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbExcluirActionPerformed
-        if (qtdSala() > 0) {
+        if (qtdCaixa() > 0) {
             restart();
-            configSala();
+            configCaixa();
             cbxEscolher.setVisible(true);
             jiformativo.setVisible(true);
             popularJComboBox();
         } else
-            JOptionPane.showMessageDialog(this, "A lista está VAZIA!!!", "VAZIA", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this, "A lista está VAZIA!!!", "VAZIA", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_rbExcluirActionPerformed
 
     private void rbAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbAlterarActionPerformed
-        if (qtdSala() > 0) {
+        if (qtdCaixa() > 0) {
             restart();
-            configSala();
+            configCaixa();
             cbxEscolher.setVisible(true);
             jiformativo.setVisible(true);
             popularJComboBox();
         } else
-            JOptionPane.showMessageDialog(this, "A lista está VAZIA!!!", "VAZIA", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this, "A lista está VAZIA!!!", "VAZIA", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_rbAlterarActionPerformed
 
     private void rbConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbConsultarActionPerformed
-        if (qtdSala() > 0) {
+        if (qtdCaixa() > 0) {
             cbxEscolher.setVisible(true);
             jiformativo.setVisible(true);
 
             btnIncluir.setVisible(false);
             btnCancelar.setVisible(false);
 
+            popularJComboBoxFunc();
             popularJComboBox();
         } else
-            JOptionPane.showMessageDialog(this, "A lista está VAZIA!!!", "VAZIA", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this, "A lista está VAZIA!!!", "VAZIA", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_rbConsultarActionPerformed
 
     private void btnConcluidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConcluidoActionPerformed
@@ -337,18 +325,17 @@ public class DialogGerSala extends javax.swing.JDialog {
         if (cbxEscolher.getSelectedIndex() >= 0) {
             pnIncluir.setVisible(true);
 
-            Sala room = listSala.get(cbxEscolher.getSelectedIndex());
+            Caixa cashier = listCaixa.get(cbxEscolher.getSelectedIndex());
 
-            tfNumero.setText(room.getNumero() + "");
-            tfQtdPoltronas.setText(room.getQtdPoltronas() + "");
-            CheckBoxVipSim.setSelected(room.isVip());
+            tfNumero.setText(cashier.getNumero() + "");
+            cbxFunc.setSelectedIndex(posicaoFuncNoArray(cashier.getFuncionario()));
+
 
             if (rbAlterar.isSelected()) {
                 btnIncluir.setText("ALTERAR");
 
                 tfNumero.setEditable(true);
-                tfQtdPoltronas.setEditable(true);
-                CheckBoxVipSim.setEnabled(true);
+                cbxFunc.setEnabled(true);
                 //CheckBoxVipSim.setEditable(true);
             } else if (rbExcluir.isSelected()) {
                 btnCancelar.setVisible(true);
@@ -356,56 +343,65 @@ public class DialogGerSala extends javax.swing.JDialog {
                 btnIncluir.setText("EXCLUIR");
 
                 tfNumero.setEditable(false);
-                tfQtdPoltronas.setEditable(false);
-                CheckBoxVipSim.setEnabled(false);
-                //CheckBoxVipSim.setEditable(false);
+                cbxFunc.setEnabled(false);
             } else if (rbConsultar.isSelected()) {
                 btnCancelar.setVisible(false);
                 btnIncluir.setVisible(false);
 
                 tfNumero.setEditable(false);
-                tfQtdPoltronas.setEditable(false);
-                CheckBoxVipSim.setEnabled(false);
-                //CheckBoxVipSim.setEditable(false);
+                cbxFunc.setEnabled(false);
             }
         }
     }//GEN-LAST:event_cbxEscolherActionPerformed
 
+    private void tfNumeroKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfNumeroKeyTyped
+//        String caracteres = "0987654321";
+//        if (!caracteres.contains(evt.getKeyChar() + "")) {
+//            evt.consume();
+//
+//            Border lineBorder = BorderFactory.createLineBorder(Color.getColor(caracteres, 0XEC2E2E));
+//            tfNumero.setBorder(lineBorder);
+//
+//        } else {
+//            tfNumero.setBorder(borderDefalt);
+//        }
+    }//GEN-LAST:event_tfNumeroKeyTyped
+
     private void btnIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIncluirActionPerformed
-        Sala room = new Sala();
-        
+        Caixa cashier = new Caixa();
+        Funcionario func = listFunc.get(cbxFunc.getSelectedIndex());
+
         if(!btnIncluir.getText().equals("INCLUIR"))
-            room = listSala.get(cbxEscolher.getSelectedIndex());
+            cashier = listCaixa.get(cbxEscolher.getSelectedIndex());
 
-        room.setNumero(Integer.parseInt(tfNumero.getText()));
-        room.setQtdPoltronas(Integer.parseInt(tfQtdPoltronas.getText()));
-        room.setVip(CheckBoxVipSim.isSelected());
-
+        cashier.setNumero(Integer.parseInt(tfNumero.getText()));
+        cashier.setFuncionario(func);
+        
         switch (btnIncluir.getText()) {
             case "INCLUIR": {
 
                 try {
-                    fixSala.incluir(room);
+                    fixCaixa.incluir(cashier);
                 } catch (SQLException sqlex) //Retorna um erro caso exista erro de query SQL
                 {
-                    JOptionPane.showMessageDialog(null, "Erro na query [INCLUIR], ERRO: " + sqlex.getMessage(), "ERROR SALA", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Erro na query [INCLUIR], ERRO: " + sqlex.getMessage(), "ERROR CAIXA", JOptionPane.ERROR_MESSAGE);
                     sqlex.printStackTrace();
                 }
 
             }
             break;
             case "EXCLUIR": {
-                int ConfirmDialog = JOptionPane.showConfirmDialog(this, "Deseja realamente EXCLUIR essa sala???", "EXCLUIR???", JOptionPane.INFORMATION_MESSAGE);
+                int ConfirmDialog = JOptionPane.showConfirmDialog(this, "Deseja realamente EXCLUIR esse caixa???", "EXCLUIR???", JOptionPane.INFORMATION_MESSAGE);
                 if (ConfirmDialog == JOptionPane.YES_OPTION) {
 
                     try {
-                        fixSala.remove(room);
+                        fixCaixa.remove(cashier);
                     } catch (SQLException sqlex)//Retorna um erro caso exista erro de query SQL
                     {
                         if (sqlex.getSQLState().equalsIgnoreCase("23503")) {
-                            JOptionPane.showMessageDialog(null, "Não pode ser excluido, pois tem dependente(s): " + sqlex.getMessage(), "ERROR SALA", JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(null, "Não pode ser excluido, pois tem dependente(s): " + sqlex.getMessage(), "ERROR CAIXA", JOptionPane.ERROR_MESSAGE);
                         } else {
-                            JOptionPane.showMessageDialog(null, "Erro na query [REMOVER], ERRO: " + sqlex.getMessage(), "ERROR SALA", JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(null, "Erro na query [REMOVER], ERRO: " + sqlex.getMessage(), "ERROR CAIXA", JOptionPane.ERROR_MESSAGE);
                         }
                         sqlex.printStackTrace();
                     }
@@ -416,14 +412,14 @@ public class DialogGerSala extends javax.swing.JDialog {
                 break;
             }
             case "ALTERAR": {
-                int ConfirmDialog = JOptionPane.showConfirmDialog(this, "Deseja realamente ALTERAR essa sala???", "ALTERAR???", JOptionPane.INFORMATION_MESSAGE);
+                int ConfirmDialog = JOptionPane.showConfirmDialog(this, "Deseja realamente ALTERAR esse caixa???", "ALTERAR???", JOptionPane.INFORMATION_MESSAGE);
                 if (ConfirmDialog == JOptionPane.YES_OPTION) {
 
                     try {
-                        fixSala.alteracao(room);
+                        fixCaixa.alteracao(cashier);
                     } catch (SQLException sqlex) //Retorna um erro caso exista erro de query SQL
                     {
-                        JOptionPane.showMessageDialog(null, "Erro na query [ALTERAÇÃO], ERRO: " + sqlex.getMessage(), "ERROR SALA", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Erro na query [ALTERAÇÃO], ERRO: " + sqlex.getMessage(), "ERROR CAIXA", JOptionPane.ERROR_MESSAGE);
                         sqlex.printStackTrace();
                     }
 
@@ -440,35 +436,11 @@ public class DialogGerSala extends javax.swing.JDialog {
         restart();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
-    private void tfQtdPoltronasKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfQtdPoltronasKeyTyped
-        String caracteres = "0987654321";
-        if (!caracteres.contains(evt.getKeyChar() + "")) {
-            evt.consume();
+    private void cbxFuncActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxFuncActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbxFuncActionPerformed
 
-            Border lineBorder = BorderFactory.createLineBorder(Color.getColor(caracteres, 0XEC2E2E));
-            tfQtdPoltronas.setBorder(lineBorder);
-        } else {
-            Border lineBorder = BorderFactory.createLineBorder(Color.GRAY);
-            tfQtdPoltronas.setBorder(borderDefalt);
-        }
-
-    }//GEN-LAST:event_tfQtdPoltronasKeyTyped
-
-    private void tfNumeroKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfNumeroKeyTyped
-        String caracteres = "0987654321";
-        if (!caracteres.contains(evt.getKeyChar() + "")) {
-            evt.consume();
-
-            Border lineBorder = BorderFactory.createLineBorder(Color.getColor(caracteres, 0XEC2E2E));
-            tfNumero.setBorder(lineBorder);
-
-        } else {
-            tfNumero.setBorder(borderDefalt);
-        }
-
-    }//GEN-LAST:event_tfNumeroKeyTyped
-
-    private void configSala() {
+    private void configCaixa() {
         rbAlterar.setEnabled(false);
         rbConsultar.setEnabled(false);
         rbExcluir.setEnabled(false);
@@ -479,15 +451,13 @@ public class DialogGerSala extends javax.swing.JDialog {
         btnCancelar.setVisible(true);
 
         tfNumero.setEditable(true);
-        tfQtdPoltronas.setEditable(true);
-        CheckBoxVipSim.setEnabled(true);
-        //CheckBoxVipSim.setEditable(true);
+        cbxFunc.setEnabled(true);
 
+
+        cbxFunc.setSelectedIndex(-1);
         tfNumero.setText("");
-        tfQtdPoltronas.setText("");
-        CheckBoxVipSim.setSelected(false);
     }
-
+    
     private void restart() {
         rbAlterar.setEnabled(true);
         rbConsultar.setEnabled(true);
@@ -498,60 +468,93 @@ public class DialogGerSala extends javax.swing.JDialog {
         cbxEscolher.setVisible(false);
         jiformativo.setVisible(false);
 
+        cbxFunc.setSelectedIndex(-1);
         tfNumero.setText("");
-        tfQtdPoltronas.setText("");
-        CheckBoxVipSim.setSelected(false);
     }
-
-    private int qtdSala() {
+    
+    private int qtdCaixa() {
         int cont = 0;
         try {
-            cont = fixSala.qtdEntidade();
+            cont = fixCaixa.qtdEntidade();
         } catch (SQLException sqlex) //Retorna um erro caso exista erro de query SQL
         {
-            JOptionPane.showMessageDialog(null, "Erro na query [QTD SALA], ERRO: " + sqlex.getMessage(), "ERROR SALA", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Erro na query [QTD CAIXA], ERRO: " + sqlex.getMessage(), "ERROR CAIXA", JOptionPane.ERROR_MESSAGE);
             sqlex.printStackTrace();
         }
         return cont;
     }
+    
+    private int posicaoFuncNoArray(Funcionario func) {
+        try {
+            listFunc = fixFunc.relatorio();
+        } catch (SQLException sqlex) //Retorna um erro caso exista erro de query SQL
+        {
+            JOptionPane.showMessageDialog(null, "Erro na query [RELATÓRIO - Funcionário], ERRO: " + sqlex.getMessage(), "ERROR CAIXA", JOptionPane.ERROR_MESSAGE);
+            sqlex.printStackTrace();
+        }
 
+        for (Funcionario employe : listFunc) {
+            if (employe.getCodigo() == func.getCodigo()) {
+                return listFunc.indexOf(employe);
+            }
+        }
+
+        return -1;
+    }
+    
+    private void popularJComboBoxFunc() {
+        cbxFunc.setModel(new DefaultComboBoxModel());
+
+        try {
+            listFunc = fixFunc.relatorio();
+        } catch (SQLException sqlex) //Retorna um erro caso exista erro de query SQL
+        {
+            JOptionPane.showMessageDialog(null, "Erro na query [RELATÓRIO - Funcionário], ERRO: " + sqlex.getMessage(), "ERROR CAIXA", JOptionPane.ERROR_MESSAGE);
+            sqlex.printStackTrace();
+        }
+
+        for (Funcionario employe : listFunc) {
+            if (employe != null) {
+                cbxFunc.addItem(employe.getNome());
+            }
+        }
+    }
+    
     private void popularJComboBox() {
         cbxEscolher.setModel(new DefaultComboBoxModel());
 
         try {
-            listSala = fixSala.relatorio();
+            listCaixa = fixCaixa.relatorio();
         } catch (SQLException sqlex) //Retorna um erro caso exista erro de query SQL
         {
-            JOptionPane.showMessageDialog(null, "Erro na query [RELATÓRIO], ERRO: " + sqlex.getMessage(), "ERROR SALA", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Erro na query [RELATÓRIO], ERRO: " + sqlex.getMessage(), "ERROR CAIXA", JOptionPane.ERROR_MESSAGE);
             sqlex.printStackTrace();
         }
         
-        for (Sala room : listSala) {
-            if (room != null) {
-                cbxEscolher.addItem(Integer.toString(room.getNumero()));
+        for (Caixa cashier : listCaixa) {
+            if (cashier != null) {
+                cbxEscolher.addItem(Integer.toString(cashier.getNumero()));
             }
         }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JCheckBox CheckBoxVipSim;
-    private javax.swing.ButtonGroup GroupBtnCrudSala;
+    private javax.swing.ButtonGroup GroupBtnCrudCaixa;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnConcluido;
     private javax.swing.JButton btnIncluir;
     private javax.swing.JComboBox<String> cbxEscolher;
+    private javax.swing.JComboBox<String> cbxFunc;
     private javax.swing.JLabel jiformativo;
     private javax.swing.JLabel jiformativo1;
+    private javax.swing.JLabel lbFuncionario;
     private javax.swing.JLabel lbNumero;
-    private javax.swing.JLabel lbQtdPoltronas;
     private javax.swing.JLabel lbTitulo;
-    private javax.swing.JLabel lbVip;
     private javax.swing.JPanel pnIncluir;
     private javax.swing.JRadioButton rbAlterar;
     private javax.swing.JRadioButton rbConsultar;
     private javax.swing.JRadioButton rbExcluir;
     private javax.swing.JRadioButton rbIncluir;
     private javax.swing.JTextField tfNumero;
-    private javax.swing.JTextField tfQtdPoltronas;
     // End of variables declaration//GEN-END:variables
 }

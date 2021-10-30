@@ -5,34 +5,28 @@
  */
 package view;
 
-import controller.fichario.SalaFichario;
-import java.awt.Color;
+import controller.fichario.ClienteFichario;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
-import javax.swing.border.Border;
-import model.Sala;
+import model.Cliente;
 
 /**
  *
  * @author Win10 x64
  */
-public class DialogGerSala extends javax.swing.JDialog {
+public class DialogGerCliente extends javax.swing.JDialog {
 
-    private ArrayList<Sala> listSala;
-    private Border borderDefalt;
-    private SalaFichario fixSala;
+    private ArrayList<Cliente> listCliente;
+    private ClienteFichario fixCliente;
 
     /**
-     * Creates new form DialogGerSala
+     * Creates new form DialogGerCliente
      */
-    public DialogGerSala(java.awt.Frame parent, boolean modal) {
+    public DialogGerCliente(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-
-        borderDefalt = tfQtdPoltronas.getBorder();
 
         cbxEscolher.setVisible(false);
         jiformativo.setVisible(false);
@@ -40,10 +34,10 @@ public class DialogGerSala extends javax.swing.JDialog {
         pnIncluir.setVisible(false);
 
         try {
-            fixSala = new SalaFichario();
+            fixCliente = new ClienteFichario();
         } catch (SQLException sqlex) //Retorna um erro caso exista erro de query SQL
         {
-            JOptionPane.showMessageDialog(null, "Erro de conexão, ERRO: " + sqlex.getMessage(), "ERROR SALA", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Erro de conexão, ERRO: " + sqlex.getMessage(), "ERROR CLIENTE", JOptionPane.ERROR_MESSAGE);
             sqlex.printStackTrace();
         }
     }
@@ -57,23 +51,25 @@ public class DialogGerSala extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        GroupBtnCrudSala = new javax.swing.ButtonGroup();
+        GroupBtnCrudCliente = new javax.swing.ButtonGroup();
         lbTitulo = new javax.swing.JLabel();
+        jiformativo = new javax.swing.JLabel();
+        cbxEscolher = new javax.swing.JComboBox<>();
+        jiformativo1 = new javax.swing.JLabel();
         rbIncluir = new javax.swing.JRadioButton();
         rbExcluir = new javax.swing.JRadioButton();
-        rbAlterar = new javax.swing.JRadioButton();
         rbConsultar = new javax.swing.JRadioButton();
-        jiformativo1 = new javax.swing.JLabel();
+        rbAlterar = new javax.swing.JRadioButton();
         btnConcluido = new javax.swing.JButton();
-        cbxEscolher = new javax.swing.JComboBox<>();
-        jiformativo = new javax.swing.JLabel();
         pnIncluir = new javax.swing.JPanel();
-        lbNumero = new javax.swing.JLabel();
-        tfNumero = new javax.swing.JTextField();
-        tfQtdPoltronas = new javax.swing.JTextField();
-        lbQtdPoltronas = new javax.swing.JLabel();
+        lbCpf = new javax.swing.JLabel();
+        tfCpf = new javax.swing.JTextField();
+        tfTelefone = new javax.swing.JTextField();
+        lbTelefone = new javax.swing.JLabel();
         btnIncluir = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
+        tfNome = new javax.swing.JTextField();
+        lbNome = new javax.swing.JLabel();
         CheckBoxVipSim = new javax.swing.JCheckBox();
         lbVip = new javax.swing.JLabel();
 
@@ -81,50 +77,11 @@ public class DialogGerSala extends javax.swing.JDialog {
 
         lbTitulo.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         lbTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lbTitulo.setText("Gerenciamento de Sala");
+        lbTitulo.setText("Gerenciamento de Cliente");
 
-        GroupBtnCrudSala.add(rbIncluir);
-        rbIncluir.setText("INCLUIR");
-        rbIncluir.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rbIncluirActionPerformed(evt);
-            }
-        });
-
-        GroupBtnCrudSala.add(rbExcluir);
-        rbExcluir.setText("EXCLUIR");
-        rbExcluir.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rbExcluirActionPerformed(evt);
-            }
-        });
-
-        GroupBtnCrudSala.add(rbAlterar);
-        rbAlterar.setText("ALTERAR");
-        rbAlterar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rbAlterarActionPerformed(evt);
-            }
-        });
-
-        GroupBtnCrudSala.add(rbConsultar);
-        rbConsultar.setText("CONSULTAR");
-        rbConsultar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rbConsultarActionPerformed(evt);
-            }
-        });
-
-        jiformativo1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jiformativo1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jiformativo1.setText("MENU");
-
-        btnConcluido.setText("Concluído");
-        btnConcluido.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnConcluidoActionPerformed(evt);
-            }
-        });
+        jiformativo.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        jiformativo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jiformativo.setText("Escolha o nome do cliente:");
 
         cbxEscolher.setName(""); // NOI18N
         cbxEscolher.addActionListener(new java.awt.event.ActionListener() {
@@ -133,29 +90,56 @@ public class DialogGerSala extends javax.swing.JDialog {
             }
         });
 
-        jiformativo.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        jiformativo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jiformativo.setText("Escolha o número da sala:");
+        jiformativo1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jiformativo1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jiformativo1.setText("MENU");
+
+        GroupBtnCrudCliente.add(rbIncluir);
+        rbIncluir.setText("INCLUIR");
+        rbIncluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbIncluirActionPerformed(evt);
+            }
+        });
+
+        GroupBtnCrudCliente.add(rbExcluir);
+        rbExcluir.setText("EXCLUIR");
+        rbExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbExcluirActionPerformed(evt);
+            }
+        });
+
+        GroupBtnCrudCliente.add(rbConsultar);
+        rbConsultar.setText("CONSULTAR");
+        rbConsultar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbConsultarActionPerformed(evt);
+            }
+        });
+
+        GroupBtnCrudCliente.add(rbAlterar);
+        rbAlterar.setText("ALTERAR");
+        rbAlterar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbAlterarActionPerformed(evt);
+            }
+        });
+
+        btnConcluido.setText("Concluído");
+        btnConcluido.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConcluidoActionPerformed(evt);
+            }
+        });
 
         pnIncluir.setBackground(new java.awt.Color(250, 250, 250));
 
-        lbNumero.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        lbNumero.setText("Número:");
+        lbCpf.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        lbCpf.setText("CPF:");
 
-        tfNumero.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                tfNumeroKeyTyped(evt);
-            }
-        });
-
-        tfQtdPoltronas.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                tfQtdPoltronasKeyTyped(evt);
-            }
-        });
-
-        lbQtdPoltronas.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        lbQtdPoltronas.setText("Quantidade de poltronas:");
+        lbTelefone.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        lbTelefone.setText("Telefone:");
 
         btnIncluir.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         btnIncluir.setText("INCLUIR");
@@ -173,6 +157,9 @@ public class DialogGerSala extends javax.swing.JDialog {
             }
         });
 
+        lbNome.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        lbNome.setText("Nome:");
+
         CheckBoxVipSim.setText("Sim");
 
         lbVip.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -186,42 +173,54 @@ public class DialogGerSala extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnIncluirLayout.createSequentialGroup()
-                        .addComponent(btnIncluir)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 105, Short.MAX_VALUE)
-                        .addComponent(btnCancelar)
-                        .addContainerGap())
-                    .addGroup(pnIncluirLayout.createSequentialGroup()
                         .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lbQtdPoltronas)
-                            .addComponent(tfQtdPoltronas, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(pnIncluirLayout.createSequentialGroup()
-                        .addComponent(lbNumero, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lbVip, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(70, 70, 70))
-                    .addGroup(pnIncluirLayout.createSequentialGroup()
-                        .addComponent(tfNumero, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(CheckBoxVipSim)
-                        .addGap(85, 85, 85))))
+                            .addComponent(lbTelefone)
+                            .addComponent(tfTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnIncluirLayout.createSequentialGroup()
+                                .addGap(4, 4, 4)
+                                .addComponent(lbVip, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(CheckBoxVipSim)))
+                    .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(pnIncluirLayout.createSequentialGroup()
+                            .addComponent(btnIncluir)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnCancelar))
+                        .addGroup(pnIncluirLayout.createSequentialGroup()
+                            .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(lbCpf, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(tfCpf, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGap(18, 18, 18)
+                            .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(lbNome, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(tfNome, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnIncluirLayout.setVerticalGroup(
             pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnIncluirLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lbNumero)
-                    .addComponent(lbVip))
-                .addGap(5, 5, 5)
-                .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tfNumero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(CheckBoxVipSim))
+                .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(pnIncluirLayout.createSequentialGroup()
+                        .addComponent(lbCpf)
+                        .addGap(6, 6, 6)
+                        .addComponent(tfCpf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnIncluirLayout.createSequentialGroup()
+                        .addComponent(lbNome)
+                        .addGap(6, 6, 6)
+                        .addComponent(tfNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lbQtdPoltronas)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tfQtdPoltronas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, Short.MAX_VALUE)
+                .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(pnIncluirLayout.createSequentialGroup()
+                        .addComponent(lbTelefone)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(tfTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnIncluirLayout.createSequentialGroup()
+                        .addComponent(lbVip)
+                        .addGap(5, 5, 5)
+                        .addComponent(CheckBoxVipSim)))
+                .addGap(18, 18, 18)
                 .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnIncluir, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -232,7 +231,7 @@ public class DialogGerSala extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lbTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, 618, Short.MAX_VALUE)
+            .addComponent(lbTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addGap(26, 26, 26)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -283,11 +282,49 @@ public class DialogGerSala extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void cbxEscolherActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxEscolherActionPerformed
+        if (cbxEscolher.getSelectedIndex() >= 0) {
+            pnIncluir.setVisible(true);
+
+            Cliente client = listCliente.get(cbxEscolher.getSelectedIndex());
+
+            tfCpf.setText(client.getCpf());
+            tfNome.setText(client.getNome());
+            tfTelefone.setText(client.getTelefone());
+            CheckBoxVipSim.setSelected(client.isVip());
+
+            if (rbAlterar.isSelected()) {
+                btnIncluir.setText("ALTERAR");
+
+                tfCpf.setEditable(true);
+                tfNome.setEditable(true);
+                tfTelefone.setEditable(true);
+                CheckBoxVipSim.setEnabled(true);
+            } else if (rbExcluir.isSelected()) {
+                btnCancelar.setVisible(true);
+                btnIncluir.setVisible(true);
+                btnIncluir.setText("EXCLUIR");
+
+                tfCpf.setEditable(false);
+                tfNome.setEditable(false);
+                tfTelefone.setEditable(false);
+                CheckBoxVipSim.setEnabled(false);
+            } else if (rbConsultar.isSelected()) {
+                btnCancelar.setVisible(false);
+                btnIncluir.setVisible(false);
+
+                tfCpf.setEditable(false);
+                tfNome.setEditable(false);
+                tfTelefone.setEditable(false);
+                CheckBoxVipSim.setEnabled(false);
+            }
+        }
+    }//GEN-LAST:event_cbxEscolherActionPerformed
+
     private void rbIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbIncluirActionPerformed
         cbxEscolher.setVisible(false);
         jiformativo.setVisible(false);
-        
-        configSala();
+        configCliente();
 
         pnIncluir.setVisible(true);
 
@@ -295,9 +332,9 @@ public class DialogGerSala extends javax.swing.JDialog {
     }//GEN-LAST:event_rbIncluirActionPerformed
 
     private void rbExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbExcluirActionPerformed
-        if (qtdSala() > 0) {
+        if (qtdCliente() > 0) {
             restart();
-            configSala();
+            configCliente();
             cbxEscolher.setVisible(true);
             jiformativo.setVisible(true);
             popularJComboBox();
@@ -305,19 +342,8 @@ public class DialogGerSala extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(this, "A lista está VAZIA!!!", "VAZIA", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_rbExcluirActionPerformed
 
-    private void rbAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbAlterarActionPerformed
-        if (qtdSala() > 0) {
-            restart();
-            configSala();
-            cbxEscolher.setVisible(true);
-            jiformativo.setVisible(true);
-            popularJComboBox();
-        } else
-            JOptionPane.showMessageDialog(this, "A lista está VAZIA!!!", "VAZIA", JOptionPane.INFORMATION_MESSAGE);
-    }//GEN-LAST:event_rbAlterarActionPerformed
-
     private void rbConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbConsultarActionPerformed
-        if (qtdSala() > 0) {
+        if (qtdCliente() > 0) {
             cbxEscolher.setVisible(true);
             jiformativo.setVisible(true);
 
@@ -329,83 +355,62 @@ public class DialogGerSala extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(this, "A lista está VAZIA!!!", "VAZIA", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_rbConsultarActionPerformed
 
+    private void rbAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbAlterarActionPerformed
+        if (qtdCliente() > 0) {
+            restart();
+            configCliente();
+            cbxEscolher.setVisible(true);
+            jiformativo.setVisible(true);
+            popularJComboBox();
+        } else
+            JOptionPane.showMessageDialog(this, "A lista está VAZIA!!!", "VAZIA", JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_rbAlterarActionPerformed
+
     private void btnConcluidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConcluidoActionPerformed
         this.setVisible(false);
     }//GEN-LAST:event_btnConcluidoActionPerformed
 
-    private void cbxEscolherActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxEscolherActionPerformed
-        if (cbxEscolher.getSelectedIndex() >= 0) {
-            pnIncluir.setVisible(true);
-
-            Sala room = listSala.get(cbxEscolher.getSelectedIndex());
-
-            tfNumero.setText(room.getNumero() + "");
-            tfQtdPoltronas.setText(room.getQtdPoltronas() + "");
-            CheckBoxVipSim.setSelected(room.isVip());
-
-            if (rbAlterar.isSelected()) {
-                btnIncluir.setText("ALTERAR");
-
-                tfNumero.setEditable(true);
-                tfQtdPoltronas.setEditable(true);
-                CheckBoxVipSim.setEnabled(true);
-                //CheckBoxVipSim.setEditable(true);
-            } else if (rbExcluir.isSelected()) {
-                btnCancelar.setVisible(true);
-                btnIncluir.setVisible(true);
-                btnIncluir.setText("EXCLUIR");
-
-                tfNumero.setEditable(false);
-                tfQtdPoltronas.setEditable(false);
-                CheckBoxVipSim.setEnabled(false);
-                //CheckBoxVipSim.setEditable(false);
-            } else if (rbConsultar.isSelected()) {
-                btnCancelar.setVisible(false);
-                btnIncluir.setVisible(false);
-
-                tfNumero.setEditable(false);
-                tfQtdPoltronas.setEditable(false);
-                CheckBoxVipSim.setEnabled(false);
-                //CheckBoxVipSim.setEditable(false);
-            }
-        }
-    }//GEN-LAST:event_cbxEscolherActionPerformed
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        restart();
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIncluirActionPerformed
-        Sala room = new Sala();
-        
-        if(!btnIncluir.getText().equals("INCLUIR"))
-            room = listSala.get(cbxEscolher.getSelectedIndex());
+        Cliente client = new Cliente();
 
-        room.setNumero(Integer.parseInt(tfNumero.getText()));
-        room.setQtdPoltronas(Integer.parseInt(tfQtdPoltronas.getText()));
-        room.setVip(CheckBoxVipSim.isSelected());
+        if (!btnIncluir.getText().equals("INCLUIR")) {
+            client = listCliente.get(cbxEscolher.getSelectedIndex());
+        }
+
+        client.setCpf(tfCpf.getText());
+        client.setNome(tfNome.getText());
+        client.setTelefone(tfTelefone.getText());
+        client.setVip(CheckBoxVipSim.isSelected());
 
         switch (btnIncluir.getText()) {
             case "INCLUIR": {
 
                 try {
-                    fixSala.incluir(room);
+                    fixCliente.incluir(client);
                 } catch (SQLException sqlex) //Retorna um erro caso exista erro de query SQL
                 {
-                    JOptionPane.showMessageDialog(null, "Erro na query [INCLUIR], ERRO: " + sqlex.getMessage(), "ERROR SALA", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Erro na query [INCLUIR], ERRO: " + sqlex.getMessage(), "ERROR CLIENTE", JOptionPane.ERROR_MESSAGE);
                     sqlex.printStackTrace();
                 }
 
             }
             break;
             case "EXCLUIR": {
-                int ConfirmDialog = JOptionPane.showConfirmDialog(this, "Deseja realamente EXCLUIR essa sala???", "EXCLUIR???", JOptionPane.INFORMATION_MESSAGE);
+                int ConfirmDialog = JOptionPane.showConfirmDialog(this, "Deseja realamente EXCLUIR esse cliente???", "EXCLUIR???", JOptionPane.INFORMATION_MESSAGE);
                 if (ConfirmDialog == JOptionPane.YES_OPTION) {
 
                     try {
-                        fixSala.remove(room);
+                        fixCliente.remove(client);
                     } catch (SQLException sqlex)//Retorna um erro caso exista erro de query SQL
                     {
                         if (sqlex.getSQLState().equalsIgnoreCase("23503")) {
-                            JOptionPane.showMessageDialog(null, "Não pode ser excluido, pois tem dependente(s): " + sqlex.getMessage(), "ERROR SALA", JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(null, "Não pode ser excluido, pois tem dependente(s): " + sqlex.getMessage(), "ERROR CLIENTE", JOptionPane.ERROR_MESSAGE);
                         } else {
-                            JOptionPane.showMessageDialog(null, "Erro na query [REMOVER], ERRO: " + sqlex.getMessage(), "ERROR SALA", JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(null, "Erro na query [REMOVER], ERRO: " + sqlex.getMessage(), "ERROR CLIENTE", JOptionPane.ERROR_MESSAGE);
                         }
                         sqlex.printStackTrace();
                     }
@@ -416,14 +421,14 @@ public class DialogGerSala extends javax.swing.JDialog {
                 break;
             }
             case "ALTERAR": {
-                int ConfirmDialog = JOptionPane.showConfirmDialog(this, "Deseja realamente ALTERAR essa sala???", "ALTERAR???", JOptionPane.INFORMATION_MESSAGE);
+                int ConfirmDialog = JOptionPane.showConfirmDialog(this, "Deseja realamente ALTERAR esse  cliente???", "ALTERAR???", JOptionPane.INFORMATION_MESSAGE);
                 if (ConfirmDialog == JOptionPane.YES_OPTION) {
 
                     try {
-                        fixSala.alteracao(room);
+                        fixCliente.alteracao(client);
                     } catch (SQLException sqlex) //Retorna um erro caso exista erro de query SQL
                     {
-                        JOptionPane.showMessageDialog(null, "Erro na query [ALTERAÇÃO], ERRO: " + sqlex.getMessage(), "ERROR SALA", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Erro na query [ALTERAÇÃO], ERRO: " + sqlex.getMessage(), "ERROR CLIENTE", JOptionPane.ERROR_MESSAGE);
                         sqlex.printStackTrace();
                     }
 
@@ -436,58 +441,6 @@ public class DialogGerSala extends javax.swing.JDialog {
         restart();
     }//GEN-LAST:event_btnIncluirActionPerformed
 
-    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        restart();
-    }//GEN-LAST:event_btnCancelarActionPerformed
-
-    private void tfQtdPoltronasKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfQtdPoltronasKeyTyped
-        String caracteres = "0987654321";
-        if (!caracteres.contains(evt.getKeyChar() + "")) {
-            evt.consume();
-
-            Border lineBorder = BorderFactory.createLineBorder(Color.getColor(caracteres, 0XEC2E2E));
-            tfQtdPoltronas.setBorder(lineBorder);
-        } else {
-            Border lineBorder = BorderFactory.createLineBorder(Color.GRAY);
-            tfQtdPoltronas.setBorder(borderDefalt);
-        }
-
-    }//GEN-LAST:event_tfQtdPoltronasKeyTyped
-
-    private void tfNumeroKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfNumeroKeyTyped
-        String caracteres = "0987654321";
-        if (!caracteres.contains(evt.getKeyChar() + "")) {
-            evt.consume();
-
-            Border lineBorder = BorderFactory.createLineBorder(Color.getColor(caracteres, 0XEC2E2E));
-            tfNumero.setBorder(lineBorder);
-
-        } else {
-            tfNumero.setBorder(borderDefalt);
-        }
-
-    }//GEN-LAST:event_tfNumeroKeyTyped
-
-    private void configSala() {
-        rbAlterar.setEnabled(false);
-        rbConsultar.setEnabled(false);
-        rbExcluir.setEnabled(false);
-        rbIncluir.setEnabled(false);
-
-        pnIncluir.setVisible(true);
-        btnIncluir.setVisible(true);
-        btnCancelar.setVisible(true);
-
-        tfNumero.setEditable(true);
-        tfQtdPoltronas.setEditable(true);
-        CheckBoxVipSim.setEnabled(true);
-        //CheckBoxVipSim.setEditable(true);
-
-        tfNumero.setText("");
-        tfQtdPoltronas.setText("");
-        CheckBoxVipSim.setSelected(false);
-    }
-
     private void restart() {
         rbAlterar.setEnabled(true);
         rbConsultar.setEnabled(true);
@@ -498,18 +451,40 @@ public class DialogGerSala extends javax.swing.JDialog {
         cbxEscolher.setVisible(false);
         jiformativo.setVisible(false);
 
-        tfNumero.setText("");
-        tfQtdPoltronas.setText("");
+        tfCpf.setText("");
+        tfNome.setText("");
+        tfTelefone.setText("");
         CheckBoxVipSim.setSelected(false);
     }
 
-    private int qtdSala() {
+    private void configCliente() {
+        rbAlterar.setEnabled(false);
+        rbConsultar.setEnabled(false);
+        rbExcluir.setEnabled(false);
+        rbIncluir.setEnabled(false);
+
+        pnIncluir.setVisible(true);
+        btnIncluir.setVisible(true);
+        btnCancelar.setVisible(true);
+
+        tfCpf.setEditable(true);
+        tfNome.setEditable(true);
+        tfTelefone.setEditable(true);
+        CheckBoxVipSim.setEnabled(true);
+
+        tfCpf.setText("");
+        tfNome.setText("");
+        tfTelefone.setText("");
+        CheckBoxVipSim.setSelected(false);
+    }
+
+    private int qtdCliente() {
         int cont = 0;
         try {
-            cont = fixSala.qtdEntidade();
+            cont = fixCliente.qtdEntidade();
         } catch (SQLException sqlex) //Retorna um erro caso exista erro de query SQL
         {
-            JOptionPane.showMessageDialog(null, "Erro na query [QTD SALA], ERRO: " + sqlex.getMessage(), "ERROR SALA", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Erro na query [QTD CLIENTE], ERRO: " + sqlex.getMessage(), "ERROR CLIENTE", JOptionPane.ERROR_MESSAGE);
             sqlex.printStackTrace();
         }
         return cont;
@@ -519,31 +494,32 @@ public class DialogGerSala extends javax.swing.JDialog {
         cbxEscolher.setModel(new DefaultComboBoxModel());
 
         try {
-            listSala = fixSala.relatorio();
+            listCliente = fixCliente.relatorio();
         } catch (SQLException sqlex) //Retorna um erro caso exista erro de query SQL
         {
-            JOptionPane.showMessageDialog(null, "Erro na query [RELATÓRIO], ERRO: " + sqlex.getMessage(), "ERROR SALA", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Erro na query [RELATÓRIO], ERRO: " + sqlex.getMessage(), "ERROR CLIENTE", JOptionPane.ERROR_MESSAGE);
             sqlex.printStackTrace();
         }
-        
-        for (Sala room : listSala) {
-            if (room != null) {
-                cbxEscolher.addItem(Integer.toString(room.getNumero()));
+
+        for (Cliente client : listCliente) {
+            if (client != null) {
+                cbxEscolher.addItem(client.getNome());
             }
         }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox CheckBoxVipSim;
-    private javax.swing.ButtonGroup GroupBtnCrudSala;
+    private javax.swing.ButtonGroup GroupBtnCrudCliente;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnConcluido;
     private javax.swing.JButton btnIncluir;
     private javax.swing.JComboBox<String> cbxEscolher;
     private javax.swing.JLabel jiformativo;
     private javax.swing.JLabel jiformativo1;
-    private javax.swing.JLabel lbNumero;
-    private javax.swing.JLabel lbQtdPoltronas;
+    private javax.swing.JLabel lbCpf;
+    private javax.swing.JLabel lbNome;
+    private javax.swing.JLabel lbTelefone;
     private javax.swing.JLabel lbTitulo;
     private javax.swing.JLabel lbVip;
     private javax.swing.JPanel pnIncluir;
@@ -551,7 +527,8 @@ public class DialogGerSala extends javax.swing.JDialog {
     private javax.swing.JRadioButton rbConsultar;
     private javax.swing.JRadioButton rbExcluir;
     private javax.swing.JRadioButton rbIncluir;
-    private javax.swing.JTextField tfNumero;
-    private javax.swing.JTextField tfQtdPoltronas;
+    private javax.swing.JTextField tfCpf;
+    private javax.swing.JTextField tfNome;
+    private javax.swing.JTextField tfTelefone;
     // End of variables declaration//GEN-END:variables
 }

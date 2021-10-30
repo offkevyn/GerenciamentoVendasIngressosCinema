@@ -1,17 +1,27 @@
 package model;
 
 class Pessoa {
+    private int codigo;
     private String cpf;
     private String nome;
     private String telefone;
 
-    public Pessoa(String cpf, String nome, String telefone) {
+    public Pessoa(String cpf, String nome, String telefone, int codigo) {
         this.cpf = cpf;
         this.nome = nome;
         this.telefone = telefone;
+        this.codigo = codigo;
     }
 
     public Pessoa() {
+    }
+
+    public int getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(int codigo) {
+        this.codigo = codigo;
     }
 
     public String getCpf() {

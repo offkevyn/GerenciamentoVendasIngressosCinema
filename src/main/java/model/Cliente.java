@@ -3,8 +3,8 @@ package model;
 public class Cliente extends Pessoa{
     private boolean vip;
 
-    public Cliente(boolean vip, String cpf, String nome, String telefone) {
-        super(cpf, nome, telefone);
+    public Cliente(String cpf, String nome, String telefone, boolean vip, int codigo) {
+        super(cpf, nome, telefone, codigo);
         this.vip = vip;
     }
 

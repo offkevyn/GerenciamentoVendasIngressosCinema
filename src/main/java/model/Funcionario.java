@@ -1,17 +1,19 @@
 package model;
 
-class Funcionario extends Pessoa{
+public class Funcionario extends Pessoa{
     private String ctps;
     private String matricula;
 
-    public Funcionario(String ctps, String matricula, String cpf, String nome, String telefone) {
-        super(cpf, nome, telefone);
+    public Funcionario(String ctps, String matricula, String cpf, String nome, String telefone, int codigo) {
+        super(cpf, nome, telefone, codigo);
         this.ctps = ctps;
         this.matricula = matricula;
     }
 
     public Funcionario() {
     }
+    
+    
     
     public String getCtps() {
         return ctps;
