@@ -112,4 +112,25 @@ public class ClienteDAO {
 
         return listCliente;
     }
+    
+    public Cliente ClientePeloCodico(int codigo) throws SQLException
+    {
+        String sql;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        sql = "SELECT * FROM cliente";
+
+        ps = conn.prepareStatement(sql);
+        rs = ps.executeQuery();
+        rs.next();
+        
+        Cliente client = new Cliente(rs.getString("cpf"),
+                    rs.getString("nome"),
+                    rs.getString("telefone"),
+                    rs.getBoolean("vip"),
+                    rs.getInt("codigo"));
+        
+        return client;
+    }
 }

@@ -3,26 +3,34 @@ package model;
 import java.time.LocalDate;
 
 public class Ingresso {
+    private int codigo;
     private Secao secao;
     private float preco;
     private Caixa caixa;
     private int acrescimo;
-    private LocalDate agendado;
     private int poltrona;
     private Cliente cliente;
 
-    public Ingresso(Secao secao, float preco, Caixa caixa, int acrescimo, LocalDate agendado, int poltrona, Cliente cliente) {
+    public Ingresso(Secao secao, float preco, Caixa caixa, int acrescimo, int poltrona, Cliente cliente, int codigo) {
         this.secao = secao;
         this.preco = preco;
         this.caixa = caixa;
         this.acrescimo = acrescimo;
-        this.agendado = agendado;
         this.poltrona = poltrona;
         this.cliente = cliente;
+        this.codigo = codigo;
     }
 
     public Ingresso() {
         acrescimo = 0;
+    }
+
+    public int getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(int codigo) {
+        this.codigo = codigo;
     }
 
     public Secao getSecao() {
@@ -55,14 +63,6 @@ public class Ingresso {
 
     public void setAcrescimo(int acrescimo) {
         this.acrescimo = acrescimo;
-    }
-
-    public LocalDate getAgendado() {
-        return agendado;
-    }
-
-    public void setAgendado(LocalDate agendado) {
-        this.agendado = agendado;
     }
 
     public int getPoltrona() {

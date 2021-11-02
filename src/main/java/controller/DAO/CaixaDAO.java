@@ -31,7 +31,7 @@ public class CaixaDAO {
         ps.execute();
         ps.close();
     }
-    
+
     public void excluir(Caixa caixa) throws SQLException {
         String sql;
         PreparedStatement ps = null;
@@ -44,7 +44,7 @@ public class CaixaDAO {
 
         ps.execute();
         ps.close();
-        
+
     }
 
     public void alteracao(Caixa caixa) throws SQLException {
@@ -117,7 +117,44 @@ public class CaixaDAO {
 
         rs.close();
         ps.close();
+        rsFunc.close();
+        psFunc.close();
 
         return listCaixa;
     }
+
+    public Caixa CaixaPeloCodico(int codigo) throws SQLException {
+        String sql, sqlFunc;
+        PreparedStatement ps = null, psFunc = null;
+        ResultSet rs = null, rsFunc = null;
+
+        sql = "SELECT * FROM caixa";
+
+        ps = conn.prepareStatement(sql);
+        rs = ps.executeQuery();
+        rs.next();
+
+        sqlFunc = "SELECT * FROM funcionario where codigo = " + rs.getInt("funcionario_cod");
+        psFunc = conn.prepareStatement(sqlFunc);
+        rsFunc = psFunc.executeQuery();
+        rsFunc.next();
+        Funcionario employe = new Funcionario(rsFunc.getString("ctps"),
+                rsFunc.getString("matricula"),
+                rsFunc.getString("cpf"),
+                rsFunc.getString("nome"),
+                rsFunc.getString("telefone"),
+                rsFunc.getInt("codigo"));
+
+        Caixa cashier = new Caixa(rs.getInt("numero"),
+                employe,
+                rs.getInt("codigo"));
+
+        rs.close();
+        ps.close();
+        rsFunc.close();
+        psFunc.close();
+
+        return cashier;
+    }
+
 }

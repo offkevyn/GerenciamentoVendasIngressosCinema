@@ -39,7 +39,7 @@ public class SecaoDAO {
         ps.execute();
         ps.close();
     }
-    
+
     public void excluir(Secao secao) throws SQLException {
         String sql;
         PreparedStatement ps = null;
@@ -52,24 +52,23 @@ public class SecaoDAO {
 
         ps.execute();
         ps.close();
-        
-    }
-    
-    public void alteracao(Secao secao) throws SQLException
-    {
-            String sql;
-            PreparedStatement ps = null;
-            sql = "UPDATE secao SET sala_cod = ?, filme_cod = ?, data_hora = ? WHERE codigo = ?";
-            
-                ps = conn.prepareStatement(sql);
-                
-                ps.setInt(1, secao.getSala().getCodigo());
-                ps.setInt(2, secao.getFilme().getCodigo());
-                ps.setObject(3, secao.getDataHora());
-                ps.setInt(4, secao.getCodigo());
 
-                ps.execute();
-                ps.close();
+    }
+
+    public void alteracao(Secao secao) throws SQLException {
+        String sql;
+        PreparedStatement ps = null;
+        sql = "UPDATE secao SET sala_cod = ?, filme_cod = ?, data_hora = ? WHERE codigo = ?";
+
+        ps = conn.prepareStatement(sql);
+
+        ps.setInt(1, secao.getSala().getCodigo());
+        ps.setInt(2, secao.getFilme().getCodigo());
+        ps.setObject(3, secao.getDataHora());
+        ps.setInt(4, secao.getCodigo());
+
+        ps.execute();
+        ps.close();
     }
 
     public int qtdRegistro() throws SQLException {
@@ -143,26 +142,82 @@ public class SecaoDAO {
 
         rs.close();
         ps.close();
+        rsFilme.close();
+        psFilme.close();
+        rsSala.close();
+        psSala.close();
 
         return listSecao;
+    }
+
+    public Secao SecaoPeloCodico(int codigo) throws SQLException {
+        LocalDateTime dataHora = LocalDateTime.now();
+        Date data = new Date();
+        Date hora = new Date();
+
+        String sql, sqlFilme, sqlSala;
+        PreparedStatement ps = null, psFilme = null, psSala = null;
+        ResultSet rs = null, rsFilme = null, rsSala = null;
+
+        sql = "SELECT * FROM secao where codigo = " + codigo;
+
+        ps = conn.prepareStatement(sql);
+        rs = ps.executeQuery();
+        rs.next();
+
+        sqlFilme = "SELECT * FROM filme where codigo = " + rs.getInt("filme_cod");
+        psFilme = conn.prepareStatement(sqlFilme);
+        rsFilme = psFilme.executeQuery();
+        rsFilme.next();
+        Filme movie = new Filme(rsFilme.getString("titulo"),
+                rsFilme.getString("sinopse"),
+                rsFilme.getInt("duracaoMinut"),
+                rsFilme.getInt("codigo"));
+
+        sqlSala = "SELECT * FROM sala where codigo = " + rs.getInt("sala_cod");
+        psSala = conn.prepareStatement(sqlSala);
+        rsSala = psSala.executeQuery();
+        rsSala.next();
+        Sala room = new Sala(rsSala.getBoolean("vip"),
+                rsSala.getInt("qtd_poltronas"),
+                rsSala.getInt("numero"),
+                rsSala.getInt("codigo"));
+
+        data = rs.getDate("data_hora");
+        hora = rs.getTime("data_hora");
+
+        dataHora = converterToDateTime(data, hora);
+
+        Secao session = new Secao(room,
+                dataHora,
+                movie,
+                rs.getInt("poltronas_oucupadas"),
+                rs.getInt("codigo"));
+
+        rs.close();
+        ps.close();
+        rsFilme.close();
+        psFilme.close();
+        rsSala.close();
+        psSala.close();
+
+        return session;
     }
 
     private LocalDateTime converterToDateTime(Date data, Date h) {
         Calendar calDate = Calendar.getInstance();
         calDate.setTime(data);
-        
+
         Calendar calHora = Calendar.getInstance();
         calHora.setTime(h);
 
         int dia = calDate.get(Calendar.DAY_OF_MONTH),
                 mes = calDate.get(Calendar.MONTH),
                 ano = calDate.get(Calendar.YEAR),
-                hora =  calHora.get(Calendar.HOUR_OF_DAY),
-                min = calHora.get(Calendar.MINUTE);  
+                hora = calHora.get(Calendar.HOUR_OF_DAY),
+                min = calHora.get(Calendar.MINUTE);
 
-        System.out.println("mes: "  + mes + " Ano: " + ano + " dia: " + dia + " hora: " + hora + " minuto: " + min);
-        
-     return LocalDateTime.of(ano, mes+1, dia, hora, min);
+        return LocalDateTime.of(ano, mes + 1, dia, hora, min);
 
     }
 }

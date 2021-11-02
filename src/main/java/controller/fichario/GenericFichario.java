@@ -6,12 +6,14 @@ import controller.DAO.SalaDAO;
 import controller.DAO.CaixaDAO;
 import controller.DAO.FuncionarioDAO;
 import controller.DAO.ClienteDAO;
+import controller.DAO.IngressoDAO;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import model.Caixa;
 import model.Cliente;
 import model.Filme;
 import model.Funcionario;
+import model.Ingresso;
 import model.Sala;
 import model.Secao;
 
@@ -25,6 +27,7 @@ public class GenericFichario<E> {
     private FuncionarioDAO funcionarioDao;
     private ClienteDAO clienteDao;
     private CaixaDAO caixaDao;
+    private IngressoDAO ingressoDao;
 
     public GenericFichario(Class<E> classeEntidade) throws SQLException {
         this.classeEntidade = classeEntidade;
@@ -35,6 +38,7 @@ public class GenericFichario<E> {
         funcionarioDao = new FuncionarioDAO();
         clienteDao = new ClienteDAO();
         caixaDao = new CaixaDAO();
+        ingressoDao = new IngressoDAO();
     }
 
     public void incluir(E entidade) throws SQLException {
@@ -55,6 +59,9 @@ public class GenericFichario<E> {
         }   
         else if (classeEntidade.equals(Caixa.class)) {
             caixaDao.incluir((Caixa) entidade);
+        }
+        else if (classeEntidade.equals(Ingresso.class)) {
+            ingressoDao.incluir((Ingresso) entidade);
         }
     }
 
@@ -121,6 +128,9 @@ public class GenericFichario<E> {
         else if (classeEntidade.equals(Caixa.class)) {
             listEntidades = (ArrayList<E>) caixaDao.relatorio();
         }
+        else if (classeEntidade.equals(Ingresso.class)) {
+            listEntidades = (ArrayList<E>) ingressoDao.relatorio();
+        }
 
         return listEntidades;
     }
@@ -144,6 +154,9 @@ public class GenericFichario<E> {
         }
         else if (classeEntidade.equals(Caixa.class)) {
             cont = caixaDao.qtdRegistro();
+        }
+        else if (classeEntidade.equals(Ingresso.class)) {
+            cont = ingressoDao.qtdRegistro();
         }
 
         return cont;
