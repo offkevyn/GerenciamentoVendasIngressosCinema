@@ -119,7 +119,7 @@ public class ClienteDAO {
         PreparedStatement ps = null;
         ResultSet rs = null;
 
-        sql = "SELECT * FROM cliente";
+        sql = "SELECT * FROM cliente where codigo = " + codigo;
 
         ps = conn.prepareStatement(sql);
         rs = ps.executeQuery();

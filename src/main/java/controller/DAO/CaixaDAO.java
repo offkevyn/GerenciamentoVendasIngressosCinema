@@ -128,7 +128,7 @@ public class CaixaDAO {
         PreparedStatement ps = null, psFunc = null;
         ResultSet rs = null, rsFunc = null;
 
-        sql = "SELECT * FROM caixa";
+        sql = "SELECT * FROM caixa where codigo = " + codigo;
 
         ps = conn.prepareStatement(sql);
         rs = ps.executeQuery();

@@ -1,6 +1,7 @@
 package controller.DAO;
 
 import controller.Conexao;
+import java.sql.Array;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,7 +11,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import static java.util.Collections.list;
 import java.util.Date;
 import model.Filme;
 import model.Sala;
@@ -27,15 +30,17 @@ public class SecaoDAO {
     public void incluir(Secao secao) throws SQLException {
         String sql;
         PreparedStatement ps = null;
+        Array array = conn.createArrayOf("INT", secao.getPoltronasOucupadas().toArray());
 
-        sql = "INSERT INTO secao(sala_cod, filme_cod, data_hora) values (?, ?, ?)";
+        sql = "INSERT INTO secao(sala_cod, filme_cod, data_hora, poltronas_oucupadas) values (?, ?, ?, ?)";
 
         ps = conn.prepareStatement(sql);
 
         ps.setInt(1, secao.getSala().getCodigo());
         ps.setInt(2, secao.getFilme().getCodigo());
         ps.setObject(3, secao.getDataHora());
-
+        ps.setArray(4, array);
+        
         ps.execute();
         ps.close();
     }
@@ -58,14 +63,15 @@ public class SecaoDAO {
     public void alteracao(Secao secao) throws SQLException {
         String sql;
         PreparedStatement ps = null;
-        sql = "UPDATE secao SET sala_cod = ?, filme_cod = ?, data_hora = ? WHERE codigo = ?";
+        sql = "UPDATE secao SET sala_cod = ?, filme_cod = ?, data_hora = ?, poltronas_oucupadas = ? WHERE codigo = ?";
 
         ps = conn.prepareStatement(sql);
 
         ps.setInt(1, secao.getSala().getCodigo());
         ps.setInt(2, secao.getFilme().getCodigo());
         ps.setObject(3, secao.getDataHora());
-        ps.setInt(4, secao.getCodigo());
+        ps.setArray(4, (Array) secao.getPoltronasOucupadas());
+        ps.setInt(5, secao.getCodigo());
 
         ps.execute();
         ps.close();
@@ -131,13 +137,20 @@ public class SecaoDAO {
 
             dataHora = converterToDateTime(data, hora);
 
+            Array array = rs.getArray("poltronas_oucupadas");
+            String[] zips = (String[])array.getArray();
+            ArrayList<Integer> oucupadas = new ArrayList<Integer>(Arrays.asList(zips));
+
+            
             Secao session = new Secao(room,
                     dataHora,
                     movie,
-                    rs.getInt("poltronas_oucupadas"),
                     rs.getInt("codigo"));
 
             listSecao.add(session);
+            if(session.getCodigo() == 3)
+            for(int i = 0; i<session.getPoltronasOucupadas().size(); i++)
+                System.out.println(session.getPoltronasOucupadas().get(i));
         }
 
         rs.close();
@@ -146,6 +159,8 @@ public class SecaoDAO {
         psFilme.close();
         rsSala.close();
         psSala.close();
+        
+        
 
         return listSecao;
     }
@@ -190,8 +205,8 @@ public class SecaoDAO {
 
         Secao session = new Secao(room,
                 dataHora,
-                movie,
-                rs.getInt("poltronas_oucupadas"),
+                movie, 
+                (ArrayList<Integer>) rs.getArray("poltronas_oucupadas"),
                 rs.getInt("codigo"));
 
         rs.close();
@@ -200,6 +215,8 @@ public class SecaoDAO {
         psFilme.close();
         rsSala.close();
         psSala.close();
+        
+
 
         return session;
     }

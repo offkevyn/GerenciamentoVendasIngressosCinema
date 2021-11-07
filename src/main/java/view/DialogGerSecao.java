@@ -399,14 +399,14 @@ public class DialogGerSecao extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void rbIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbIncluirActionPerformed
+        popularJComboBoxSala();
+        popularJComboBoxFilme();
+        
         cbxEscolher.setVisible(false);
         jiformativo.setVisible(false);
 
         configSecao();
-
-        popularJComboBoxSala();
-        popularJComboBoxFilme();
-
+        
         pnIncluir.setVisible(true);
 
         btnIncluir.setText("INCLUIR");
@@ -425,6 +425,9 @@ public class DialogGerSecao extends javax.swing.JDialog {
 
     private void rbAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbAlterarActionPerformed
         if (qtdSecao() > 0) {
+            popularJComboBoxSala();
+            popularJComboBoxFilme();
+            
             restart();
             configSecao();
             cbxEscolher.setVisible(true);
@@ -673,6 +676,9 @@ public class DialogGerSecao extends javax.swing.JDialog {
         tflbqtdPoltronasOuculpadas.setEditable(false);
         tflbqtdPoltronasOuculpadas.setVisible(false);
         lbqtdPoltronasOuculpadas.setVisible(false);
+        
+        popularJComboBoxSala();
+        popularJComboBoxFilme();
     }
 
     private int posicaoSalaNoArray(Sala sala) {

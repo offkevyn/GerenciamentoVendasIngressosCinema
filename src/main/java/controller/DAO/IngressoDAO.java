@@ -21,12 +21,9 @@ public class IngressoDAO {
 //    private SecaoFichario fixSecao;
 //    private ClienteFichario fixCliente;
 //    private CaixaFichario fixCaixaa;
-    
     private SecaoDAO secaoDao;
     private ClienteDAO clienteDao;
     private CaixaDAO caixaaDao;
-    
-    
 
     public IngressoDAO() throws SQLException {
         conn = Conexao.getConexao();
@@ -34,10 +31,9 @@ public class IngressoDAO {
 //        fixSecao = new SecaoFichario();
 //        fixCliente = new ClienteFichario();
 //        fixCaixaa = new CaixaFichario();
-
-          secaoDao = new SecaoDAO();
-          clienteDao = new ClienteDAO();
-          caixaaDao = new CaixaDAO();
+        secaoDao = new SecaoDAO();
+        clienteDao = new ClienteDAO();
+        caixaaDao = new CaixaDAO();
 
     }
 
@@ -59,7 +55,42 @@ public class IngressoDAO {
         ps.execute();
         ps.close();
     }
-    
+
+    public void excluir(Ingresso ingresso) throws SQLException {
+        String sql;
+        PreparedStatement ps = null;
+
+        sql = "DELETE FROM ingresso where codigo = ?";
+
+        ps = conn.prepareStatement(sql);
+
+        ps.setInt(1, ingresso.getCodigo());
+
+        ps.execute();
+        ps.close();
+
+    }
+
+    public void alteracao(Ingresso ingresso) throws SQLException {
+        String sql;
+        PreparedStatement ps = null;
+
+        sql = "UPDATE ingresso SET secao_cod = ?, caixa_cod = ?, cliente_cod = ?, preco = ?, acresimo = ?, poltrona = ? WHERE codigo = ?";
+
+        ps = conn.prepareStatement(sql);
+
+        ps.setInt(1, ingresso.getSecao().getCodigo());
+        ps.setInt(2, ingresso.getCaixa().getCodigo());
+        ps.setInt(3, ingresso.getCliente().getCodigo());
+        ps.setFloat(4, ingresso.getPreco());
+        ps.setInt(5, ingresso.getAcrescimo());
+        ps.setInt(6, ingresso.getPoltrona());
+        ps.setInt(7, ingresso.getCodigo());
+
+        ps.execute();
+        ps.close();
+    }
+
     public int qtdRegistro() throws SQLException {
         int count = 0;
 
@@ -99,7 +130,7 @@ public class IngressoDAO {
 //            Caixa caixaa = fixCaixaa.entidadePeloID(rs.getInt("caixa_cod"));
             Secao secao = secaoDao.SecaoPeloCodico(rs.getInt("secao_cod"));
             Cliente cliente = clienteDao.ClientePeloCodico(rs.getInt("cliente_cod"));
-            Caixa caixaa = caixaaDao. CaixaPeloCodico(rs.getInt("caixa_cod"));
+            Caixa caixaa = caixaaDao.CaixaPeloCodico(rs.getInt("caixa_cod"));
 
             Ingresso ticket = new Ingresso(secao,
                     rs.getFloat("preco"),

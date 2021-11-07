@@ -431,39 +431,43 @@ public class DialogGerIngresso extends javax.swing.JDialog {
     }//GEN-LAST:event_rbIncluirActionPerformed
 
     private void rbExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbExcluirActionPerformed
-//        if (qtdCaixa() > 0) {
-//            restart();
-//            configCaixa();
-//            cbxEscolher.setVisible(true);
-//            jiformativo.setVisible(true);
-//            popularJComboBox();
-//        } else
-//        JOptionPane.showMessageDialog(this, "A lista está VAZIA!!!", "VAZIA", JOptionPane.INFORMATION_MESSAGE);
+        if (qtdIngresso() > 0) {
+            restart();
+            configIngresso();
+            cbxEscolher.setVisible(true);
+            jiformativo.setVisible(true);
+            popularJComboBox();
+        } else
+            JOptionPane.showMessageDialog(this, "A lista está VAZIA!!!", "VAZIA", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_rbExcluirActionPerformed
 
     private void rbAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbAlterarActionPerformed
-//        if (qtdCaixa() > 0) {
-//            restart();
-//            configCaixa();
-//            cbxEscolher.setVisible(true);
-//            jiformativo.setVisible(true);
-//            popularJComboBox();
-//        } else
-//        JOptionPane.showMessageDialog(this, "A lista está VAZIA!!!", "VAZIA", JOptionPane.INFORMATION_MESSAGE);
+        if (qtdIngresso() > 0) {
+            popularJComboBoxSecao();
+            popularJComboBoxCliente();
+            popularJComboBoxCaixaa();
+
+            restart();
+            configIngresso();
+            cbxEscolher.setVisible(true);
+            jiformativo.setVisible(true);
+            popularJComboBox();
+        } else
+            JOptionPane.showMessageDialog(this, "A lista está VAZIA!!!", "VAZIA", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_rbAlterarActionPerformed
 
     private void rbConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbConsultarActionPerformed
         if (qtdIngresso() > 0) {
+            popularJComboBoxSecao();
+            popularJComboBoxCliente();
+            popularJComboBoxCaixaa();
+            popularJComboBox();
+            
             cbxEscolher.setVisible(true);
             jiformativo.setVisible(true);
 
             btnIncluir.setVisible(false);
             btnCancelar.setVisible(false);
-
-            popularJComboBoxSecao();
-            popularJComboBoxCliente();
-            popularJComboBoxCaixaa();
-            popularJComboBox();
         } else
             JOptionPane.showMessageDialog(this, "A lista está VAZIA!!!", "VAZIA", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_rbConsultarActionPerformed
@@ -481,14 +485,16 @@ public class DialogGerIngresso extends javax.swing.JDialog {
             if (ticket.getPreco() == 28.0) {
                 rbIngressoInteira.setSelected(true);
             } else {
-                rbIngressoInteira.setSelected(true);
+                rbIngressoMeia.setSelected(true);
             }
             tfAcrescimo.setText(ticket.getAcrescimo() + "");
             tfPrecoTotal.setText(ticket.getPreco() + ticket.getAcrescimo() + "");
             tfPoltrona.setText(ticket.getPoltrona() + "");
+            
+            cbxSecao.setSelectedIndex(posicaoSecaoNoArray(ticket.getSecao()));
             cbxCaixaa.setSelectedIndex(posicaoCaixaaNoArray(ticket.getCaixa()));
             cbxCliente.setSelectedIndex(posicaoClienteNoArray(ticket.getCliente()));
-            cbxSecao.setSelectedIndex(posicaoSecaoNoArray(ticket.getSecao()));
+            
 
             if (rbAlterar.isSelected()) {
                 btnIncluir.setText("ALTERAR");
@@ -536,13 +542,14 @@ public class DialogGerIngresso extends javax.swing.JDialog {
         Secao secao = listSecao.get(cbxSecao.getSelectedIndex());
         Cliente cliente = listCliente.get(cbxCliente.getSelectedIndex());
         Caixa caixaa = listCaixaa.get(cbxCaixaa.getSelectedIndex());
+        
         int acrescimo = 0;
         float precoIngresso = 28;
         if (rbIngressoMeia.isSelected()) {
             precoIngresso = 14;
         }
-        if (secao.getSala().isVip() && (!cliente.isVip())) {
-            acrescimo = (int) (precoIngresso * 1.2);
+        if (secao.getSala().isVip()) {
+            acrescimo = (int) (precoIngresso * 0.2);
         }
 
         if (!btnIncluir.getText().equals("INCLUIR")) {
@@ -570,42 +577,42 @@ public class DialogGerIngresso extends javax.swing.JDialog {
             }
             break;
             case "EXCLUIR": {
-//                int ConfirmDialog = JOptionPane.showConfirmDialog(this, "Deseja realamente EXCLUIR esse caixa???", "EXCLUIR???", JOptionPane.INFORMATION_MESSAGE);
-//                if (ConfirmDialog == JOptionPane.YES_OPTION) {
-//
-//                    try {
-//                        fixCaixa.remove(cashier);
-//                    } catch (SQLException sqlex)//Retorna um erro caso exista erro de query SQL
-//                    {
-//                        if (sqlex.getSQLState().equalsIgnoreCase("23503")) {
-//                            JOptionPane.showMessageDialog(null, "Não pode ser excluido, pois tem dependente(s): " + sqlex.getMessage(), "ERROR CAIXA", JOptionPane.ERROR_MESSAGE);
-//                        } else {
-//                            JOptionPane.showMessageDialog(null, "Erro na query [REMOVER], ERRO: " + sqlex.getMessage(), "ERROR CAIXA", JOptionPane.ERROR_MESSAGE);
-//                        }
-//                        sqlex.printStackTrace();
-//                    }
-//
-//                } else {
-//                    btnCancelarActionPerformed(evt);
-//                }
-//                break;
+                int ConfirmDialog = JOptionPane.showConfirmDialog(this, "Deseja realamente EXCLUIR esse ingresso???", "EXCLUIR???", JOptionPane.INFORMATION_MESSAGE);
+                if (ConfirmDialog == JOptionPane.YES_OPTION) {
+
+                    try {
+                        fixIngresso.remove(ticket);
+                    } catch (SQLException sqlex)//Retorna um erro caso exista erro de query SQL
+                    {
+                        if (sqlex.getSQLState().equalsIgnoreCase("23503")) {
+                            JOptionPane.showMessageDialog(null, "Não pode ser excluido, pois tem dependente(s): " + sqlex.getMessage(), "ERROR INGRESSO", JOptionPane.ERROR_MESSAGE);
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Erro na query [REMOVER], ERRO: " + sqlex.getMessage(), "ERROR INGRESSO", JOptionPane.ERROR_MESSAGE);
+                        }
+                        sqlex.printStackTrace();
+                    }
+
+                } else {
+                    btnCancelarActionPerformed(evt);
+                }
+                break;
             }
             case "ALTERAR": {
-//                int ConfirmDialog = JOptionPane.showConfirmDialog(this, "Deseja realamente ALTERAR esse caixa???", "ALTERAR???", JOptionPane.INFORMATION_MESSAGE);
-//                if (ConfirmDialog == JOptionPane.YES_OPTION) {
-//
-//                    try {
-//                        fixCaixa.alteracao(cashier);
-//                    } catch (SQLException sqlex) //Retorna um erro caso exista erro de query SQL
-//                    {
-//                        JOptionPane.showMessageDialog(null, "Erro na query [ALTERAÇÃO], ERRO: " + sqlex.getMessage(), "ERROR CAIXA", JOptionPane.ERROR_MESSAGE);
-//                        sqlex.printStackTrace();
-//                    }
-//
-//                } else {
-//                    btnCancelarActionPerformed(evt);
-//                }
-//                break;
+                int ConfirmDialog = JOptionPane.showConfirmDialog(this, "Deseja realamente ALTERAR esse ingresso???", "ALTERAR???", JOptionPane.INFORMATION_MESSAGE);
+                if (ConfirmDialog == JOptionPane.YES_OPTION) {
+
+                    try {
+                        fixIngresso.alteracao(ticket);
+                    } catch (SQLException sqlex) //Retorna um erro caso exista erro de query SQL
+                    {
+                        JOptionPane.showMessageDialog(null, "Erro na query [ALTERAÇÃO], ERRO: " + sqlex.getMessage(), "ERROR INGRESSO", JOptionPane.ERROR_MESSAGE);
+                        sqlex.printStackTrace();
+                    }
+
+                } else {
+                    btnCancelarActionPerformed(evt);
+                }
+                break;
             }
         }
         restart();
@@ -620,27 +627,7 @@ public class DialogGerIngresso extends javax.swing.JDialog {
     }//GEN-LAST:event_cbxCaixaaActionPerformed
 
     private void cbxSecaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxSecaoActionPerformed
-        if (cbxSecao.getSelectedIndex() > 0) {
-            Secao secao = listSecao.get(cbxSecao.getSelectedIndex());
-            int acrescimo = 0;
-
-            float precoIngresso;
-            precoIngresso = 28;
-            if (rbIngressoMeia.isSelected()) {
-                precoIngresso = 14;
-            }
-
-            if (secao.getSala().isVip()) {
-                acrescimo = (int) (28 * 0.2);
-                if (rbIngressoMeia.isSelected()) {
-                    acrescimo = (int) (14 * 0.2);
-                }
-            }
-
-            tfAcrescimo.setText(acrescimo + "");
-            tfPrecoTotal.setText(acrescimo + precoIngresso + "");
-        }
-
+        atualizaAcrescimoEPrecoTotal();
     }//GEN-LAST:event_cbxSecaoActionPerformed
 
     private void cbxClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxClienteActionPerformed
@@ -648,58 +635,15 @@ public class DialogGerIngresso extends javax.swing.JDialog {
     }//GEN-LAST:event_cbxClienteActionPerformed
 
     private void rbIngressoInteiraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbIngressoInteiraActionPerformed
-        Secao secao = listSecao.get(cbxSecao.getSelectedIndex());
-        int acrescimo = 0;
-
-        float precoIngresso;
-        precoIngresso = 28;
-        if (rbIngressoMeia.isSelected()) {
-            precoIngresso = 14;
-        }
-
-        if (secao.getSala().isVip()) {
-            acrescimo = (int) (28 * 0.2);
-            if (rbIngressoMeia.isSelected()) {
-                acrescimo = (int) (14 * 0.2);
-            }
-        }
-
-        tfAcrescimo.setText(acrescimo + "");
-        tfPrecoTotal.setText(acrescimo + precoIngresso + "");
+        atualizaAcrescimoEPrecoTotal();
     }//GEN-LAST:event_rbIngressoInteiraActionPerformed
 
     private void rbIngressoMeiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbIngressoMeiaActionPerformed
-        Secao secao = listSecao.get(cbxSecao.getSelectedIndex());
-        int acrescimo = 0;
-
-        float precoIngresso;
-        precoIngresso = 28;
-        if (rbIngressoMeia.isSelected()) {
-            precoIngresso = 14;
-        }
-
-        if (secao.getSala().isVip()) {
-            acrescimo = (int) (28 * 0.2);
-            if (rbIngressoMeia.isSelected()) {
-                acrescimo = (int) (14 * 0.2);
-            }
-        }
-
-        tfAcrescimo.setText(acrescimo + "");
-        tfPrecoTotal.setText(acrescimo + precoIngresso + "");
+        atualizaAcrescimoEPrecoTotal();
     }//GEN-LAST:event_rbIngressoMeiaActionPerformed
 
     private void tfAcrescimoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfAcrescimoKeyTyped
-        //        String caracteres = "0987654321";
-        //        if (!caracteres.contains(evt.getKeyChar() + "")) {
-        //            evt.consume();
-        //
-        //            Border lineBorder = BorderFactory.createLineBorder(Color.getColor(caracteres, 0XEC2E2E));
-        //            tfNumero.setBorder(lineBorder);
-        //
-        //        } else {
-        //            tfNumero.setBorder(borderDefalt);
-        //        }
+
     }//GEN-LAST:event_tfAcrescimoKeyTyped
 
     private void tfPrecoTotalKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfPrecoTotalKeyTyped
@@ -722,6 +666,26 @@ public class DialogGerIngresso extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_tfAcrescimoActionPerformed
 
+    private void atualizaAcrescimoEPrecoTotal()
+    {
+        int acrescimo = 0;
+
+        float precoIngresso = 28;
+        if (rbIngressoMeia.isSelected()) {
+            precoIngresso = 14;
+        }
+        
+        if (cbxSecao.getSelectedIndex() > 0) {
+            Secao secao = listSecao.get(cbxSecao.getSelectedIndex());
+
+            if (secao.getSala().isVip()) {
+                acrescimo = (int) (precoIngresso * 0.2);
+            }
+        }
+        tfAcrescimo.setText(acrescimo + "");
+        tfPrecoTotal.setText(acrescimo + precoIngresso + "");
+    }
+    
     private void configIngresso() {
         rbAlterar.setEnabled(false);
         rbConsultar.setEnabled(false);
@@ -747,6 +711,10 @@ public class DialogGerIngresso extends javax.swing.JDialog {
         cbxCaixaa.setSelectedIndex(-1);
         cbxCliente.setSelectedIndex(-1);
         cbxSecao.setSelectedIndex(-1);
+        
+        popularJComboBoxSecao();
+        popularJComboBoxCliente();
+        popularJComboBoxCaixaa();
     }
 
     private void restart() {
@@ -815,7 +783,8 @@ public class DialogGerIngresso extends javax.swing.JDialog {
         return -1;
     }
 
-    private int posicaoCaixaaNoArray(Caixa caixaa) {
+        private int posicaoCaixaaNoArray(Caixa caixaa) {
+        
         try {
             listCaixaa = fixCaixaa.relatorio();
         } catch (SQLException sqlex) //Retorna um erro caso exista erro de query SQL
@@ -823,7 +792,7 @@ public class DialogGerIngresso extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, "Erro na query [RELATÓRIO - Caixaa], ERRO: " + sqlex.getMessage(), "ERROR INGRESSO", JOptionPane.ERROR_MESSAGE);
             sqlex.printStackTrace();
         }
-
+        
         for (Caixa cashier : listCaixaa) {
             if (cashier.getCodigo() == caixaa.getCodigo()) {
                 return listCaixaa.indexOf(cashier);

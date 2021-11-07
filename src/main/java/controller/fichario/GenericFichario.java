@@ -84,6 +84,9 @@ public class GenericFichario<E> {
         else if (classeEntidade.equals(Caixa.class)) {
             caixaDao.excluir((Caixa) entidade);
         }
+        else if (classeEntidade.equals(Ingresso.class)) {
+            ingressoDao.excluir((Ingresso) entidade);
+        }
     }
 
     public void alteracao(E entidade) throws SQLException {
@@ -104,6 +107,9 @@ public class GenericFichario<E> {
         }
         else if (classeEntidade.equals(Caixa.class)) {
             caixaDao.alteracao((Caixa) entidade);
+        }
+        else if (classeEntidade.equals(Ingresso.class)) {
+            ingressoDao.alteracao((Ingresso) entidade);
         }
     }
 
