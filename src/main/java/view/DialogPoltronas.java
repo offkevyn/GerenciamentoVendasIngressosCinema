@@ -11,37 +11,45 @@ import java.util.Arrays;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import model.Secao;
 
 /**
  *
  * @author Win10 x64
  */
 public class DialogPoltronas extends javax.swing.JDialog {
-    private final int qtd = 3;
+
+    private final int qtd;
     private JButton poltronas[];
     private JButton selecionada;
-    
+    private boolean apenasVisualizar;
+    private Secao secao;
+
     private ArrayList<Integer> oucupadas;
-            
+
     /**
      * Creates new form DiaologPoltronas
      */
-    public DialogPoltronas(java.awt.Frame parent, boolean modal) {
+    public DialogPoltronas(java.awt.Frame parent, boolean modal, boolean apenasVisualizar, Secao secao) {
         super(parent, modal);
         initComponents();
-       
+
+        this.apenasVisualizar = apenasVisualizar;
+        this.secao = secao;
+        qtd = this.secao.getSala().getQtdPoltronas();
+        oucupadas = this.secao.getPoltronasOucupadas();
+
         poltronas = new JButton[qtd];
         selecionada = new JButton();
-        oucupadas = new ArrayList<Integer>(Arrays.asList(1,5,11,8,13, 313));
+
         configPoltronas();
-        
+
         this.setLayout(new GridLayout(5, 5, 5, 3));
         this.setSize(new Dimension(480, 380));
         this.setResizable(false);
 //        this.setPreferredSize(new Dimension(480, 380));
 //        this.setMinimumSize(new Dimension(480, 380));
-        
-        
+
     }
 
     /**
@@ -72,30 +80,30 @@ public class DialogPoltronas extends javax.swing.JDialog {
     /**
      * @param args the command line arguments
      */
-    
-    private void configPoltronas()
-    {
-        for(int i  = 0; i<qtd; i++)
-        {
-            poltronas[i] = new JButton("" + (i+1));
+    private void configPoltronas() {
+        for (int i = 0; i < qtd; i++) {
+            poltronas[i] = new JButton("" + (i + 1));
             poltronas[i].setPreferredSize(new Dimension(45, 45));
-            poltronas[i].setBackground(Color.GRAY);
-            
-            if(oucupadas.contains(i))
-            {
-                poltronas[i].setBackground(Color.red);
-                poltronas[i].setFocusPainted(false);
-            }         
-            else
-                poltronas[i].addActionListener(listener);
-                
-            
+            poltronas[i].setBackground(Color.red);
+
+            if (oucupadas != null) {
+                if (oucupadas.contains(i) || apenasVisualizar) {
+                    if (oucupadas.contains(i)) {
+                        poltronas[i].setBackground(Color.red);
+                    }
+                    
+                    poltronas[i].setFocusPainted(false);
+                } else if (!oucupadas.contains(i) || !apenasVisualizar) {
+                    poltronas[i].addActionListener(listener);
+                }
+            }
+
             JPanel jp = new JPanel();
             jp.add(poltronas[i]);
             this.add(jp);
         }
     }
-    
+
     ActionListener listener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -103,12 +111,12 @@ public class DialogPoltronas extends javax.swing.JDialog {
 //                String text = ((JButton) e.getSource()).getText();
 //                JOptionPane.showMessageDialog(null, text);
 //            }
-                selecionada.setBackground(Color.GRAY);
-                selecionada = ((JButton) e.getSource());
-                selecionada.setBackground(Color.GREEN);
+            selecionada.setBackground(Color.GRAY);
+            selecionada = ((JButton) e.getSource());
+            selecionada.setBackground(Color.GREEN);
         }
     };
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

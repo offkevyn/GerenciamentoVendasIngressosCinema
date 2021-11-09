@@ -40,7 +40,7 @@ public class SecaoDAO {
         ps.setInt(2, secao.getFilme().getCodigo());
         ps.setObject(3, secao.getDataHora());
         ps.setArray(4, array);
-        
+
         ps.execute();
         ps.close();
     }
@@ -101,6 +101,7 @@ public class SecaoDAO {
     public ArrayList<Secao> relatorio() throws SQLException {
         ArrayList<Secao> listSecao = new ArrayList<>();
         LocalDateTime dataHora = LocalDateTime.now();
+        ArrayList<Integer> poltronasOucupadas = new ArrayList<>();
         Date data = new Date();
         Date hora = new Date();
 
@@ -136,21 +137,24 @@ public class SecaoDAO {
             hora = rs.getTime("data_hora");
 
             dataHora = converterToDateTime(data, hora);
-
-            Array array = rs.getArray("poltronas_oucupadas");
-            String[] zips = (String[])array.getArray();
-            ArrayList<Integer> oucupadas = new ArrayList<Integer>(Arrays.asList(zips));
-
             
+            poltronasOucupadas = null;
+            Array array = rs.getArray("poltronas_oucupadas");
+            if(array != null)
+            {
+                Integer[] zips = ((Integer[]) array.getArray());
+                poltronasOucupadas = new ArrayList<Integer>(Arrays.asList(zips));
+            }
+            
+
             Secao session = new Secao(room,
                     dataHora,
                     movie,
+                    poltronasOucupadas,
                     rs.getInt("codigo"));
+            
 
             listSecao.add(session);
-            if(session.getCodigo() == 3)
-            for(int i = 0; i<session.getPoltronasOucupadas().size(); i++)
-                System.out.println(session.getPoltronasOucupadas().get(i));
         }
 
         rs.close();
@@ -159,8 +163,6 @@ public class SecaoDAO {
         psFilme.close();
         rsSala.close();
         psSala.close();
-        
-        
 
         return listSecao;
     }
@@ -205,7 +207,7 @@ public class SecaoDAO {
 
         Secao session = new Secao(room,
                 dataHora,
-                movie, 
+                movie,
                 (ArrayList<Integer>) rs.getArray("poltronas_oucupadas"),
                 rs.getInt("codigo"));
 
@@ -215,8 +217,6 @@ public class SecaoDAO {
         psFilme.close();
         rsSala.close();
         psSala.close();
-        
-
 
         return session;
     }

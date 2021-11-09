@@ -18,16 +18,8 @@ public class Secao {
         this.poltronasOucupadas = poltronasOucupadas;
         this.codigo = codigo;
     }
-    
-    public Secao(Sala sala, LocalDateTime dataHora, Filme filme, int codigo) {
-        this.sala = sala;
-        this.dataHora = dataHora;
-        this.filme = filme;
-        this.codigo = codigo;
-    }
 
     public Secao() {
-       poltronasOucupadas = new ArrayList<Integer>(Arrays.asList(1,5,11,8,13, 313));
     }
 
     public int getCodigo() {

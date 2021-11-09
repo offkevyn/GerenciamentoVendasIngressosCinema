@@ -203,8 +203,8 @@ public class FormPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnIngressoActionPerformed
 
     private void btnpoltronasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnpoltronasActionPerformed
-        DialogPoltronas dialgPoltronas = new DialogPoltronas(this, true);
-        dialgPoltronas.setVisible(true);
+//        DialogPoltronas dialgPoltronas = new DialogPoltronas(this, true, false);
+//        dialgPoltronas.setVisible(true);
     }//GEN-LAST:event_btnpoltronasActionPerformed
 
     /**

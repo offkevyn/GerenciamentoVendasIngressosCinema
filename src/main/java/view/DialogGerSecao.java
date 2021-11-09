@@ -38,12 +38,12 @@ public class DialogGerSecao extends javax.swing.JDialog {
     public DialogGerSecao(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        
+
         cbxEscolher.setVisible(false);
         jiformativo.setVisible(false);
 
         pnIncluir.setVisible(false);
-        
+
         try {
             fixFilme = new FilmeFichario();
             fixSala = new SalaFichario();
@@ -93,8 +93,8 @@ public class DialogGerSecao extends javax.swing.JDialog {
         lbDia = new javax.swing.JLabel();
         tfMes = new javax.swing.JTextField();
         lbMes = new javax.swing.JLabel();
-        lbqtdPoltronasOuculpadas = new javax.swing.JLabel();
-        tflbqtdPoltronasOuculpadas = new javax.swing.JTextField();
+        btnVisualizarPoltronas = new javax.swing.JButton();
+        lbNumPoltronaOucupada = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -229,44 +229,20 @@ public class DialogGerSecao extends javax.swing.JDialog {
         lbMes.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         lbMes.setText("Mês:");
 
-        lbqtdPoltronasOuculpadas.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        lbqtdPoltronasOuculpadas.setText("Quantidade Poltronas oucupadas:");
-
-        tflbqtdPoltronasOuculpadas.addActionListener(new java.awt.event.ActionListener() {
+        btnVisualizarPoltronas.setText("Vizualizar poltronas");
+        btnVisualizarPoltronas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tflbqtdPoltronasOuculpadasActionPerformed(evt);
+                btnVisualizarPoltronasActionPerformed(evt);
             }
         });
+
+        lbNumPoltronaOucupada.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        lbNumPoltronaOucupada.setText(" poltronas ouculpadas");
 
         javax.swing.GroupLayout pnIncluirLayout = new javax.swing.GroupLayout(pnIncluir);
         pnIncluir.setLayout(pnIncluirLayout);
         pnIncluirLayout.setHorizontalGroup(
             pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnIncluirLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnIncluirLayout.createSequentialGroup()
-                        .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(lbHora, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(tfHora, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(26, 26, 26)
-                        .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lbMinutos)
-                            .addComponent(tfMinutos, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(76, 76, 76))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnIncluirLayout.createSequentialGroup()
-                        .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lbDia)
-                            .addComponent(tfDia, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(tfMes, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lbMes))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lbAno)
-                            .addComponent(tfAno, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(42, 42, 42))))
             .addGroup(pnIncluirLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -289,13 +265,40 @@ public class DialogGerSecao extends javax.swing.JDialog {
                                     .addComponent(cbxFilme, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(lbFilme, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addContainerGap())))
-                    .addComponent(lbDiaSecao, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lbHoraSecao, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lbDiaSecao, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+            .addGroup(pnIncluirLayout.createSequentialGroup()
+                .addGap(48, 48, 48)
+                .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(tfDia, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbDia))
+                .addGap(27, 27, 27)
+                .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(tfMes, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbMes))
+                .addGap(27, 27, 27)
+                .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lbAno)
+                    .addComponent(tfAno, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(lbHoraSecao, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnIncluirLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnVisualizarPoltronas)
+                    .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(lbHora, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(tfHora, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnIncluirLayout.createSequentialGroup()
+                        .addGap(26, 26, 26)
                         .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lbqtdPoltronasOuculpadas)
-                            .addComponent(tflbqtdPoltronasOuculpadas, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                            .addComponent(lbMinutos)
+                            .addComponent(tfMinutos, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(82, 82, 82))
+                    .addGroup(pnIncluirLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lbNumPoltronaOucupada, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())))
         );
         pnIncluirLayout.setVerticalGroup(
             pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -308,22 +311,22 @@ public class DialogGerSecao extends javax.swing.JDialog {
                 .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cbxFilme, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cbxSala, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lbqtdPoltronasOuculpadas)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tflbqtdPoltronasOuculpadas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lbDiaSecao)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lbAno)
-                    .addComponent(lbMes)
-                    .addComponent(lbDia))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tfMes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tfDia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tfAno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(pnIncluirLayout.createSequentialGroup()
+                        .addComponent(lbDia)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(tfDia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnIncluirLayout.createSequentialGroup()
+                        .addComponent(lbAno)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(tfAno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnIncluirLayout.createSequentialGroup()
+                        .addComponent(lbMes)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(tfMes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lbHoraSecao)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -336,6 +339,10 @@ public class DialogGerSecao extends javax.swing.JDialog {
                         .addComponent(lbMinutos)
                         .addGap(1, 1, 1)
                         .addComponent(tfMinutos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnVisualizarPoltronas)
+                    .addComponent(lbNumPoltronaOucupada))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnIncluir, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -401,12 +408,14 @@ public class DialogGerSecao extends javax.swing.JDialog {
     private void rbIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbIncluirActionPerformed
         popularJComboBoxSala();
         popularJComboBoxFilme();
-        
+
         cbxEscolher.setVisible(false);
         jiformativo.setVisible(false);
+        lbNumPoltronaOucupada.setVisible(false);
+        btnVisualizarPoltronas.setVisible(false);
 
         configSecao();
-        
+
         pnIncluir.setVisible(true);
 
         btnIncluir.setText("INCLUIR");
@@ -427,7 +436,7 @@ public class DialogGerSecao extends javax.swing.JDialog {
         if (qtdSecao() > 0) {
             popularJComboBoxSala();
             popularJComboBoxFilme();
-            
+
             restart();
             configSecao();
             cbxEscolher.setVisible(true);
@@ -467,15 +476,16 @@ public class DialogGerSecao extends javax.swing.JDialog {
             tfMes.setText(session.getDataHora().getMonthValue() + "");
             tfHora.setText(session.getDataHora().getHour() + "");
             tfMinutos.setText(session.getDataHora().getMinute() + "");
-            tflbqtdPoltronasOuculpadas.setText(session.getPoltronasOucupadas() + "");
-            
+
             cbxFilme.setSelectedIndex(posicaoFilmeNoArray(session.getFilme()));
             cbxSala.setSelectedIndex(posicaoSalaNoArray(session.getSala()));
 
-            
-            tflbqtdPoltronasOuculpadas.setEditable(false);
-            tflbqtdPoltronasOuculpadas.setVisible(false);
-            lbqtdPoltronasOuculpadas.setVisible(false);
+            if (session.getPoltronasOucupadas() != null) {
+                lbNumPoltronaOucupada.setText(session.getPoltronasOucupadas().size() + " poltronas ouculpadas");
+            } else {
+                lbNumPoltronaOucupada.setText("0 poltronas ouculpadas");
+            }
+
             if (rbAlterar.isSelected()) {
                 btnIncluir.setText("ALTERAR");
 
@@ -486,6 +496,9 @@ public class DialogGerSecao extends javax.swing.JDialog {
                 tfHora.setEditable(true);
                 tfMes.setEditable(true);
                 tfMinutos.setEditable(true);
+
+                lbNumPoltronaOucupada.setVisible(true);
+                btnVisualizarPoltronas.setVisible(true);
             } else if (rbExcluir.isSelected()) {
                 btnCancelar.setVisible(true);
                 btnIncluir.setVisible(true);
@@ -498,9 +511,9 @@ public class DialogGerSecao extends javax.swing.JDialog {
                 tfHora.setEditable(false);
                 tfMes.setEditable(false);
                 tfMinutos.setEditable(false);
-                
-                tflbqtdPoltronasOuculpadas.setVisible(true);
-                lbqtdPoltronasOuculpadas.setVisible(true);
+
+                lbNumPoltronaOucupada.setVisible(true);
+                btnVisualizarPoltronas.setVisible(true);
             } else if (rbConsultar.isSelected()) {
                 btnCancelar.setVisible(false);
                 btnIncluir.setVisible(false);
@@ -512,9 +525,9 @@ public class DialogGerSecao extends javax.swing.JDialog {
                 tfHora.setEditable(false);
                 tfMes.setEditable(false);
                 tfMinutos.setEditable(false);
-                
-                tflbqtdPoltronasOuculpadas.setVisible(true);
-                lbqtdPoltronasOuculpadas.setVisible(true);
+
+                lbNumPoltronaOucupada.setVisible(true);
+                btnVisualizarPoltronas.setVisible(true);
             }
         }
     }//GEN-LAST:event_cbxEscolherActionPerformed
@@ -524,9 +537,10 @@ public class DialogGerSecao extends javax.swing.JDialog {
         Filme filme = listFilme.get(cbxFilme.getSelectedIndex());
         Sala sala = listSala.get(cbxSala.getSelectedIndex());
 
-        if(!btnIncluir.getText().equals("INCLUIR"))
+        if (!btnIncluir.getText().equals("INCLUIR")) {
             session = listSecao.get(cbxEscolher.getSelectedIndex());
-        
+        }
+
         int dia = Integer.parseInt(tfDia.getText()),
                 mes = Integer.parseInt(tfMes.getText()),
                 ano = Integer.parseInt(tfAno.getText()),
@@ -612,9 +626,10 @@ public class DialogGerSecao extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_tfDiaActionPerformed
 
-    private void tflbqtdPoltronasOuculpadasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tflbqtdPoltronasOuculpadasActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tflbqtdPoltronasOuculpadasActionPerformed
+    private void btnVisualizarPoltronasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVisualizarPoltronasActionPerformed
+        DialogPoltronas dialgPoltronas = new DialogPoltronas(null, true, true, listSecao.get(cbxEscolher.getSelectedIndex()));
+        dialgPoltronas.setVisible(true);
+    }//GEN-LAST:event_btnVisualizarPoltronasActionPerformed
 
     private int qtdSecao() {
         int cont = 0;
@@ -672,11 +687,7 @@ public class DialogGerSecao extends javax.swing.JDialog {
         tfHora.setText("");
         tfMes.setText("");
         tfMinutos.setText("");
-        
-        tflbqtdPoltronasOuculpadas.setEditable(false);
-        tflbqtdPoltronasOuculpadas.setVisible(false);
-        lbqtdPoltronasOuculpadas.setVisible(false);
-        
+
         popularJComboBoxSala();
         popularJComboBoxFilme();
     }
@@ -777,6 +788,7 @@ public class DialogGerSecao extends javax.swing.JDialog {
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnConcluido;
     private javax.swing.JButton btnIncluir;
+    private javax.swing.JButton btnVisualizarPoltronas;
     private javax.swing.JComboBox<String> cbxEscolher;
     private javax.swing.JComboBox<String> cbxFilme;
     private javax.swing.JComboBox<String> cbxSala;
@@ -790,9 +802,9 @@ public class DialogGerSecao extends javax.swing.JDialog {
     private javax.swing.JLabel lbHoraSecao;
     private javax.swing.JLabel lbMes;
     private javax.swing.JLabel lbMinutos;
+    private javax.swing.JLabel lbNumPoltronaOucupada;
     private javax.swing.JLabel lbSala;
     private javax.swing.JLabel lbTitulo;
-    private javax.swing.JLabel lbqtdPoltronasOuculpadas;
     private javax.swing.JPanel pnIncluir;
     private javax.swing.JRadioButton rbAlterar;
     private javax.swing.JRadioButton rbConsultar;
@@ -803,6 +815,5 @@ public class DialogGerSecao extends javax.swing.JDialog {
     private javax.swing.JTextField tfHora;
     private javax.swing.JTextField tfMes;
     private javax.swing.JTextField tfMinutos;
-    private javax.swing.JTextField tflbqtdPoltronasOuculpadas;
     // End of variables declaration//GEN-END:variables
 }
