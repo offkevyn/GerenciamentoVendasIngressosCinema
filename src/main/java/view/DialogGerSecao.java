@@ -46,11 +46,10 @@ public class DialogGerSecao extends javax.swing.JDialog {
 
         try {
             fixFilme = new FilmeFichario();
-            fixSala = new SalaFichario();
             fixSecao = new SecaoFichario();
         } catch (SQLException sqlex) //Retorna um erro caso exista erro de query SQL
         {
-            JOptionPane.showMessageDialog(null, "[Erro na Instância] Erro de conexão, ERRO: " + sqlex.getMessage(), "ERROR SEÇÃO", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "[Erro na Instância] Erro de conexão, ERRO: " + sqlex.getMessage(), "ERROR FORM PRINCIPAL", JOptionPane.ERROR_MESSAGE);
             sqlex.printStackTrace();
         }
     }
@@ -627,7 +626,7 @@ public class DialogGerSecao extends javax.swing.JDialog {
     }//GEN-LAST:event_tfDiaActionPerformed
 
     private void btnVisualizarPoltronasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVisualizarPoltronasActionPerformed
-        DialogPoltronas dialgPoltronas = new DialogPoltronas(null, true, true, listSecao.get(cbxEscolher.getSelectedIndex()));
+        DialogPoltronas dialgPoltronas = new DialogPoltronas(null, true, false, listSecao.get(cbxEscolher.getSelectedIndex()), null);
         dialgPoltronas.setVisible(true);
     }//GEN-LAST:event_btnVisualizarPoltronasActionPerformed
 

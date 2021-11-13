@@ -7,11 +7,13 @@ package view;
 
 import controller.fichario.SalaFichario;
 import java.awt.Color;
+import java.awt.Component;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import javax.swing.border.Border;
 import model.Sala;
 
@@ -271,7 +273,7 @@ public class DialogGerSala extends javax.swing.JDialog {
                                 .addGap(18, 18, 18)
                                 .addComponent(cbxEscolher, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(3, 3, 3)
-                        .addComponent(rbAlterar)
+                        .addComponent(rbAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(rbConsultar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -286,7 +288,7 @@ public class DialogGerSala extends javax.swing.JDialog {
     private void rbIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbIncluirActionPerformed
         cbxEscolher.setVisible(false);
         jiformativo.setVisible(false);
-        
+
         configSala();
 
         pnIncluir.setVisible(true);
@@ -373,9 +375,17 @@ public class DialogGerSala extends javax.swing.JDialog {
 
     private void btnIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIncluirActionPerformed
         Sala room = new Sala();
-        
-        if(!btnIncluir.getText().equals("INCLUIR"))
+
+        if (!(tfNumero.getText().isEmpty() || tfQtdPoltronas.getText().isEmpty())) {
+        } else {
+            JOptionPane.showMessageDialog(null, "Preencha os campos obrigatórios", "ERROR CAMPO VAZIO", JOptionPane.ERROR_MESSAGE);
+            mostrarCamposObrigatorio();
+            return;
+        }
+
+        if (!btnIncluir.getText().equals("INCLUIR")) {
             room = listSala.get(cbxEscolher.getSelectedIndex());
+        }
 
         room.setNumero(Integer.parseInt(tfNumero.getText()));
         room.setQtdPoltronas(Integer.parseInt(tfQtdPoltronas.getText()));
@@ -468,6 +478,22 @@ public class DialogGerSala extends javax.swing.JDialog {
 
     }//GEN-LAST:event_tfNumeroKeyTyped
 
+    private void mostrarCamposObrigatorio() {
+        Border lineBorder = BorderFactory.createLineBorder(Color.getColor(null, 0XEC2E2E));
+        
+        for (int i = 0; i < pnIncluir.getComponentCount(); i++) {
+            Component c = pnIncluir.getComponent(i);
+
+            if (c instanceof JTextField) {
+                JTextField field = (JTextField) c;
+                if(field.getText().isEmpty()){
+                    field.setBorder(lineBorder);
+                }
+                
+            }
+        }
+    }
+
     private void configSala() {
         rbAlterar.setEnabled(false);
         rbConsultar.setEnabled(false);
@@ -525,7 +551,7 @@ public class DialogGerSala extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, "Erro na query [RELATÓRIO], ERRO: " + sqlex.getMessage(), "ERROR SALA", JOptionPane.ERROR_MESSAGE);
             sqlex.printStackTrace();
         }
-        
+
         for (Sala room : listSala) {
             if (room != null) {
                 cbxEscolher.addItem(Integer.toString(room.getNumero()));

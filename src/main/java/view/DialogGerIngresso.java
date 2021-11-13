@@ -99,8 +99,8 @@ public class DialogGerIngresso extends javax.swing.JDialog {
         tfAcrescimo = new javax.swing.JTextField();
         lbPrecoTotal = new javax.swing.JLabel();
         tfPrecoTotal = new javax.swing.JTextField();
-        lbPoltrona = new javax.swing.JLabel();
-        tfPoltrona = new javax.swing.JTextField();
+        tfPoltronaEscolhida = new javax.swing.JTextField();
+        btnEscolherPoltrona = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -261,17 +261,23 @@ public class DialogGerIngresso extends javax.swing.JDialog {
             }
         });
 
-        lbPoltrona.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        lbPoltrona.setText("Poltrona");
-
-        tfPoltrona.addActionListener(new java.awt.event.ActionListener() {
+        tfPoltronaEscolhida.setEditable(false);
+        tfPoltronaEscolhida.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tfPoltronaActionPerformed(evt);
+                tfPoltronaEscolhidaActionPerformed(evt);
             }
         });
-        tfPoltrona.addKeyListener(new java.awt.event.KeyAdapter() {
+        tfPoltronaEscolhida.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                tfPoltronaKeyTyped(evt);
+                tfPoltronaEscolhidaKeyTyped(evt);
+            }
+        });
+
+        btnEscolherPoltrona.setText("Poltrona");
+        btnEscolherPoltrona.setToolTipText("");
+        btnEscolherPoltrona.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEscolherPoltronaActionPerformed(evt);
             }
         });
 
@@ -290,19 +296,26 @@ public class DialogGerIngresso extends javax.swing.JDialog {
                         .addGap(43, 43, 43))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnIncluirLayout.createSequentialGroup()
                         .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cbxSecao, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lbSecao, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                            .addGroup(pnIncluirLayout.createSequentialGroup()
+                                .addComponent(lbSecao, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(pnIncluirLayout.createSequentialGroup()
+                                .addComponent(cbxSecao, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(18, 18, 18)))
                         .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(cbxCaixaa, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lbCaixaa, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lbCaixaa, javax.swing.GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE)
+                            .addComponent(cbxCaixaa, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addContainerGap())
                     .addGroup(pnIncluirLayout.createSequentialGroup()
                         .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(pnIncluirLayout.createSequentialGroup()
+                                .addComponent(btnEscolherPoltrona)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(tfPoltronaEscolhida, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(tfAcrescimo, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(cbxCliente, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lbCliente, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE)
-                            .addComponent(lbAcrescimo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE))
+                            .addComponent(lbCliente, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lbAcrescimo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
                         .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(rbIngressoInteira)
@@ -310,12 +323,7 @@ public class DialogGerIngresso extends javax.swing.JDialog {
                             .addComponent(rbIngressoMeia)
                             .addComponent(lbPrecoTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(tfPrecoTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(pnIncluirLayout.createSequentialGroup()
-                        .addComponent(lbPoltrona)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(tfPoltrona)
-                        .addGap(123, 123, 123))))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         pnIncluirLayout.setVerticalGroup(
             pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -349,11 +357,11 @@ public class DialogGerIngresso extends javax.swing.JDialog {
                             .addComponent(tfAcrescimo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(tfPrecoTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(lbPrecoTotal))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
                 .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lbPoltrona)
-                    .addComponent(tfPoltrona, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                    .addComponent(tfPoltronaEscolhida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnEscolherPoltrona))
+                .addGap(18, 18, 18)
                 .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnIncluir, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -462,7 +470,7 @@ public class DialogGerIngresso extends javax.swing.JDialog {
             popularJComboBoxCliente();
             popularJComboBoxCaixaa();
             popularJComboBox();
-            
+
             cbxEscolher.setVisible(true);
             jiformativo.setVisible(true);
 
@@ -489,19 +497,20 @@ public class DialogGerIngresso extends javax.swing.JDialog {
             }
             tfAcrescimo.setText(ticket.getAcrescimo() + "");
             tfPrecoTotal.setText(ticket.getPreco() + ticket.getAcrescimo() + "");
-            tfPoltrona.setText(ticket.getPoltrona() + "");
+            tfPoltronaEscolhida.setText(ticket.getPoltrona() + "");
             
+            System.out.println(tfPoltronaEscolhida.getText());
+
             cbxSecao.setSelectedIndex(posicaoSecaoNoArray(ticket.getSecao()));
             cbxCaixaa.setSelectedIndex(posicaoCaixaaNoArray(ticket.getCaixa()));
             cbxCliente.setSelectedIndex(posicaoClienteNoArray(ticket.getCliente()));
-            
 
             if (rbAlterar.isSelected()) {
                 btnIncluir.setText("ALTERAR");
 
 //                tfAcrescimo.setEditable(true);
 //                tfPrecoTotal.setEditable(true);
-                tfPoltrona.setEditable(true);
+//                tfPoltronaEscolhida.setEditable(true);
                 rbIngressoInteira.setEnabled(true);
                 rbIngressoMeia.setEnabled(true);
                 cbxCaixaa.setEnabled(true);
@@ -515,7 +524,7 @@ public class DialogGerIngresso extends javax.swing.JDialog {
 
 //                tfAcrescimo.setEditable(false);
 //                tfPrecoTotal.setEditable(false);
-                tfPoltrona.setEditable(false);
+//                tfPoltronaEscolhida.setEditable(false);
                 rbIngressoInteira.setEnabled(false);
                 rbIngressoMeia.setEnabled(false);
                 cbxCaixaa.setEnabled(false);
@@ -527,7 +536,7 @@ public class DialogGerIngresso extends javax.swing.JDialog {
 
 //                tfAcrescimo.setEditable(false);
 //                tfPrecoTotal.setEditable(false);
-                tfPoltrona.setEditable(false);
+//                tfPoltronaEscolhida.setEditable(false);
                 rbIngressoInteira.setEnabled(false);
                 rbIngressoMeia.setEnabled(false);
                 cbxCaixaa.setEnabled(false);
@@ -542,7 +551,7 @@ public class DialogGerIngresso extends javax.swing.JDialog {
         Secao secao = listSecao.get(cbxSecao.getSelectedIndex());
         Cliente cliente = listCliente.get(cbxCliente.getSelectedIndex());
         Caixa caixaa = listCaixaa.get(cbxCaixaa.getSelectedIndex());
-        
+
         int acrescimo = 0;
         float precoIngresso = 28;
         if (rbIngressoMeia.isSelected()) {
@@ -556,9 +565,11 @@ public class DialogGerIngresso extends javax.swing.JDialog {
             ticket = listIngresso.get(cbxEscolher.getSelectedIndex());
         }
 
+        if (!tfPoltronaEscolhida.getText().isEmpty()) {
+            ticket.setPoltrona(Integer.parseInt(tfPoltronaEscolhida.getText()));
+        }
         ticket.setAcrescimo(acrescimo);
         ticket.setPreco(precoIngresso);
-        ticket.setPoltrona(Integer.parseInt(tfPoltrona.getText()));
         ticket.setCaixa(caixaa);
         ticket.setCliente(cliente);
         ticket.setSecao(secao);
@@ -628,6 +639,8 @@ public class DialogGerIngresso extends javax.swing.JDialog {
 
     private void cbxSecaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxSecaoActionPerformed
         atualizaAcrescimoEPrecoTotal();
+
+        
     }//GEN-LAST:event_cbxSecaoActionPerformed
 
     private void cbxClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxClienteActionPerformed
@@ -654,27 +667,41 @@ public class DialogGerIngresso extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_tfPrecoTotalActionPerformed
 
-    private void tfPoltronaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfPoltronaActionPerformed
+    private void tfPoltronaEscolhidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfPoltronaEscolhidaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_tfPoltronaActionPerformed
+    }//GEN-LAST:event_tfPoltronaEscolhidaActionPerformed
 
-    private void tfPoltronaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfPoltronaKeyTyped
+    private void tfPoltronaEscolhidaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfPoltronaEscolhidaKeyTyped
         // TODO add your handling code here:
-    }//GEN-LAST:event_tfPoltronaKeyTyped
+    }//GEN-LAST:event_tfPoltronaEscolhidaKeyTyped
 
     private void tfAcrescimoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfAcrescimoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_tfAcrescimoActionPerformed
 
-    private void atualizaAcrescimoEPrecoTotal()
-    {
+    private void btnEscolherPoltronaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEscolherPoltronaActionPerformed
+        DialogPoltronas dialgPoltronas;
+        if (rbIncluir.isSelected() || rbAlterar.isSelected()) {
+            dialgPoltronas = new DialogPoltronas(null, true, false, listSecao.get(cbxSecao.getSelectedIndex()), null);
+        } else {
+            dialgPoltronas = new DialogPoltronas(null, true, true, listSecao.get(cbxSecao.getSelectedIndex()), listIngresso.get(cbxEscolher.getSelectedIndex()).getPoltrona());
+        }
+
+        dialgPoltronas.setVisible(true);
+
+        int escolhida = dialgPoltronas.getEscolhida();
+        if (!dialgPoltronas.isVisible() && escolhida > 0 && (rbIncluir.isSelected() || rbAlterar.isSelected()))
+            tfPoltronaEscolhida.setText("" + escolhida);
+    }//GEN-LAST:event_btnEscolherPoltronaActionPerformed
+
+    private void atualizaAcrescimoEPrecoTotal() {
         int acrescimo = 0;
 
         float precoIngresso = 28;
         if (rbIngressoMeia.isSelected()) {
             precoIngresso = 14;
         }
-        
+
         if (cbxSecao.getSelectedIndex() > 0) {
             Secao secao = listSecao.get(cbxSecao.getSelectedIndex());
 
@@ -685,7 +712,7 @@ public class DialogGerIngresso extends javax.swing.JDialog {
         tfAcrescimo.setText(acrescimo + "");
         tfPrecoTotal.setText(acrescimo + precoIngresso + "");
     }
-    
+
     private void configIngresso() {
         rbAlterar.setEnabled(false);
         rbConsultar.setEnabled(false);
@@ -698,7 +725,7 @@ public class DialogGerIngresso extends javax.swing.JDialog {
 
 //        tfAcrescimo.setEditable(true);
 //        tfPrecoTotal.setEditable(true);
-        tfPoltrona.setEditable(true);
+//        tfPoltronaEscolhida.setEditable(true);
         rbIngressoInteira.setEnabled(true);
         rbIngressoMeia.setEnabled(true);
         cbxCaixaa.setEnabled(true);
@@ -707,11 +734,11 @@ public class DialogGerIngresso extends javax.swing.JDialog {
 
         tfAcrescimo.setText("");
         tfPrecoTotal.setText("");
-        tfPoltrona.setText("");
+        tfPoltronaEscolhida.setText("");
         cbxCaixaa.setSelectedIndex(-1);
         cbxCliente.setSelectedIndex(-1);
         cbxSecao.setSelectedIndex(-1);
-        
+
         popularJComboBoxSecao();
         popularJComboBoxCliente();
         popularJComboBoxCaixaa();
@@ -729,7 +756,7 @@ public class DialogGerIngresso extends javax.swing.JDialog {
 
         tfAcrescimo.setText("");
         tfPrecoTotal.setText("");
-        tfPoltrona.setText("");
+        tfPoltronaEscolhida.setText("");
         cbxCaixaa.setSelectedIndex(-1);
         cbxCliente.setSelectedIndex(-1);
         cbxSecao.setSelectedIndex(-1);
@@ -783,8 +810,8 @@ public class DialogGerIngresso extends javax.swing.JDialog {
         return -1;
     }
 
-        private int posicaoCaixaaNoArray(Caixa caixaa) {
-        
+    private int posicaoCaixaaNoArray(Caixa caixaa) {
+
         try {
             listCaixaa = fixCaixaa.relatorio();
         } catch (SQLException sqlex) //Retorna um erro caso exista erro de query SQL
@@ -792,7 +819,7 @@ public class DialogGerIngresso extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, "Erro na query [RELATÓRIO - Caixaa], ERRO: " + sqlex.getMessage(), "ERROR INGRESSO", JOptionPane.ERROR_MESSAGE);
             sqlex.printStackTrace();
         }
-        
+
         for (Caixa cashier : listCaixaa) {
             if (cashier.getCodigo() == caixaa.getCodigo()) {
                 return listCaixaa.indexOf(cashier);
@@ -880,6 +907,7 @@ public class DialogGerIngresso extends javax.swing.JDialog {
     private javax.swing.ButtonGroup GroupBtnPrecoIngresso;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnConcluido;
+    private javax.swing.JButton btnEscolherPoltrona;
     private javax.swing.JButton btnIncluir;
     private javax.swing.JComboBox<String> cbxCaixaa;
     private javax.swing.JComboBox<String> cbxCliente;
@@ -890,7 +918,6 @@ public class DialogGerIngresso extends javax.swing.JDialog {
     private javax.swing.JLabel lbAcrescimo;
     private javax.swing.JLabel lbCaixaa;
     private javax.swing.JLabel lbCliente;
-    private javax.swing.JLabel lbPoltrona;
     private javax.swing.JLabel lbPrecoIngresso;
     private javax.swing.JLabel lbPrecoTotal;
     private javax.swing.JLabel lbSecao;
@@ -903,7 +930,7 @@ public class DialogGerIngresso extends javax.swing.JDialog {
     private javax.swing.JRadioButton rbIngressoInteira;
     private javax.swing.JRadioButton rbIngressoMeia;
     private javax.swing.JTextField tfAcrescimo;
-    private javax.swing.JTextField tfPoltrona;
+    private javax.swing.JTextField tfPoltronaEscolhida;
     private javax.swing.JTextField tfPrecoTotal;
     // End of variables declaration//GEN-END:variables
 }

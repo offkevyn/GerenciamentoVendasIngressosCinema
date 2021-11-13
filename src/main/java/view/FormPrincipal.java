@@ -5,17 +5,48 @@
  */
 package view;
 
+import controller.DAO.FilmeDAO;
+import controller.DAO.SalaDAO;
+import controller.fichario.CaixaFichario;
+import controller.fichario.ClienteFichario;
+import controller.fichario.FilmeFichario;
+import controller.fichario.FuncionarioFichario;
+import controller.fichario.SalaFichario;
+import controller.fichario.SecaoFichario;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Win10 x64
  */
 public class FormPrincipal extends javax.swing.JFrame {
 
+    private FilmeFichario fixFilme;
+    private SalaFichario fixSala;
+    private FuncionarioFichario fixFunc;
+    private CaixaFichario fixCaixa;
+    private SecaoFichario fixSecao;
+    private ClienteFichario fixCliente;
+
     /**
      * Creates new form FormPrincipal
      */
     public FormPrincipal() {
         initComponents();
+
+        try {
+            fixFilme = new FilmeFichario();
+            fixSala = new SalaFichario();
+            fixFunc = new FuncionarioFichario();
+            fixCaixa = new CaixaFichario();
+            fixSecao = new SecaoFichario();
+            fixCliente = new ClienteFichario();
+        } catch (SQLException sqlex) //Retorna um erro caso exista erro de query SQL
+        {
+            JOptionPane.showMessageDialog(null, "Erro de conexão, ERRO: " + sqlex.getMessage(), "ERROR FORM PRINCIPAL", JOptionPane.ERROR_MESSAGE);
+            sqlex.printStackTrace();
+        }
     }
 
     /**
@@ -34,7 +65,6 @@ public class FormPrincipal extends javax.swing.JFrame {
         btnCliente = new javax.swing.JButton();
         btnCaixa = new javax.swing.JButton();
         btnIngresso = new javax.swing.JButton();
-        btnpoltronas = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -87,89 +117,65 @@ public class FormPrincipal extends javax.swing.JFrame {
             }
         });
 
-        btnpoltronas.setText("Poltronas");
-        btnpoltronas.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnpoltronasActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(228, 228, 228)
-                .addComponent(btnFuncionario, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(68, 68, 68)
-                .addComponent(btnIngresso, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(btnSala, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnFilme, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnSecao, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnFuncionario)
+                            .addComponent(btnCaixa, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(62, 62, 62)
+                        .addComponent(btnIngresso, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(72, 72, 72)
-                .addComponent(btnSecao, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 199, Short.MAX_VALUE)
-                .addComponent(btnCaixa, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(122, 122, 122))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnpoltronas, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(205, 205, 205))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(62, 62, 62)
-                    .addComponent(btnSala, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(426, Short.MAX_VALUE)))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(70, 70, 70)
-                    .addComponent(btnFilme, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(418, Short.MAX_VALUE)))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(175, 175, 175)
-                    .addComponent(btnCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(293, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btnpoltronas, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 105, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(btnFuncionario, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(2, 2, 2))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(btnIngresso, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnSala, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnFuncionario, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnFilme, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnCaixa, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSecao, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnCaixa, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(64, 64, 64))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(93, 93, 93)
-                    .addComponent(btnSala, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(173, Short.MAX_VALUE)))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(149, Short.MAX_VALUE)
-                    .addComponent(btnFilme, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(117, 117, 117)))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(212, Short.MAX_VALUE)
-                    .addComponent(btnCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(54, 54, 54)))
+                    .addComponent(btnCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnIngresso, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSecaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSecaoActionPerformed
-        DialogGerSecao dialgSecao = new DialogGerSecao(this, true);
-        dialgSecao.setVisible(true);
+        try {
+            if (fixFilme.qtdEntidade() > 0 && fixSala.qtdEntidade() > 0) {
+                DialogGerSecao dialgSecao = new DialogGerSecao(this, true);
+                dialgSecao.setVisible(true);
+            } else {
+                JOptionPane.showMessageDialog(null, "Seção e dependente de 'Sala' e 'Filme', é necessário ao menos um de cada.", "FORM PRINCIPAL", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (SQLException sqlex) //Retorna um erro caso exista erro de query SQL
+        {
+            JOptionPane.showMessageDialog(null, "Erro na query [QTD SALA & FILME], ERRO: " + sqlex.getMessage(), "ERROR FORM PRINCIPAL", JOptionPane.ERROR_MESSAGE);
+            sqlex.printStackTrace();
+        }
+
     }//GEN-LAST:event_btnSecaoActionPerformed
 
     private void btnSalaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalaActionPerformed
@@ -193,19 +199,36 @@ public class FormPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnClienteActionPerformed
 
     private void btnCaixaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCaixaActionPerformed
-        DialogGerCaixa dialgCaixa = new DialogGerCaixa(this, true);
-        dialgCaixa.setVisible(true);
+        try {
+            if (fixFunc.qtdEntidade() > 0) {
+                DialogGerCaixa dialgCaixa = new DialogGerCaixa(this, true);
+                dialgCaixa.setVisible(true);
+            } else {
+                JOptionPane.showMessageDialog(null, "Caixa e dependente de 'Funcionário', é necessário ao menos um.", "FORM PRINCIPAL", JOptionPane.INFORMATION_MESSAGE);
+            }
+
+        } catch (SQLException sqlex) //Retorna um erro caso exista erro de query SQL
+        {
+            JOptionPane.showMessageDialog(null, "Erro na query [QTD FUNCIONÁRIO], ERRO: " + sqlex.getMessage(), "ERROR FORM PRINCIPAL", JOptionPane.ERROR_MESSAGE);
+            sqlex.printStackTrace();
+        }
     }//GEN-LAST:event_btnCaixaActionPerformed
 
     private void btnIngressoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngressoActionPerformed
-        DialogGerIngresso dialgIngresso = new DialogGerIngresso(this, true);
-        dialgIngresso.setVisible(true);
-    }//GEN-LAST:event_btnIngressoActionPerformed
+        try {
+            if (fixCaixa.qtdEntidade() > 0 && fixSecao.qtdEntidade() > 0) {
+                DialogGerIngresso dialgIngresso = new DialogGerIngresso(this, true);
+                dialgIngresso.setVisible(true);
+            } else {
+                JOptionPane.showMessageDialog(null, "Ingresso e dependente de 'Caixa' e 'Seção', é necessário ao menos um de cada.", "FORM PRINCIPAL", JOptionPane.INFORMATION_MESSAGE);
+            }
 
-    private void btnpoltronasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnpoltronasActionPerformed
-//        DialogPoltronas dialgPoltronas = new DialogPoltronas(this, true, false);
-//        dialgPoltronas.setVisible(true);
-    }//GEN-LAST:event_btnpoltronasActionPerformed
+        } catch (SQLException sqlex) //Retorna um erro caso exista erro de query SQL
+        {
+            JOptionPane.showMessageDialog(null, "Erro na query [QTD CAIXA & SEÇÃO], ERRO: " + sqlex.getMessage(), "ERROR FORM PRINCIPAL", JOptionPane.ERROR_MESSAGE);
+            sqlex.printStackTrace();
+        }
+    }//GEN-LAST:event_btnIngressoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -250,6 +273,5 @@ public class FormPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton btnIngresso;
     private javax.swing.JButton btnSala;
     private javax.swing.JButton btnSecao;
-    private javax.swing.JButton btnpoltronas;
     // End of variables declaration//GEN-END:variables
 }

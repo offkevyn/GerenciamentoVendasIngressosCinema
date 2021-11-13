@@ -30,19 +30,29 @@ public class DialogPoltronas extends javax.swing.JDialog {
     /**
      * Creates new form DiaologPoltronas
      */
-    public DialogPoltronas(java.awt.Frame parent, boolean modal, boolean apenasVisualizar, Secao secao) {
+    public DialogPoltronas(java.awt.Frame parent, boolean modal, boolean apenasVisualizar, Secao secao, Integer temSelecionada) {
         super(parent, modal);
         initComponents();
 
         this.apenasVisualizar = apenasVisualizar;
         this.secao = secao;
-        qtd = this.secao.getSala().getQtdPoltronas();
-        oucupadas = this.secao.getPoltronasOucupadas();
+        this.qtd = this.secao.getSala().getQtdPoltronas();
+
+        if (this.secao.getPoltronasOucupadas() != null) {
+            this.oucupadas = this.secao.getPoltronasOucupadas();
+        } else {
+            oucupadas = new ArrayList<>();
+        }
 
         poltronas = new JButton[qtd];
-        selecionada = new JButton();
+        this.selecionada = new JButton();
 
         configPoltronas();
+
+        if (temSelecionada != null) {
+            this.selecionada = poltronas[temSelecionada-1];
+            selecionada.setBackground(Color.GREEN);
+        }
 
         this.setLayout(new GridLayout(5, 5, 5, 3));
         this.setSize(new Dimension(480, 380));
@@ -84,24 +94,33 @@ public class DialogPoltronas extends javax.swing.JDialog {
         for (int i = 0; i < qtd; i++) {
             poltronas[i] = new JButton("" + (i + 1));
             poltronas[i].setPreferredSize(new Dimension(45, 45));
-            poltronas[i].setBackground(Color.red);
+            poltronas[i].setBackground(Color.GRAY);
 
-            if (oucupadas != null) {
-                if (oucupadas.contains(i) || apenasVisualizar) {
-                    if (oucupadas.contains(i)) {
-                        poltronas[i].setBackground(Color.red);
-                    }
-                    
-                    poltronas[i].setFocusPainted(false);
-                } else if (!oucupadas.contains(i) || !apenasVisualizar) {
-                    poltronas[i].addActionListener(listener);
-                }
+
+            if (oucupadas.contains(i)) {
+                poltronas[i].setBackground(Color.red);
+                poltronas[i].setFocusPainted(false);
+            }
+
+            if (!oucupadas.contains(i) && !apenasVisualizar) {
+                poltronas[i].addActionListener(listener);
+            }
+
+            if (apenasVisualizar) {
+                poltronas[i].setFocusPainted(false);
             }
 
             JPanel jp = new JPanel();
             jp.add(poltronas[i]);
             this.add(jp);
         }
+    }
+
+    public int getEscolhida() {
+        if(!selecionada.getText().isEmpty())
+            return Integer.parseInt(selecionada.getText());
+        
+        return -1;
     }
 
     ActionListener listener = new ActionListener() {

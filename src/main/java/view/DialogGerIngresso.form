@@ -207,22 +207,30 @@
                       </Group>
                       <Group type="102" alignment="1" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="cbxSecao" min="-2" pref="111" max="-2" attributes="0"/>
-                              <Component id="lbSecao" alignment="0" min="-2" pref="111" max="-2" attributes="0"/>
+                              <Group type="102" attributes="0">
+                                  <Component id="lbSecao" min="-2" pref="111" max="-2" attributes="0"/>
+                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              </Group>
+                              <Component id="cbxSecao" max="32767" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="18" max="32767" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="cbxCaixaa" alignment="0" max="32767" attributes="0"/>
-                              <Component id="lbCaixaa" alignment="0" min="-2" pref="111" max="-2" attributes="0"/>
+                              <Component id="lbCaixaa" pref="111" max="32767" attributes="0"/>
+                              <Component id="cbxCaixaa" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
-                      <Group type="102" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                              <Group type="102" attributes="0">
+                                  <Component id="btnEscolherPoltrona" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="32767" attributes="0"/>
+                                  <Component id="tfPoltronaEscolhida" min="-2" pref="40" max="-2" attributes="0"/>
+                              </Group>
                               <Component id="tfAcrescimo" alignment="0" max="32767" attributes="0"/>
                               <Component id="cbxCliente" alignment="0" max="32767" attributes="0"/>
-                              <Component id="lbCliente" alignment="0" pref="111" max="32767" attributes="0"/>
-                              <Component id="lbAcrescimo" alignment="0" pref="111" max="32767" attributes="0"/>
+                              <Component id="lbCliente" alignment="0" max="32767" attributes="0"/>
+                              <Component id="lbAcrescimo" alignment="0" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
@@ -233,12 +241,6 @@
                               <Component id="tfPrecoTotal" min="-2" pref="111" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="32767" attributes="0"/>
-                      </Group>
-                      <Group type="102" attributes="0">
-                          <Component id="lbPoltrona" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="tfPoltrona" max="32767" attributes="0"/>
-                          <EmptySpace min="-2" pref="123" max="-2" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -286,12 +288,12 @@
                       </Group>
                       <Component id="lbPrecoTotal" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace pref="11" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="lbPoltrona" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="tfPoltrona" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="tfPoltronaEscolhida" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnEscolherPoltrona" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="26" max="32767" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="btnCancelar" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                       <Component id="btnIncluir" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
@@ -456,18 +458,22 @@
             <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="tfPrecoTotalKeyTyped"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JLabel" name="lbPoltrona">
+        <Component class="javax.swing.JTextField" name="tfPoltronaEscolhida">
           <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Tahoma" size="12" style="0"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="Poltrona"/>
+            <Property name="editable" type="boolean" value="false"/>
           </Properties>
-        </Component>
-        <Component class="javax.swing.JTextField" name="tfPoltrona">
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tfPoltronaActionPerformed"/>
-            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="tfPoltronaKeyTyped"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tfPoltronaEscolhidaActionPerformed"/>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="tfPoltronaEscolhidaKeyTyped"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="btnEscolherPoltrona">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Poltrona"/>
+            <Property name="toolTipText" type="java.lang.String" value=""/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEscolherPoltronaActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

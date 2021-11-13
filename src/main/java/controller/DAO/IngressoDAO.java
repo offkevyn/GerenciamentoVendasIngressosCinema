@@ -54,6 +54,8 @@ public class IngressoDAO {
 
         ps.execute();
         ps.close();
+        
+        secaoDao.atualizaPoltronas(ingresso.getSecao(), ingresso.getPoltrona(), true);
     }
 
     public void excluir(Ingresso ingresso) throws SQLException {
@@ -69,6 +71,7 @@ public class IngressoDAO {
         ps.execute();
         ps.close();
 
+        secaoDao.atualizaPoltronas(ingresso.getSecao(), ingresso.getPoltrona(), false);
     }
 
     public void alteracao(Ingresso ingresso) throws SQLException {

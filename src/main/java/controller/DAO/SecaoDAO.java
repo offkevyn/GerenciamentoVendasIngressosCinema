@@ -63,6 +63,8 @@ public class SecaoDAO {
     public void alteracao(Secao secao) throws SQLException {
         String sql;
         PreparedStatement ps = null;
+        Array array = conn.createArrayOf("INT", secao.getPoltronasOucupadas().toArray());
+        
         sql = "UPDATE secao SET sala_cod = ?, filme_cod = ?, data_hora = ?, poltronas_oucupadas = ? WHERE codigo = ?";
 
         ps = conn.prepareStatement(sql);
@@ -70,7 +72,7 @@ public class SecaoDAO {
         ps.setInt(1, secao.getSala().getCodigo());
         ps.setInt(2, secao.getFilme().getCodigo());
         ps.setObject(3, secao.getDataHora());
-        ps.setArray(4, (Array) secao.getPoltronasOucupadas());
+        ps.setArray(4, array);
         ps.setInt(5, secao.getCodigo());
 
         ps.execute();
@@ -171,6 +173,7 @@ public class SecaoDAO {
         LocalDateTime dataHora = LocalDateTime.now();
         Date data = new Date();
         Date hora = new Date();
+        ArrayList<Integer> poltronasOucupadas = new ArrayList<>();
 
         String sql, sqlFilme, sqlSala;
         PreparedStatement ps = null, psFilme = null, psSala = null;
@@ -204,11 +207,19 @@ public class SecaoDAO {
         hora = rs.getTime("data_hora");
 
         dataHora = converterToDateTime(data, hora);
+        
+        poltronasOucupadas = null;
+            Array array = rs.getArray("poltronas_oucupadas");
+            if(array != null)
+            {
+                Integer[] zips = ((Integer[]) array.getArray());
+                poltronasOucupadas = new ArrayList<Integer>(Arrays.asList(zips));
+            }
 
         Secao session = new Secao(room,
                 dataHora,
                 movie,
-                (ArrayList<Integer>) rs.getArray("poltronas_oucupadas"),
+                poltronasOucupadas,
                 rs.getInt("codigo"));
 
         rs.close();
@@ -236,5 +247,27 @@ public class SecaoDAO {
 
         return LocalDateTime.of(ano, mes + 1, dia, hora, min);
 
+    }
+    
+    public void atualizaPoltronas(Secao secao, int numPoltrona, boolean adicionar) throws SQLException {
+        String sql;
+        PreparedStatement ps = null;
+        
+        if(adicionar)
+            secao.getPoltronasOucupadas().add(numPoltrona);
+        else
+            secao.getPoltronasOucupadas().remove(numPoltrona);
+        
+        Array array = conn.createArrayOf("INT", secao.getPoltronasOucupadas().toArray());
+        
+        sql = "UPDATE secao SET poltronas_oucupadas = ? WHERE codigo = ?";
+
+        ps = conn.prepareStatement(sql);
+
+        ps.setArray(1, array);
+        ps.setInt(2, secao.getCodigo());
+
+        ps.execute();
+        ps.close();
     }
 }
