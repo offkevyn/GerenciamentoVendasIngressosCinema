@@ -13,6 +13,7 @@ import controller.fichario.FilmeFichario;
 import controller.fichario.FuncionarioFichario;
 import controller.fichario.SalaFichario;
 import controller.fichario.SecaoFichario;
+import java.awt.Dimension;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
@@ -47,6 +48,9 @@ public class FormPrincipal extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Erro de conexão, ERRO: " + sqlex.getMessage(), "ERROR FORM PRINCIPAL", JOptionPane.ERROR_MESSAGE);
             sqlex.printStackTrace();
         }
+        
+        this.setSize(new Dimension(225, 230));
+        this.setResizable(false);
     }
 
     /**
@@ -131,13 +135,13 @@ public class FormPrincipal extends javax.swing.JFrame {
                             .addComponent(btnSecao, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnFuncionario)
-                            .addComponent(btnCaixa, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(btnCaixa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnFuncionario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(62, 62, 62)
                         .addComponent(btnIngresso, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
