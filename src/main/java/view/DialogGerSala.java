@@ -8,6 +8,10 @@ package view;
 import controller.fichario.SalaFichario;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
@@ -35,6 +39,8 @@ public class DialogGerSala extends javax.swing.JDialog {
         initComponents();
 
         borderDefalt = tfQtdPoltronas.getBorder();
+        tfNumero.addKeyListener(listenerTfNumber);
+        tfQtdPoltronas.addKeyListener(listenerTfNumber);
 
         cbxEscolher.setVisible(false);
         jiformativo.setVisible(false);
@@ -327,6 +333,16 @@ public class DialogGerSala extends javax.swing.JDialog {
             btnCancelar.setVisible(false);
 
             popularJComboBox();
+            
+            for (int i = 0; i < pnIncluir.getComponentCount(); i++) {
+                Component c = pnIncluir.getComponent(i);
+
+                if (c instanceof JTextField) {
+                    JTextField field = (JTextField) c;
+
+                    field.setBorder(borderDefalt);
+                }
+            }
         } else
             JOptionPane.showMessageDialog(this, "A lista está VAZIA!!!", "VAZIA", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_rbConsultarActionPerformed
@@ -376,10 +392,14 @@ public class DialogGerSala extends javax.swing.JDialog {
     private void btnIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIncluirActionPerformed
         Sala room = new Sala();
 
-        if (!(tfNumero.getText().isEmpty() || tfQtdPoltronas.getText().isEmpty())) {
-        } else {
+        if ((tfNumero.getText().isEmpty() || tfQtdPoltronas.getText().isEmpty())) {
             JOptionPane.showMessageDialog(null, "Preencha os campos obrigatórios", "ERROR CAMPO VAZIO", JOptionPane.ERROR_MESSAGE);
             mostrarCamposObrigatorio();
+            return;
+        }
+
+        if (!(Integer.parseInt(tfQtdPoltronas.getText()) <= 50 && Integer.parseInt(tfQtdPoltronas.getText()) >= 1)) {
+            JOptionPane.showMessageDialog(null, "Uma sala tem que ter entre 1 e 50 poltronas.", "ERROR", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
@@ -451,45 +471,52 @@ public class DialogGerSala extends javax.swing.JDialog {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void tfQtdPoltronasKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfQtdPoltronasKeyTyped
-        String caracteres = "0987654321";
-        if (!caracteres.contains(evt.getKeyChar() + "")) {
-            evt.consume();
-
-            Border lineBorder = BorderFactory.createLineBorder(Color.getColor(caracteres, 0XEC2E2E));
-            tfQtdPoltronas.setBorder(lineBorder);
-        } else {
-            Border lineBorder = BorderFactory.createLineBorder(Color.GRAY);
-            tfQtdPoltronas.setBorder(borderDefalt);
-        }
 
     }//GEN-LAST:event_tfQtdPoltronasKeyTyped
 
     private void tfNumeroKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfNumeroKeyTyped
-        String caracteres = "0987654321";
-        if (!caracteres.contains(evt.getKeyChar() + "")) {
-            evt.consume();
-
-            Border lineBorder = BorderFactory.createLineBorder(Color.getColor(caracteres, 0XEC2E2E));
-            tfNumero.setBorder(lineBorder);
-
-        } else {
-            tfNumero.setBorder(borderDefalt);
-        }
 
     }//GEN-LAST:event_tfNumeroKeyTyped
 
+    KeyListener listenerTfNumber = new KeyListener() {
+        @Override
+        public void keyTyped(KeyEvent e) {
+            JTextField field = (JTextField) e.getSource();
+
+            String caracteres = "0987654321";
+            if (!caracteres.contains(e.getKeyChar() + "")) {
+                e.consume();
+
+                Border lineBorder = BorderFactory.createLineBorder(Color.getColor(caracteres, 0XEC2E2E));
+                field.setBorder(lineBorder);
+            } else {
+                Border lineBorder = BorderFactory.createLineBorder(Color.GRAY);
+                field.setBorder(borderDefalt);
+            }
+
+        }
+
+        @Override
+        public void keyPressed(KeyEvent arg0) {
+        }
+
+        @Override
+        public void keyReleased(KeyEvent arg0) {
+        }
+    };
+
     private void mostrarCamposObrigatorio() {
         Border lineBorder = BorderFactory.createLineBorder(Color.getColor(null, 0XEC2E2E));
-        
+
         for (int i = 0; i < pnIncluir.getComponentCount(); i++) {
             Component c = pnIncluir.getComponent(i);
 
             if (c instanceof JTextField) {
                 JTextField field = (JTextField) c;
-                if(field.getText().isEmpty()){
+                if (field.getText().isEmpty()) {
                     field.setBorder(lineBorder);
                 }
-                
+
             }
         }
     }
@@ -504,14 +531,24 @@ public class DialogGerSala extends javax.swing.JDialog {
         btnIncluir.setVisible(true);
         btnCancelar.setVisible(true);
 
-        tfNumero.setEditable(true);
-        tfQtdPoltronas.setEditable(true);
+//        tfNumero.setEditable(true);
+//        tfQtdPoltronas.setEditable(true);
         CheckBoxVipSim.setEnabled(true);
-        //CheckBoxVipSim.setEditable(true);
 
-        tfNumero.setText("");
-        tfQtdPoltronas.setText("");
+//        tfNumero.setText("");
         CheckBoxVipSim.setSelected(false);
+
+        for (int i = 0; i < pnIncluir.getComponentCount(); i++) {
+            Component c = pnIncluir.getComponent(i);
+
+            if (c instanceof JTextField) {
+                JTextField field = (JTextField) c;
+
+                field.setBorder(borderDefalt);
+                field.setText("");
+                field.setEditable(true);
+            }
+        }
     }
 
     private void restart() {

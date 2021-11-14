@@ -194,6 +194,11 @@ public class DialogGerIngresso extends javax.swing.JDialog {
         lbSecao.setText("Seção:");
 
         cbxSecao.setName(""); // NOI18N
+        cbxSecao.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbxSecaoItemStateChanged(evt);
+            }
+        });
         cbxSecao.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbxSecaoActionPerformed(evt);
@@ -298,10 +303,9 @@ public class DialogGerIngresso extends javax.swing.JDialog {
                         .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(pnIncluirLayout.createSequentialGroup()
                                 .addComponent(lbSecao, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(pnIncluirLayout.createSequentialGroup()
-                                .addComponent(cbxSecao, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGap(18, 18, 18)))
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(cbxSecao, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
                         .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(lbCaixaa, javax.swing.GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE)
                             .addComponent(cbxCaixaa, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -490,6 +494,10 @@ public class DialogGerIngresso extends javax.swing.JDialog {
 
             Ingresso ticket = listIngresso.get(cbxEscolher.getSelectedIndex());
 
+            cbxSecao.setSelectedIndex(posicaoSecaoNoArray(ticket.getSecao()));
+            cbxCaixaa.setSelectedIndex(posicaoCaixaaNoArray(ticket.getCaixa()));
+            cbxCliente.setSelectedIndex(posicaoClienteNoArray(ticket.getCliente()));
+            
             if (ticket.getPreco() == 28.0) {
                 rbIngressoInteira.setSelected(true);
             } else {
@@ -498,14 +506,9 @@ public class DialogGerIngresso extends javax.swing.JDialog {
             tfAcrescimo.setText(ticket.getAcrescimo() + "");
             tfPrecoTotal.setText(ticket.getPreco() + ticket.getAcrescimo() + "");
             tfPoltronaEscolhida.setText(ticket.getPoltrona() + "");
-            
-            System.out.println(tfPoltronaEscolhida.getText());
-
-            cbxSecao.setSelectedIndex(posicaoSecaoNoArray(ticket.getSecao()));
-            cbxCaixaa.setSelectedIndex(posicaoCaixaaNoArray(ticket.getCaixa()));
-            cbxCliente.setSelectedIndex(posicaoClienteNoArray(ticket.getCliente()));
-
+        
             if (rbAlterar.isSelected()) {
+
                 btnIncluir.setText("ALTERAR");
 
 //                tfAcrescimo.setEditable(true);
@@ -551,6 +554,11 @@ public class DialogGerIngresso extends javax.swing.JDialog {
         Secao secao = listSecao.get(cbxSecao.getSelectedIndex());
         Cliente cliente = listCliente.get(cbxCliente.getSelectedIndex());
         Caixa caixaa = listCaixaa.get(cbxCaixaa.getSelectedIndex());
+        
+        if (tfPoltronaEscolhida.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Escolha uma poltrona!!", "ERROR CAMPO VAZIO", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
         int acrescimo = 0;
         float precoIngresso = 28;
@@ -640,7 +648,7 @@ public class DialogGerIngresso extends javax.swing.JDialog {
     private void cbxSecaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxSecaoActionPerformed
         atualizaAcrescimoEPrecoTotal();
 
-        
+
     }//GEN-LAST:event_cbxSecaoActionPerformed
 
     private void cbxClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxClienteActionPerformed
@@ -682,7 +690,14 @@ public class DialogGerIngresso extends javax.swing.JDialog {
     private void btnEscolherPoltronaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEscolherPoltronaActionPerformed
         DialogPoltronas dialgPoltronas;
         if (rbIncluir.isSelected() || rbAlterar.isSelected()) {
-            dialgPoltronas = new DialogPoltronas(null, true, false, listSecao.get(cbxSecao.getSelectedIndex()), null);
+            if (tfPoltronaEscolhida.getText().isEmpty()) {
+                dialgPoltronas = new DialogPoltronas(null, true, false, listSecao.get(cbxSecao.getSelectedIndex()), null);
+            } else {
+                Secao sessionAux = listSecao.get(cbxSecao.getSelectedIndex());
+                Integer numPoltrona = listIngresso.get(cbxEscolher.getSelectedIndex()).getPoltrona();
+                sessionAux.getPoltronasOucupadas().remove(numPoltrona);
+                dialgPoltronas = new DialogPoltronas(null, true, false, sessionAux, Integer.parseInt(tfPoltronaEscolhida.getText()));
+            }
         } else {
             dialgPoltronas = new DialogPoltronas(null, true, true, listSecao.get(cbxSecao.getSelectedIndex()), listIngresso.get(cbxEscolher.getSelectedIndex()).getPoltrona());
         }
@@ -693,6 +708,10 @@ public class DialogGerIngresso extends javax.swing.JDialog {
         if (!dialgPoltronas.isVisible() && escolhida > 0 && (rbIncluir.isSelected() || rbAlterar.isSelected()))
             tfPoltronaEscolhida.setText("" + escolhida);
     }//GEN-LAST:event_btnEscolherPoltronaActionPerformed
+
+    private void cbxSecaoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxSecaoItemStateChanged
+        tfPoltronaEscolhida.setText("");
+    }//GEN-LAST:event_cbxSecaoItemStateChanged
 
     private void atualizaAcrescimoEPrecoTotal() {
         int acrescimo = 0;

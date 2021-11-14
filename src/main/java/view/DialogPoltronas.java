@@ -50,8 +50,8 @@ public class DialogPoltronas extends javax.swing.JDialog {
         configPoltronas();
 
         if (temSelecionada != null) {
-            this.selecionada = poltronas[temSelecionada-1];
-            selecionada.setBackground(Color.GREEN);
+            this.selecionada = poltronas[temSelecionada - 1];
+            this.selecionada.setBackground(Color.GREEN);
         }
 
         this.setLayout(new GridLayout(5, 5, 5, 3));
@@ -96,13 +96,12 @@ public class DialogPoltronas extends javax.swing.JDialog {
             poltronas[i].setPreferredSize(new Dimension(45, 45));
             poltronas[i].setBackground(Color.GRAY);
 
-
-            if (oucupadas.contains(i)) {
+            if (oucupadas.contains(i + 1)) {
                 poltronas[i].setBackground(Color.red);
                 poltronas[i].setFocusPainted(false);
             }
 
-            if (!oucupadas.contains(i) && !apenasVisualizar) {
+            if (!oucupadas.contains(i + 1) && !apenasVisualizar) {
                 poltronas[i].addActionListener(listener);
             }
 
@@ -117,22 +116,22 @@ public class DialogPoltronas extends javax.swing.JDialog {
     }
 
     public int getEscolhida() {
-        if(!selecionada.getText().isEmpty())
+        if (!selecionada.getText().isEmpty()) {
             return Integer.parseInt(selecionada.getText());
-        
+        }
+
         return -1;
     }
 
     ActionListener listener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-//            if (e.getSource() instanceof JButton) {
-//                String text = ((JButton) e.getSource()).getText();
-//                JOptionPane.showMessageDialog(null, text);
-//            }
+
             selecionada.setBackground(Color.GRAY);
             selecionada = ((JButton) e.getSource());
             selecionada.setBackground(Color.GREEN);
+
+            DialogPoltronas.this.setVisible(false);
         }
     };
 

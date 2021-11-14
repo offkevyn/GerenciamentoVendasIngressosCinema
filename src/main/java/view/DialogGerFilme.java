@@ -6,10 +6,17 @@
 package view;
 
 import controller.fichario.FilmeFichario;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.border.Border;
 import model.Filme;
 import model.Sala;
 
@@ -21,6 +28,8 @@ public class DialogGerFilme extends javax.swing.JDialog {
 
     private ArrayList<Filme> listFilme;
     private FilmeFichario fixFilme;
+    private Border borderDefalt;
+    private int qtdCaracterSinopse;
 
     /**
      * Creates new form NewJDialog
@@ -28,6 +37,11 @@ public class DialogGerFilme extends javax.swing.JDialog {
     public DialogGerFilme(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+
+        qtdCaracterSinopse = 0;
+
+        borderDefalt = tfDuracaoMin.getBorder();
+        tfDuracaoMin.addKeyListener(listenerTfNumber);
 
         cbxEscolher.setVisible(false);
         jiformativo.setVisible(false);
@@ -61,8 +75,9 @@ public class DialogGerFilme extends javax.swing.JDialog {
         btnIncluir = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
         jScrollPane = new javax.swing.JScrollPane();
-        textASinopse = new javax.swing.JTextArea();
+        taTextASinopse = new javax.swing.JTextArea();
         lbSinopse = new javax.swing.JLabel();
+        lbqtdCaracter = new javax.swing.JLabel();
         lbTitulo = new javax.swing.JLabel();
         jiformativo = new javax.swing.JLabel();
         cbxEscolher = new javax.swing.JComboBox<>();
@@ -80,14 +95,9 @@ public class DialogGerFilme extends javax.swing.JDialog {
         lbTituloFilme.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         lbTituloFilme.setText("Título:");
 
-        tfTituloFilme.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tfTituloFilmetfTituloActionPerformed(evt);
-            }
-        });
         tfTituloFilme.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                tfTituloFilmetfTituloKeyTyped(evt);
+                tfTituloFilmeKeyTyped(evt);
             }
         });
 
@@ -116,12 +126,21 @@ public class DialogGerFilme extends javax.swing.JDialog {
             }
         });
 
-        textASinopse.setColumns(20);
-        textASinopse.setRows(5);
-        jScrollPane.setViewportView(textASinopse);
+        taTextASinopse.setColumns(20);
+        taTextASinopse.setLineWrap(true);
+        taTextASinopse.setRows(5);
+        taTextASinopse.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                taTextASinopseKeyTyped(evt);
+            }
+        });
+        jScrollPane.setViewportView(taTextASinopse);
 
         lbSinopse.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         lbSinopse.setText("Sinopse:");
+
+        lbqtdCaracter.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        lbqtdCaracter.setText("/1000");
 
         javax.swing.GroupLayout pnIncluirLayout = new javax.swing.GroupLayout(pnIncluir);
         pnIncluir.setLayout(pnIncluirLayout);
@@ -133,21 +152,23 @@ public class DialogGerFilme extends javax.swing.JDialog {
                     .addComponent(jScrollPane, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(pnIncluirLayout.createSequentialGroup()
                         .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnIncluirLayout.createSequentialGroup()
-                                    .addComponent(btnIncluir)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(btnCancelar))
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnIncluirLayout.createSequentialGroup()
-                                    .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(lbTituloFilme, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(tfTituloFilme, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(lbDuracaoMin)
-                                        .addComponent(tfDuracaoMin, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                            .addComponent(lbSinopse))
-                        .addGap(0, 8, Short.MAX_VALUE)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnIncluirLayout.createSequentialGroup()
+                                .addComponent(btnIncluir)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnCancelar))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnIncluirLayout.createSequentialGroup()
+                                .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lbTituloFilme, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(tfTituloFilme, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lbDuracaoMin)
+                                    .addComponent(tfDuracaoMin, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(0, 8, Short.MAX_VALUE))
+                    .addGroup(pnIncluirLayout.createSequentialGroup()
+                        .addComponent(lbSinopse)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lbqtdCaracter)))
                 .addContainerGap())
         );
         pnIncluirLayout.setVerticalGroup(
@@ -162,10 +183,12 @@ public class DialogGerFilme extends javax.swing.JDialog {
                     .addComponent(tfTituloFilme, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(tfDuracaoMin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lbSinopse)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbSinopse)
+                    .addComponent(lbqtdCaracter))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnIncluir, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -288,14 +311,6 @@ public class DialogGerFilme extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void tfTituloFilmetfTituloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfTituloFilmetfTituloActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tfTituloFilmetfTituloActionPerformed
-
-    private void tfTituloFilmetfTituloKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfTituloFilmetfTituloKeyTyped
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tfTituloFilmetfTituloKeyTyped
-
     private void tfDuracaoMintfDuracaoMinKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfDuracaoMintfDuracaoMinKeyTyped
         // TODO add your handling code here:
     }//GEN-LAST:event_tfDuracaoMintfDuracaoMinKeyTyped
@@ -303,12 +318,24 @@ public class DialogGerFilme extends javax.swing.JDialog {
     private void btnIncluir2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIncluir2ActionPerformed
         Filme movie = new Filme();
 
-        if(!btnIncluir.getText().equals("INCLUIR"))
+        if ((tfTituloFilme.getText().isEmpty() || tfDuracaoMin.getText().isEmpty())) {
+            JOptionPane.showMessageDialog(null, "Preencha os campos obrigatórios", "ERROR CAMPO VAZIO", JOptionPane.ERROR_MESSAGE);
+            mostrarCamposObrigatorio();
+            return;
+        }
+
+        if (qtdCaracterSinopse > 1000) {
+            JOptionPane.showMessageDialog(null, "Sinopse deve ter no máximo 1000 caracteres. ", "ERROR", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (!btnIncluir.getText().equals("INCLUIR")) {
             movie = listFilme.get(cbxEscolher.getSelectedIndex());
-        
+        }
+
         movie.setTitulo(tfTituloFilme.getText());
         movie.setDuracaoMinut(Integer.parseInt(tfDuracaoMin.getText()));
-        movie.setSinopse(textASinopse.getText());
+        movie.setSinopse(taTextASinopse.getText());
 
         switch (btnIncluir.getText()) {
             case "INCLUIR": {
@@ -373,14 +400,15 @@ public class DialogGerFilme extends javax.swing.JDialog {
 
             tfTituloFilme.setText(movie.getTitulo());
             tfDuracaoMin.setText(movie.getDuracaoMinut() + "");
-            textASinopse.setText(movie.getSinopse());
+            taTextASinopse.setText(movie.getSinopse());
+            lbqtdCaracter.setText(taTextASinopse.getText().length() + "/1000");
 
             if (rbAlterar.isSelected()) {
                 btnIncluir.setText("ALTERAR");
 
                 tfTituloFilme.setEditable(true);
                 tfDuracaoMin.setEditable(true);
-                textASinopse.setEditable(true);
+                taTextASinopse.setEditable(true);
                 //CheckBoxVipSim.setEditable(true);
             } else if (rbExcluir.isSelected()) {
                 btnCancelar.setVisible(true);
@@ -389,7 +417,7 @@ public class DialogGerFilme extends javax.swing.JDialog {
 
                 tfTituloFilme.setEditable(false);
                 tfDuracaoMin.setEditable(false);
-                textASinopse.setEditable(false);
+                taTextASinopse.setEditable(false);
                 //CheckBoxVipSim.setEditable(false);
             } else if (rbConsultar.isSelected()) {
                 btnCancelar.setVisible(false);
@@ -397,7 +425,7 @@ public class DialogGerFilme extends javax.swing.JDialog {
 
                 tfTituloFilme.setEditable(false);
                 tfDuracaoMin.setEditable(false);
-                textASinopse.setEditable(false);
+                taTextASinopse.setEditable(false);
             }
         }
     }//GEN-LAST:event_cbxEscolherActionPerformed
@@ -443,6 +471,16 @@ public class DialogGerFilme extends javax.swing.JDialog {
             btnCancelar.setVisible(false);
 
             popularJComboBox();
+            
+            for (int i = 0; i < pnIncluir.getComponentCount(); i++) {
+                Component c = pnIncluir.getComponent(i);
+
+                if (c instanceof JTextField) {
+                    JTextField field = (JTextField) c;
+
+                    field.setBorder(borderDefalt);
+                }
+            }
         } else
             JOptionPane.showMessageDialog(this, "A lista está VAZIA!!!", "VAZIA", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_rbConsultarActionPerformed
@@ -455,6 +493,66 @@ public class DialogGerFilme extends javax.swing.JDialog {
         restart();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
+    private void taTextASinopseKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_taTextASinopseKeyTyped
+        if (taTextASinopse.getText().length() > 999) {
+            evt.consume();
+
+            lbqtdCaracter.setForeground(Color.RED);
+        } else {
+            lbqtdCaracter.setForeground(Color.BLACK);
+        }
+        qtdCaracterSinopse = taTextASinopse.getText().length();
+        lbqtdCaracter.setText(qtdCaracterSinopse + "/1000");
+
+
+    }//GEN-LAST:event_taTextASinopseKeyTyped
+
+    private void tfTituloFilmeKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfTituloFilmeKeyTyped
+        tfTituloFilme.setBorder(borderDefalt);
+    }//GEN-LAST:event_tfTituloFilmeKeyTyped
+
+    KeyListener listenerTfNumber = new KeyListener() {
+        @Override
+        public void keyTyped(KeyEvent e) {
+            JTextField field = (JTextField) e.getSource();
+
+            String caracteres = "0987654321";
+            if (!caracteres.contains(e.getKeyChar() + "")) {
+                e.consume();
+
+                Border lineBorder = BorderFactory.createLineBorder(Color.getColor(null, 0XEC2E2E));
+                field.setBorder(lineBorder);
+            } else {
+                field.setBorder(borderDefalt);
+            }
+
+        }
+
+        @Override
+        public void keyPressed(KeyEvent arg0) {
+        }
+
+        @Override
+        public void keyReleased(KeyEvent arg0) {
+        }
+    };
+
+    private void mostrarCamposObrigatorio() {
+        Border lineBorder = BorderFactory.createLineBorder(Color.getColor(null, 0XEC2E2E));
+
+        for (int i = 0; i < pnIncluir.getComponentCount(); i++) {
+            Component c = pnIncluir.getComponent(i);
+
+            if (c instanceof JTextField) {
+                JTextField field = (JTextField) c;
+                if (field.getText().isEmpty()) {
+                    field.setBorder(lineBorder);
+                }
+
+            }
+        }
+    }
+
     private void configFilme() {
         rbAlterar.setEnabled(false);
         rbConsultar.setEnabled(false);
@@ -465,13 +563,27 @@ public class DialogGerFilme extends javax.swing.JDialog {
         btnIncluir.setVisible(true);
         btnCancelar.setVisible(true);
 
-        tfTituloFilme.setEditable(true);
-        tfDuracaoMin.setEditable(true);
-        textASinopse.setEditable(true);
+//        tfTituloFilme.setEditable(true);
+//        tfDuracaoMin.setEditable(true);
+        taTextASinopse.setEditable(true);
 
-        tfTituloFilme.setText("");
-        tfDuracaoMin.setText("");
-        textASinopse.setText("");
+//        tfTituloFilme.setText("");
+//        tfDuracaoMin.setText("");
+//        taTextASinopse.setText("");
+        lbqtdCaracter.setText("/1000");
+        lbqtdCaracter.setForeground(Color.BLACK);
+        
+        for (int i = 0; i < pnIncluir.getComponentCount(); i++) {
+            Component c = pnIncluir.getComponent(i);
+
+            if (c instanceof JTextField) {
+                JTextField field = (JTextField) c;
+
+                field.setBorder(borderDefalt);
+                field.setText("");
+                field.setEditable(true);
+            }
+        }
     }
 
     private void restart() {
@@ -486,7 +598,8 @@ public class DialogGerFilme extends javax.swing.JDialog {
 
         tfTituloFilme.setText("");
         tfDuracaoMin.setText("");
-        textASinopse.setText("");
+        taTextASinopse.setText("");
+        lbqtdCaracter.setText("/1000");
     }
 
     private int qtdFilme() {
@@ -533,12 +646,13 @@ public class DialogGerFilme extends javax.swing.JDialog {
     private javax.swing.JLabel lbSinopse;
     private javax.swing.JLabel lbTitulo;
     private javax.swing.JLabel lbTituloFilme;
+    private javax.swing.JLabel lbqtdCaracter;
     private javax.swing.JPanel pnIncluir;
     private javax.swing.JRadioButton rbAlterar;
     private javax.swing.JRadioButton rbConsultar;
     private javax.swing.JRadioButton rbExcluir;
     private javax.swing.JRadioButton rbIncluir;
-    private javax.swing.JTextArea textASinopse;
+    private javax.swing.JTextArea taTextASinopse;
     private javax.swing.JTextField tfDuracaoMin;
     private javax.swing.JTextField tfTituloFilme;
     // End of variables declaration//GEN-END:variables

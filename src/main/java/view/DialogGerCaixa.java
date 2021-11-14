@@ -7,10 +7,16 @@ package view;
 
 import controller.fichario.CaixaFichario;
 import controller.fichario.FuncionarioFichario;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import javax.swing.border.Border;
 import model.Caixa;
 import model.Funcionario;
@@ -26,6 +32,9 @@ public class DialogGerCaixa extends javax.swing.JDialog {
 
     private CaixaFichario fixCaixa;
     private FuncionarioFichario fixFunc;
+    
+    private Border borderDefalt;
+
 
     /**
      * Creates new form DialogGerCaixa
@@ -33,6 +42,9 @@ public class DialogGerCaixa extends javax.swing.JDialog {
     public DialogGerCaixa(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        
+        borderDefalt = tfNumero.getBorder();
+        tfNumero.addKeyListener(listenerTfNumber);
         
         cbxEscolher.setVisible(false);
         jiformativo.setVisible(false);
@@ -313,6 +325,16 @@ public class DialogGerCaixa extends javax.swing.JDialog {
 
             popularJComboBoxFunc();
             popularJComboBox();
+            
+            for (int i = 0; i < pnIncluir.getComponentCount(); i++) {
+                Component c = pnIncluir.getComponent(i);
+
+                if (c instanceof JTextField) {
+                    JTextField field = (JTextField) c;
+
+                    field.setBorder(borderDefalt);
+                }
+            }
         } else
         JOptionPane.showMessageDialog(this, "A lista está VAZIA!!!", "VAZIA", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_rbConsultarActionPerformed
@@ -370,6 +392,12 @@ public class DialogGerCaixa extends javax.swing.JDialog {
     private void btnIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIncluirActionPerformed
         Caixa cashier = new Caixa();
         Funcionario func = listFunc.get(cbxFunc.getSelectedIndex());
+        
+        if ((tfNumero.getText().isEmpty())) {
+            JOptionPane.showMessageDialog(null, "Preencha os campos obrigatórios", "ERROR CAMPO VAZIO", JOptionPane.ERROR_MESSAGE);
+            mostrarCamposObrigatorio();
+            return;
+        }
 
         if(!btnIncluir.getText().equals("INCLUIR"))
             cashier = listCaixa.get(cbxEscolher.getSelectedIndex());
@@ -440,6 +468,49 @@ public class DialogGerCaixa extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_cbxFuncActionPerformed
 
+    KeyListener listenerTfNumber = new KeyListener() {
+        @Override
+        public void keyTyped(KeyEvent e) {
+            JTextField field = (JTextField) e.getSource();
+
+            String caracteres = "0987654321";
+            if (!caracteres.contains(e.getKeyChar() + "")) {
+                e.consume();
+
+                Border lineBorder = BorderFactory.createLineBorder(Color.getColor(caracteres, 0XEC2E2E));
+                field.setBorder(lineBorder);
+            } else {
+                Border lineBorder = BorderFactory.createLineBorder(Color.GRAY);
+                field.setBorder(borderDefalt);
+            }
+
+        }
+
+        @Override
+        public void keyPressed(KeyEvent arg0) {
+        }
+
+        @Override
+        public void keyReleased(KeyEvent arg0) {
+        }
+    };
+    
+    private void mostrarCamposObrigatorio() {
+        Border lineBorder = BorderFactory.createLineBorder(Color.getColor(null, 0XEC2E2E));
+
+        for (int i = 0; i < pnIncluir.getComponentCount(); i++) {
+            Component c = pnIncluir.getComponent(i);
+
+            if (c instanceof JTextField) {
+                JTextField field = (JTextField) c;
+                if (field.getText().isEmpty()) {
+                    field.setBorder(lineBorder);
+                }
+
+            }
+        }
+    }
+    
     private void configCaixa() {
         rbAlterar.setEnabled(false);
         rbConsultar.setEnabled(false);
@@ -450,12 +521,24 @@ public class DialogGerCaixa extends javax.swing.JDialog {
         btnIncluir.setVisible(true);
         btnCancelar.setVisible(true);
 
-        tfNumero.setEditable(true);
+        //tfNumero.setEditable(true);
         cbxFunc.setEnabled(true);
 
 
         cbxFunc.setSelectedIndex(-1);
-        tfNumero.setText("");
+        //tfNumero.setText("");
+        
+        for (int i = 0; i < pnIncluir.getComponentCount(); i++) {
+            Component c = pnIncluir.getComponent(i);
+
+            if (c instanceof JTextField) {
+                JTextField field = (JTextField) c;
+
+                field.setBorder(borderDefalt);
+                field.setText("");
+                field.setEditable(true);
+            }
+        }
     }
     
     private void restart() {

@@ -1,10 +1,17 @@
 package view;
 
 import controller.fichario.FuncionarioFichario;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.border.Border;
 import model.Funcionario;
 import model.Sala;
 
@@ -13,9 +20,16 @@ public class DialogGerFuncionario extends javax.swing.JDialog {
     private ArrayList<Funcionario> listFunc;
     private FuncionarioFichario fixFunc;
 
+    private Border borderDefalt;
+
     public DialogGerFuncionario(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+
+        borderDefalt = tfCpf.getBorder();
+        tfCpf.addKeyListener(listenerTfNumber);
+        tfCtps.addKeyListener(listenerTfNumber);
+        tfTelefone.addKeyListener(listenerTfNumber);
 
         cbxEscolher.setVisible(false);
         jiformativo.setVisible(false);
@@ -352,6 +366,16 @@ public class DialogGerFuncionario extends javax.swing.JDialog {
             cbxEscolher.setVisible(true);
             jiformativo.setVisible(true);
             popularJComboBox();
+            
+            for (int i = 0; i < pnIncluir.getComponentCount(); i++) {
+                Component c = pnIncluir.getComponent(i);
+
+                if (c instanceof JTextField) {
+                    JTextField field = (JTextField) c;
+
+                    field.setBorder(borderDefalt);
+                }
+            }
         } else
             JOptionPane.showMessageDialog(this, "A lista está VAZIA!!!", "VAZIA", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_rbAlterarActionPerformed
@@ -413,6 +437,12 @@ public class DialogGerFuncionario extends javax.swing.JDialog {
 
     private void btnIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIncluirActionPerformed
         Funcionario employe = new Funcionario();
+
+        if ((tfCpf.getText().isEmpty() || tfNome.getText().isEmpty() || tfTelefone.getText().isEmpty() || tfCtps.getText().isEmpty() || tfMatricula.getText().isEmpty())) {
+            JOptionPane.showMessageDialog(null, "Preencha os campos obrigatórios", "ERROR CAMPO VAZIO", JOptionPane.ERROR_MESSAGE);
+            mostrarCamposObrigatorio();
+            return;
+        }
 
         if (!btnIncluir.getText().equals("INCLUIR")) {
             employe = listFunc.get(cbxEscolher.getSelectedIndex());
@@ -483,7 +513,7 @@ public class DialogGerFuncionario extends javax.swing.JDialog {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void tfNomeKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfNomeKeyTyped
-        // TODO add your handling code here:
+        tfNome.setBorder(borderDefalt);
     }//GEN-LAST:event_tfNomeKeyTyped
 
     private void tfCtpsKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfCtpsKeyTyped
@@ -491,8 +521,51 @@ public class DialogGerFuncionario extends javax.swing.JDialog {
     }//GEN-LAST:event_tfCtpsKeyTyped
 
     private void tfMatriculaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfMatriculaKeyTyped
-        // TODO add your handling code here:
+        tfMatricula.setBorder(borderDefalt);
     }//GEN-LAST:event_tfMatriculaKeyTyped
+
+    KeyListener listenerTfNumber = new KeyListener() {
+        @Override
+        public void keyTyped(KeyEvent e) {
+            JTextField field = (JTextField) e.getSource();
+
+            String caracteres = "0987654321";
+            if (!caracteres.contains(e.getKeyChar() + "")) {
+                e.consume();
+
+                Border lineBorder = BorderFactory.createLineBorder(Color.getColor(caracteres, 0XEC2E2E));
+                field.setBorder(lineBorder);
+            } else {
+                Border lineBorder = BorderFactory.createLineBorder(Color.GRAY);
+                field.setBorder(borderDefalt);
+            }
+
+        }
+
+        @Override
+        public void keyPressed(KeyEvent arg0) {
+        }
+
+        @Override
+        public void keyReleased(KeyEvent arg0) {
+        }
+    };
+
+    private void mostrarCamposObrigatorio() {
+        Border lineBorder = BorderFactory.createLineBorder(Color.getColor(null, 0XEC2E2E));
+
+        for (int i = 0; i < pnIncluir.getComponentCount(); i++) {
+            Component c = pnIncluir.getComponent(i);
+
+            if (c instanceof JTextField) {
+                JTextField field = (JTextField) c;
+                if (field.getText().isEmpty()) {
+                    field.setBorder(lineBorder);
+                }
+
+            }
+        }
+    }
 
     private void restart() {
         rbAlterar.setEnabled(true);
@@ -521,17 +594,29 @@ public class DialogGerFuncionario extends javax.swing.JDialog {
         btnIncluir.setVisible(true);
         btnCancelar.setVisible(true);
 
+//        
         tfCpf.setEditable(true);
-        tfNome.setEditable(true);
-        tfTelefone.setEditable(true);
-        tfCtps.setEditable(true);
-        tfMatricula.setEditable(true);
+//        tfNome.setEditable(true);
+//        tfTelefone.setEditable(true);
+//        tfCtps.setEditable(true);
+//        tfMatricula.setEditable(true);
+//
+//        tfCpf.setText("");
+//        tfNome.setText("");
+//        tfTelefone.setText("");
+//        tfCtps.setText("");
+//        tfMatricula.setText("");
+        for (int i = 0; i < pnIncluir.getComponentCount(); i++) {
+            Component c = pnIncluir.getComponent(i);
 
-        tfCpf.setText("");
-        tfNome.setText("");
-        tfTelefone.setText("");
-        tfCtps.setText("");
-        tfMatricula.setText("");
+            if (c instanceof JTextField) {
+                JTextField field = (JTextField) c;
+
+                field.setBorder(borderDefalt);
+                field.setText("");
+                field.setEditable(true);
+            }
+        }
     }
 
     private int qtdFunc() {

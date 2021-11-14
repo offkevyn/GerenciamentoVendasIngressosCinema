@@ -6,10 +6,17 @@
 package view;
 
 import controller.fichario.ClienteFichario;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.border.Border;
 import model.Cliente;
 
 /**
@@ -20,6 +27,7 @@ public class DialogGerCliente extends javax.swing.JDialog {
 
     private ArrayList<Cliente> listCliente;
     private ClienteFichario fixCliente;
+    private Border borderDefalt;
 
     /**
      * Creates new form DialogGerCliente
@@ -27,6 +35,10 @@ public class DialogGerCliente extends javax.swing.JDialog {
     public DialogGerCliente(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+
+        borderDefalt = tfCpf.getBorder();
+        tfCpf.addKeyListener(listenerTfNumber);
+        tfTelefone.addKeyListener(listenerTfNumber);
 
         cbxEscolher.setVisible(false);
         jiformativo.setVisible(false);
@@ -154,6 +166,12 @@ public class DialogGerCliente extends javax.swing.JDialog {
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCancelarActionPerformed(evt);
+            }
+        });
+
+        tfNome.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                tfNomeKeyTyped(evt);
             }
         });
 
@@ -351,6 +369,16 @@ public class DialogGerCliente extends javax.swing.JDialog {
             btnCancelar.setVisible(false);
 
             popularJComboBox();
+
+            for (int i = 0; i < pnIncluir.getComponentCount(); i++) {
+                Component c = pnIncluir.getComponent(i);
+
+                if (c instanceof JTextField) {
+                    JTextField field = (JTextField) c;
+
+                    field.setBorder(borderDefalt);
+                }
+            }
         } else
             JOptionPane.showMessageDialog(this, "A lista está VAZIA!!!", "VAZIA", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_rbConsultarActionPerformed
@@ -376,6 +404,12 @@ public class DialogGerCliente extends javax.swing.JDialog {
 
     private void btnIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIncluirActionPerformed
         Cliente client = new Cliente();
+
+        if ((tfCpf.getText().isEmpty() || tfNome.getText().isEmpty() || tfTelefone.getText().isEmpty())) {
+            JOptionPane.showMessageDialog(null, "Preencha os campos obrigatórios", "ERROR CAMPO VAZIO", JOptionPane.ERROR_MESSAGE);
+            mostrarCamposObrigatorio();
+            return;
+        }
 
         if (!btnIncluir.getText().equals("INCLUIR")) {
             client = listCliente.get(cbxEscolher.getSelectedIndex());
@@ -441,6 +475,53 @@ public class DialogGerCliente extends javax.swing.JDialog {
         restart();
     }//GEN-LAST:event_btnIncluirActionPerformed
 
+    private void tfNomeKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfNomeKeyTyped
+        tfNome.setBorder(borderDefalt);
+    }//GEN-LAST:event_tfNomeKeyTyped
+
+    KeyListener listenerTfNumber = new KeyListener() {
+        @Override
+        public void keyTyped(KeyEvent e) {
+            JTextField field = (JTextField) e.getSource();
+
+            String caracteres = "0987654321";
+            if (!caracteres.contains(e.getKeyChar() + "")) {
+                e.consume();
+
+                Border lineBorder = BorderFactory.createLineBorder(Color.getColor(caracteres, 0XEC2E2E));
+                field.setBorder(lineBorder);
+            } else {
+                Border lineBorder = BorderFactory.createLineBorder(Color.GRAY);
+                field.setBorder(borderDefalt);
+            }
+
+        }
+
+        @Override
+        public void keyPressed(KeyEvent arg0) {
+        }
+
+        @Override
+        public void keyReleased(KeyEvent arg0) {
+        }
+    };
+
+    private void mostrarCamposObrigatorio() {
+        Border lineBorder = BorderFactory.createLineBorder(Color.getColor(null, 0XEC2E2E));
+
+        for (int i = 0; i < pnIncluir.getComponentCount(); i++) {
+            Component c = pnIncluir.getComponent(i);
+
+            if (c instanceof JTextField) {
+                JTextField field = (JTextField) c;
+                if (field.getText().isEmpty()) {
+                    field.setBorder(lineBorder);
+                }
+
+            }
+        }
+    }
+
     private void restart() {
         rbAlterar.setEnabled(true);
         rbConsultar.setEnabled(true);
@@ -467,15 +548,27 @@ public class DialogGerCliente extends javax.swing.JDialog {
         btnIncluir.setVisible(true);
         btnCancelar.setVisible(true);
 
-        tfCpf.setEditable(true);
-        tfNome.setEditable(true);
-        tfTelefone.setEditable(true);
+//        tfCpf.setEditable(true);
+//        tfNome.setEditable(true);
+//        tfTelefone.setEditable(true);
         CheckBoxVipSim.setEnabled(true);
 
-        tfCpf.setText("");
-        tfNome.setText("");
-        tfTelefone.setText("");
+//        tfCpf.setText("");
+//        tfNome.setText("");
+//        tfTelefone.setText("");
         CheckBoxVipSim.setSelected(false);
+
+        for (int i = 0; i < pnIncluir.getComponentCount(); i++) {
+            Component c = pnIncluir.getComponent(i);
+
+            if (c instanceof JTextField) {
+                JTextField field = (JTextField) c;
+
+                field.setBorder(borderDefalt);
+                field.setText("");
+                field.setEditable(true);
+            }
+        }
     }
 
     private int qtdCliente() {

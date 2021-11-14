@@ -92,6 +92,8 @@ public class IngressoDAO {
 
         ps.execute();
         ps.close();
+        
+        secaoDao.atualizaPoltronas(ingresso.getSecao(), ingresso.getPoltrona(), true);
     }
 
     public int qtdRegistro() throws SQLException {

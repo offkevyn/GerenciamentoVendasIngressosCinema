@@ -20,6 +20,7 @@ public class Secao {
     }
 
     public Secao() {
+        poltronasOucupadas = new  ArrayList<>();
     }
 
     public int getCodigo() {
