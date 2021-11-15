@@ -71,6 +71,7 @@ public class FormPrincipal extends javax.swing.JFrame {
         btnIngresso = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Home");
 
         btnSecao.setText("Seção");
         btnSecao.addActionListener(new java.awt.event.ActionListener() {

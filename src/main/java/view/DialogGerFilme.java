@@ -89,6 +89,7 @@ public class DialogGerFilme extends javax.swing.JDialog {
         btnConcluido = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Filme");
 
         pnIncluir.setBackground(new java.awt.Color(250, 250, 250));
 

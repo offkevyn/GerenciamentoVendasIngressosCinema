@@ -89,10 +89,11 @@ public class DialogGerCaixa extends javax.swing.JDialog {
         lbFuncionario = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Caixa");
 
         lbTitulo.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         lbTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lbTitulo.setText("Gerenciamento de Sala");
+        lbTitulo.setText("Gerenciamento de Caixa");
 
         jiformativo1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jiformativo1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);

@@ -1,9 +1,6 @@
 package controller.DAO;
 
 import controller.Conexao;
-import controller.fichario.CaixaFichario;
-import controller.fichario.ClienteFichario;
-import controller.fichario.SecaoFichario;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -40,21 +37,26 @@ public class IngressoDAO {
     public void incluir(Ingresso ingresso) throws SQLException {
         String sql;
         PreparedStatement ps = null;
-
-        sql = "insert into ingresso(secao_cod, caixa_cod, cliente_cod, preco, acresimo, poltrona) values (?, ?, ?, ?, ?, ?);";
+        if (ingresso.getCliente() != null) {
+            sql = "insert into ingresso(secao_cod, caixa_cod, preco, acresimo, poltrona, cliente_cod) values (?, ?, ?, ?, ?, ?);";
+        } else {
+            sql = "insert into ingresso(secao_cod, caixa_cod, preco, acresimo, poltrona) values (?, ?, ?, ?, ?);";
+        }
 
         ps = conn.prepareStatement(sql);
 
         ps.setInt(1, ingresso.getSecao().getCodigo());
         ps.setInt(2, ingresso.getCaixa().getCodigo());
-        ps.setInt(3, ingresso.getCliente().getCodigo());
-        ps.setFloat(4, ingresso.getPreco());
-        ps.setInt(5, ingresso.getAcrescimo());
-        ps.setInt(6, ingresso.getPoltrona());
+        ps.setFloat(3, ingresso.getPreco());
+        ps.setInt(4, ingresso.getAcrescimo());
+        ps.setInt(5, ingresso.getPoltrona());
+        if (ingresso.getCliente() != null) {
+            ps.setInt(6, ingresso.getCliente().getCodigo());
+        }
 
         ps.execute();
         ps.close();
-        
+
         secaoDao.atualizaPoltronas(ingresso.getSecao(), ingresso.getPoltrona(), true);
     }
 
@@ -78,21 +80,29 @@ public class IngressoDAO {
         String sql;
         PreparedStatement ps = null;
 
-        sql = "UPDATE ingresso SET secao_cod = ?, caixa_cod = ?, cliente_cod = ?, preco = ?, acresimo = ?, poltrona = ? WHERE codigo = ?";
+        if (ingresso.getCliente() != null) {
+            sql = "UPDATE ingresso SET secao_cod = ?, caixa_cod = ?, preco = ?, acresimo = ?, poltrona = ?, cliente_cod = ? WHERE codigo = ?";
+        } else {
+            sql = "UPDATE ingresso SET secao_cod = ?, caixa_cod = ?, preco = ?, acresimo = ?, poltrona = ? WHERE codigo = ?";
+        }
 
         ps = conn.prepareStatement(sql);
 
         ps.setInt(1, ingresso.getSecao().getCodigo());
         ps.setInt(2, ingresso.getCaixa().getCodigo());
-        ps.setInt(3, ingresso.getCliente().getCodigo());
-        ps.setFloat(4, ingresso.getPreco());
-        ps.setInt(5, ingresso.getAcrescimo());
-        ps.setInt(6, ingresso.getPoltrona());
-        ps.setInt(7, ingresso.getCodigo());
+        ps.setFloat(3, ingresso.getPreco());
+        ps.setInt(4, ingresso.getAcrescimo());
+        ps.setInt(5, ingresso.getPoltrona());
+        if (ingresso.getCliente() != null) {
+            ps.setInt(6, ingresso.getCliente().getCodigo());
+            ps.setInt(7, ingresso.getCodigo());
+        } else {
+            ps.setInt(6, ingresso.getCodigo());
+        }
 
         ps.execute();
         ps.close();
-        
+
         secaoDao.atualizaPoltronas(ingresso.getSecao(), ingresso.getPoltrona(), true);
     }
 
@@ -134,7 +144,11 @@ public class IngressoDAO {
 //            Cliente cliente = fixCliente.entidadePeloID(rs.getInt("cliente_cod"));
 //            Caixa caixaa = fixCaixaa.entidadePeloID(rs.getInt("caixa_cod"));
             Secao secao = secaoDao.SecaoPeloCodico(rs.getInt("secao_cod"));
-            Cliente cliente = clienteDao.ClientePeloCodico(rs.getInt("cliente_cod"));
+            Cliente cliente = null;
+            if (rs.getInt("cliente_cod") > 0) {
+                cliente = clienteDao.ClientePeloCodico(rs.getInt("cliente_cod"));
+            }
+
             Caixa caixaa = caixaaDao.CaixaPeloCodico(rs.getInt("caixa_cod"));
 
             Ingresso ticket = new Ingresso(secao,

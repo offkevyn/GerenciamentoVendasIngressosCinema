@@ -103,6 +103,7 @@ public class DialogGerIngresso extends javax.swing.JDialog {
         btnEscolherPoltrona = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Ingresso");
 
         lbTitulo.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         lbTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -437,10 +438,10 @@ public class DialogGerIngresso extends javax.swing.JDialog {
 
         cbxEscolher.setVisible(false);
         jiformativo.setVisible(false);
-        configIngresso();
 
         pnIncluir.setVisible(true);
-
+        
+        configIngresso();
         btnIncluir.setText("INCLUIR");
     }//GEN-LAST:event_rbIncluirActionPerformed
 
@@ -498,8 +499,11 @@ public class DialogGerIngresso extends javax.swing.JDialog {
 
             cbxSecao.setSelectedIndex(posicaoSecaoNoArray(ticket.getSecao()));
             cbxCaixaa.setSelectedIndex(posicaoCaixaaNoArray(ticket.getCaixa()));
-            cbxCliente.setSelectedIndex(posicaoClienteNoArray(ticket.getCliente()));
-            
+            if(ticket.getCliente() != null)
+                cbxCliente.setSelectedIndex(posicaoClienteNoArray(ticket.getCliente()));
+            else
+                cbxCliente.setSelectedIndex(-1);
+
             if (ticket.getPreco() == 28.0) {
                 rbIngressoInteira.setSelected(true);
             } else {
@@ -508,7 +512,7 @@ public class DialogGerIngresso extends javax.swing.JDialog {
             tfAcrescimo.setText(ticket.getAcrescimo() + "");
             tfPrecoTotal.setText(ticket.getPreco() + ticket.getAcrescimo() + "");
             tfPoltronaEscolhida.setText(ticket.getPoltrona() + "");
-        
+
             if (rbAlterar.isSelected()) {
 
                 btnIncluir.setText("ALTERAR");
@@ -554,9 +558,12 @@ public class DialogGerIngresso extends javax.swing.JDialog {
     private void btnIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIncluirActionPerformed
         Ingresso ticket = new Ingresso();
         Secao secao = listSecao.get(cbxSecao.getSelectedIndex());
-        Cliente cliente = listCliente.get(cbxCliente.getSelectedIndex());
         Caixa caixaa = listCaixaa.get(cbxCaixaa.getSelectedIndex());
-        
+        Cliente cliente = null;
+        if(cbxCliente.getSelectedIndex() >= 0)
+            cliente = listCliente.get(cbxCliente.getSelectedIndex());
+
+
         if (tfPoltronaEscolhida.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Escolha uma poltrona!!", "ERROR CAMPO VAZIO", JOptionPane.ERROR_MESSAGE);
             return;
@@ -649,8 +656,6 @@ public class DialogGerIngresso extends javax.swing.JDialog {
 
     private void cbxSecaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxSecaoActionPerformed
         atualizaAcrescimoEPrecoTotal();
-
-
     }//GEN-LAST:event_cbxSecaoActionPerformed
 
     private void cbxClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxClienteActionPerformed
@@ -723,7 +728,7 @@ public class DialogGerIngresso extends javax.swing.JDialog {
             precoIngresso = 14;
         }
 
-        if (cbxSecao.getSelectedIndex() > 0) {
+        if (cbxSecao.getSelectedIndex() >= 0) {
             Secao secao = listSecao.get(cbxSecao.getSelectedIndex());
 
             if (secao.getSala().isVip()) {
@@ -756,13 +761,12 @@ public class DialogGerIngresso extends javax.swing.JDialog {
         tfAcrescimo.setText("");
         tfPrecoTotal.setText("");
         tfPoltronaEscolhida.setText("");
-        cbxCaixaa.setSelectedIndex(-1);
-        cbxCliente.setSelectedIndex(-1);
-        cbxSecao.setSelectedIndex(-1);
 
         popularJComboBoxSecao();
         popularJComboBoxCliente();
         popularJComboBoxCaixaa();
+        
+        cbxCliente.setSelectedIndex(-1);
     }
 
     private void restart() {
@@ -879,7 +883,7 @@ public class DialogGerIngresso extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, "Erro na query [RELATÓRIO - Cliente], ERRO: " + sqlex.getMessage(), "ERROR INGRESSO", JOptionPane.ERROR_MESSAGE);
             sqlex.printStackTrace();
         }
-
+        
         for (Cliente client : listCliente) {
             if (client != null) {
                 cbxCliente.addItem(client.getNome());

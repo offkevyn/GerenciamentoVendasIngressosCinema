@@ -249,7 +249,7 @@ public class SecaoDAO {
 
     }
     
-    public void atualizaPoltronas(Secao secao, int numPoltrona, boolean adicionar) throws SQLException {
+    public void atualizaPoltronas(Secao secao, Integer numPoltrona, boolean adicionar) throws SQLException {
         String sql;
         PreparedStatement ps = null;
         
