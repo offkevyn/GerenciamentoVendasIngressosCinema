@@ -31,19 +31,25 @@
           <Group type="102" attributes="0">
               <EmptySpace min="24" pref="24" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jiformativo1" min="-2" pref="85" max="-2" attributes="0"/>
-                  <Component id="rbIncluir" min="-2" pref="85" max="-2" attributes="0"/>
-                  <Component id="rbExcluir" min="-2" pref="85" max="-2" attributes="0"/>
-                  <Component id="rbAlterar" min="-2" pref="85" max="-2" attributes="0"/>
-                  <Component id="rbConsultar" min="-2" max="-2" attributes="0"/>
-                  <Component id="btnConcluido" min="-2" max="-2" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jiformativo1" min="-2" pref="85" max="-2" attributes="0"/>
+                          <Component id="rbIncluir" min="-2" pref="85" max="-2" attributes="0"/>
+                          <Component id="rbExcluir" min="-2" pref="85" max="-2" attributes="0"/>
+                          <Component id="rbAlterar" min="-2" pref="85" max="-2" attributes="0"/>
+                          <Component id="rbConsultar" min="-2" max="-2" attributes="0"/>
+                          <Component id="btnConcluido" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jiformativo" min="-2" max="-2" attributes="0"/>
+                          <Component id="cbxEscolher" min="-2" pref="119" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <Component id="btnTabelaSecao" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnRelatorio" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jiformativo" min="-2" max="-2" attributes="0"/>
-                  <Component id="cbxEscolher" min="-2" pref="119" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
               <Component id="pnIncluir" min="-2" max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -66,6 +72,10 @@
                       <Component id="rbConsultar" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="7" pref="7" max="-2" attributes="0"/>
                       <Component id="btnConcluido" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="btnTabelaSecao" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="btnRelatorio" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
                       <EmptySpace min="19" pref="19" max="-2" attributes="0"/>
@@ -244,17 +254,17 @@
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
               <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="lbHora" max="32767" attributes="0"/>
-                      <Component id="cbxHora" pref="46" max="32767" attributes="0"/>
+                      <Component id="lbHora" pref="54" max="32767" attributes="0"/>
+                      <Component id="cbxHora" max="32767" attributes="0"/>
                   </Group>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="lbMinutos" max="32767" attributes="0"/>
-                      <Component id="cbxMinuto" max="32767" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="lbMinutos" min="-2" max="-2" attributes="0"/>
+                      <Component id="cbxMinuto" min="-2" pref="54" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="86" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="78" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -300,8 +310,8 @@
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="cbxMinuto" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="cbxHora" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="cbxMinuto" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
@@ -534,6 +544,9 @@
                 <StringItem index="59" value="59"/>
               </StringArray>
             </Property>
+            <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+              <Color id="Default Cursor"/>
+            </Property>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbxMinutoActionPerformed"/>
@@ -580,5 +593,21 @@
         </Component>
       </SubComponents>
     </Container>
+    <Component class="javax.swing.JButton" name="btnTabelaSecao">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Tabela Se&#xe7;&#xe3;o"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnTabelaSecaoActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnRelatorio">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Relat&#xf3;rio"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRelatorioActionPerformed"/>
+      </Events>
+    </Component>
   </SubComponents>
 </Form>

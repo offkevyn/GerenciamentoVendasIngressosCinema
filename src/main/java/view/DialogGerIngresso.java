@@ -5,20 +5,32 @@
  */
 package view;
 
+import controller.Conexao;
 import controller.fichario.CaixaFichario;
 import controller.fichario.ClienteFichario;
 import controller.fichario.FuncionarioFichario;
 import controller.fichario.IngressoFichario;
 import controller.fichario.SecaoFichario;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import model.Caixa;
 import model.Cliente;
+import model.Filme;
 import model.Funcionario;
 import model.Ingresso;
 import model.Secao;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.swing.JRViewer;
 
 /**
  *
@@ -101,6 +113,8 @@ public class DialogGerIngresso extends javax.swing.JDialog {
         tfPrecoTotal = new javax.swing.JTextField();
         tfPoltronaEscolhida = new javax.swing.JTextField();
         btnEscolherPoltrona = new javax.swing.JButton();
+        btnArquivo = new javax.swing.JButton();
+        btnRelatorio = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Ingresso");
@@ -287,6 +301,14 @@ public class DialogGerIngresso extends javax.swing.JDialog {
             }
         });
 
+        btnArquivo.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        btnArquivo.setText("Arquivo");
+        btnArquivo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnArquivoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnIncluirLayout = new javax.swing.GroupLayout(pnIncluir);
         pnIncluir.setLayout(pnIncluirLayout);
         pnIncluirLayout.setHorizontalGroup(
@@ -294,12 +316,6 @@ public class DialogGerIngresso extends javax.swing.JDialog {
             .addGroup(pnIncluirLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnIncluirLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnIncluir)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnCancelar)
-                        .addGap(43, 43, 43))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnIncluirLayout.createSequentialGroup()
                         .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(pnIncluirLayout.createSequentialGroup()
@@ -311,12 +327,13 @@ public class DialogGerIngresso extends javax.swing.JDialog {
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                 .addComponent(tfPoltronaEscolhida, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                                             .addComponent(tfAcrescimo, javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(cbxCliente, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                             .addComponent(lbCliente, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                             .addComponent(lbAcrescimo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                         .addGap(18, 18, Short.MAX_VALUE))
                                     .addGroup(pnIncluirLayout.createSequentialGroup()
-                                        .addComponent(cbxSecao, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(cbxCliente, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(cbxSecao, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                         .addGap(18, 18, 18)))
                                 .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(rbIngressoInteira)
@@ -324,13 +341,18 @@ public class DialogGerIngresso extends javax.swing.JDialog {
                                     .addComponent(rbIngressoMeia)
                                     .addComponent(lbPrecoTotal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(tfPrecoTotal)
-                                    .addComponent(cbxCaixaa, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE))
+                                    .addComponent(cbxCaixaa, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                             .addGroup(pnIncluirLayout.createSequentialGroup()
-                                .addComponent(lbSecao, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnArquivo)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(lbCaixaa, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap())))
+                                .addComponent(btnIncluir)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(10, 10, 10))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnIncluirLayout.createSequentialGroup()
+                        .addComponent(lbSecao, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lbCaixaa, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))))
         );
         pnIncluirLayout.setVerticalGroup(
             pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -368,12 +390,20 @@ public class DialogGerIngresso extends javax.swing.JDialog {
                 .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tfPoltronaEscolhida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnEscolherPoltrona))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnIncluir, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                    .addComponent(btnIncluir, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnArquivo, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(28, 28, 28))
         );
+
+        btnRelatorio.setText("Relatório");
+        btnRelatorio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRelatorioActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -394,7 +424,8 @@ public class DialogGerIngresso extends javax.swing.JDialog {
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jiformativo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(cbxEscolher, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(cbxEscolher, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(btnRelatorio))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(pnIncluir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -423,6 +454,8 @@ public class DialogGerIngresso extends javax.swing.JDialog {
                         .addComponent(rbConsultar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnConcluido)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnRelatorio)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(pnIncluir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -516,6 +549,7 @@ public class DialogGerIngresso extends javax.swing.JDialog {
             if (rbAlterar.isSelected()) {
 
                 btnIncluir.setText("ALTERAR");
+                btnArquivo.setVisible(false);
 
 //                tfAcrescimo.setEditable(true);
 //                tfPrecoTotal.setEditable(true);
@@ -529,7 +563,9 @@ public class DialogGerIngresso extends javax.swing.JDialog {
             } else if (rbExcluir.isSelected()) {
                 btnCancelar.setVisible(true);
                 btnIncluir.setVisible(true);
+                btnArquivo.setVisible(false);
                 btnIncluir.setText("EXCLUIR");
+                
 
 //                tfAcrescimo.setEditable(false);
 //                tfPrecoTotal.setEditable(false);
@@ -542,6 +578,7 @@ public class DialogGerIngresso extends javax.swing.JDialog {
             } else if (rbConsultar.isSelected()) {
                 btnCancelar.setVisible(false);
                 btnIncluir.setVisible(false);
+                btnArquivo.setVisible(true);
 
 //                tfAcrescimo.setEditable(false);
 //                tfPrecoTotal.setEditable(false);
@@ -720,6 +757,71 @@ public class DialogGerIngresso extends javax.swing.JDialog {
         tfPoltronaEscolhida.setText("");
     }//GEN-LAST:event_cbxSecaoItemStateChanged
 
+    private void btnArquivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnArquivoActionPerformed
+        try {
+            Connection conn = Conexao.getConexao();
+            
+            Ingresso ticket = listIngresso.get(cbxEscolher.getSelectedIndex());
+            
+            Map parameters = new HashMap();
+            parameters.put("REPORT_CONNECTION", conn);
+            parameters.put("ID_INGRESSO", ticket.getCodigo());
+
+            JasperReport relCompilado = JasperCompileManager.compileReport("src/main/java/rel/IngressoPeloID.jrxml");
+
+            JasperPrint relPreenchido = JasperFillManager.fillReport(relCompilado, parameters, conn);
+
+            JDialog tela = new JDialog(this, "Relatório Ingresso", true);
+            tela.setSize(1100, 700);
+
+            JRViewer painelRel = new JRViewer(relPreenchido);
+
+            tela.getContentPane().add(painelRel);
+
+            tela.setVisible(true);
+
+        } catch (JRException ex) {
+            JOptionPane.showMessageDialog(null, "Erro gerar relatório [ JasperReport ] " + ex.getMessage(), "ERROR INGRESSO", JOptionPane.ERROR_MESSAGE);
+            ex.printStackTrace();
+        }
+        catch (SQLException sqlex) //Retorna um erro caso exista erro de query SQL
+        {
+            JOptionPane.showMessageDialog(null, "Erro na query [RELATÓRIO], ERRO: " + sqlex.getMessage(), "ERROR INGRESSO", JOptionPane.ERROR_MESSAGE);
+            sqlex.printStackTrace();
+        }
+    }//GEN-LAST:event_btnArquivoActionPerformed
+
+    private void btnRelatorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRelatorioActionPerformed
+        try {
+            Connection conn = Conexao.getConexao();
+
+            Map parameters = new HashMap();
+            parameters.put("REPORT_CONNECTION", conn);
+
+            JasperReport relCompilado = JasperCompileManager.compileReport("src/main/java/rel/Ingresso.jrxml");
+
+            JasperPrint relPreenchido = JasperFillManager.fillReport(relCompilado, parameters, conn);
+
+            JDialog tela = new JDialog(this, "Relatório Ingresso", true);
+            tela.setSize(1000, 700);
+
+            JRViewer painelRel = new JRViewer(relPreenchido);
+
+            tela.getContentPane().add(painelRel);
+
+            tela.setVisible(true);
+
+        } catch (JRException ex) {
+            JOptionPane.showMessageDialog(null, "Erro gerar relatório [ JasperReport ] " + ex.getMessage(), "ERROR INGRESSO", JOptionPane.ERROR_MESSAGE);
+            ex.printStackTrace();
+        }
+        catch (SQLException sqlex) //Retorna um erro caso exista erro de query SQL
+        {
+            JOptionPane.showMessageDialog(null, "Erro na query [RELATÓRIO], ERRO: " + sqlex.getMessage(), "ERROR INGRESSO", JOptionPane.ERROR_MESSAGE);
+            sqlex.printStackTrace();
+        }
+    }//GEN-LAST:event_btnRelatorioActionPerformed
+
     private void atualizaAcrescimoEPrecoTotal() {
         int acrescimo = 0;
 
@@ -744,6 +846,8 @@ public class DialogGerIngresso extends javax.swing.JDialog {
         rbConsultar.setEnabled(false);
         rbExcluir.setEnabled(false);
         rbIncluir.setEnabled(false);
+        
+        btnArquivo.setVisible(false);
 
         pnIncluir.setVisible(true);
         btnIncluir.setVisible(true);
@@ -930,10 +1034,12 @@ public class DialogGerIngresso extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup GroupBtnCrudIngresso;
     private javax.swing.ButtonGroup GroupBtnPrecoIngresso;
+    private javax.swing.JButton btnArquivo;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnConcluido;
     private javax.swing.JButton btnEscolherPoltrona;
     private javax.swing.JButton btnIncluir;
+    private javax.swing.JButton btnRelatorio;
     private javax.swing.JComboBox<String> cbxCaixaa;
     private javax.swing.JComboBox<String> cbxCliente;
     private javax.swing.JComboBox<String> cbxEscolher;

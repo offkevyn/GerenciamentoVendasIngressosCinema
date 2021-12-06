@@ -5,22 +5,33 @@
  */
 package view;
 
+import controller.Conexao;
 import controller.fichario.CaixaFichario;
 import controller.fichario.FuncionarioFichario;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 import model.Caixa;
 import model.Funcionario;
 import model.Sala;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.swing.JRViewer;
 
 /**
  *
@@ -33,7 +44,7 @@ public class DialogGerCaixa extends javax.swing.JDialog {
     private CaixaFichario fixCaixa;
     private FuncionarioFichario fixFunc;
     
-    private Border borderDefalt;
+    private Border borderDefault;
 
 
     /**
@@ -43,7 +54,7 @@ public class DialogGerCaixa extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         
-        borderDefalt = tfNumero.getBorder();
+        borderDefault = tfNumero.getBorder();
         tfNumero.addKeyListener(listenerTfNumber);
         
         cbxEscolher.setVisible(false);
@@ -87,6 +98,7 @@ public class DialogGerCaixa extends javax.swing.JDialog {
         btnCancelar = new javax.swing.JButton();
         cbxFunc = new javax.swing.JComboBox<>();
         lbFuncionario = new javax.swing.JLabel();
+        btnRelatorio = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Caixa");
@@ -227,6 +239,13 @@ public class DialogGerCaixa extends javax.swing.JDialog {
                 .addContainerGap())
         );
 
+        btnRelatorio.setText("Relatório");
+        btnRelatorio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRelatorioActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -235,20 +254,23 @@ public class DialogGerCaixa extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addGap(26, 26, 26)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnConcluido)
+                    .addComponent(btnRelatorio)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(rbIncluir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jiformativo1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(rbExcluir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(rbAlterar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(rbConsultar))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jiformativo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(cbxEscolher, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addGap(25, 25, 25)
-                .addComponent(pnIncluir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnConcluido)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(rbIncluir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jiformativo1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(rbExcluir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(rbAlterar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(rbConsultar))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jiformativo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(cbxEscolher, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(25, 25, 25)
+                        .addComponent(pnIncluir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -276,7 +298,9 @@ public class DialogGerCaixa extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnConcluido))
                     .addComponent(pnIncluir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnRelatorio)
+                .addContainerGap(13, Short.MAX_VALUE))
         );
 
         pack();
@@ -333,7 +357,7 @@ public class DialogGerCaixa extends javax.swing.JDialog {
                 if (c instanceof JTextField) {
                     JTextField field = (JTextField) c;
 
-                    field.setBorder(borderDefalt);
+                    field.setBorder(borderDefault);
                 }
             }
         } else
@@ -386,7 +410,7 @@ public class DialogGerCaixa extends javax.swing.JDialog {
 //            tfNumero.setBorder(lineBorder);
 //
 //        } else {
-//            tfNumero.setBorder(borderDefalt);
+//            tfNumero.setBorder(borderDefault);
 //        }
     }//GEN-LAST:event_tfNumeroKeyTyped
 
@@ -469,6 +493,37 @@ public class DialogGerCaixa extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_cbxFuncActionPerformed
 
+    private void btnRelatorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRelatorioActionPerformed
+        try {
+            Connection conn = Conexao.getConexao();
+            
+            Map parameters = new HashMap();
+            parameters.put("REPORT_CONNECTION", conn);
+
+            JasperReport relCompilado = JasperCompileManager.compileReport("src/main/java/rel/Caixa.jrxml");
+
+            JasperPrint relPreenchido = JasperFillManager.fillReport(relCompilado, parameters, conn);
+
+            JDialog tela = new JDialog(this, "Relatório Caixa", true);
+            tela.setSize(1000, 700);
+
+            JRViewer painelRel = new JRViewer(relPreenchido);
+
+            tela.getContentPane().add(painelRel);
+
+            tela.setVisible(true);
+
+        } catch (JRException ex) {
+            JOptionPane.showMessageDialog(null, "Erro gerar relatório [ JasperReport ] " + ex.getMessage(), "ERROR CAIXAE", JOptionPane.ERROR_MESSAGE);
+            ex.printStackTrace();
+        }
+        catch (SQLException sqlex) //Retorna um erro caso exista erro de query SQL
+        {
+            JOptionPane.showMessageDialog(null, "Erro na query [RELATÓRIO], ERRO: " + sqlex.getMessage(), "ERROR CAIXA", JOptionPane.ERROR_MESSAGE);
+            sqlex.printStackTrace();
+        }
+    }//GEN-LAST:event_btnRelatorioActionPerformed
+
     KeyListener listenerTfNumber = new KeyListener() {
         @Override
         public void keyTyped(KeyEvent e) {
@@ -482,7 +537,7 @@ public class DialogGerCaixa extends javax.swing.JDialog {
                 field.setBorder(lineBorder);
             } else {
                 Border lineBorder = BorderFactory.createLineBorder(Color.GRAY);
-                field.setBorder(borderDefalt);
+                field.setBorder(borderDefault);
             }
 
         }
@@ -535,7 +590,7 @@ public class DialogGerCaixa extends javax.swing.JDialog {
             if (c instanceof JTextField) {
                 JTextField field = (JTextField) c;
 
-                field.setBorder(borderDefalt);
+                field.setBorder(borderDefault);
                 field.setText("");
                 field.setEditable(true);
             }
@@ -627,6 +682,7 @@ public class DialogGerCaixa extends javax.swing.JDialog {
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnConcluido;
     private javax.swing.JButton btnIncluir;
+    private javax.swing.JButton btnRelatorio;
     private javax.swing.JComboBox<String> cbxEscolher;
     private javax.swing.JComboBox<String> cbxFunc;
     private javax.swing.JLabel jiformativo;

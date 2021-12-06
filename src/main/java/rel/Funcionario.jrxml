@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.18.1.final using JasperReports Library version 6.18.1-9d75d1969e774d4f179fb3be8401e98a0e6d1611  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Funcionario" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8815b0a1-ee49-4957-8505-9d4e1cab6d1a">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter.xml"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value="ZnVuY2lvbmFyaW8gLDE1LDE1LGFhM2IwM2ZlLTFhZmEtNDEwYi1hMWI4LTgzZjFmYmFjYTUzYTs="/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="479"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="521"/>
+	<queryString>
+		<![CDATA[SELECT nome,
+	matricula
+FROM funcionario]]>
+	</queryString>
+	<field name="nome" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome"/>
+		<property name="com.jaspersoft.studio.field.label" value="nome"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="funcionario"/>
+	</field>
+	<field name="matricula" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="matricula"/>
+		<property name="com.jaspersoft.studio.field.label" value="matricula"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="funcionario"/>
+	</field>
+	<variable name="CONT_FUNCIONARIOS" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{nome}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="26" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Transparent" x="0" y="0" width="557" height="20" backcolor="#ED332F" uuid="09c947e5-437d-4563-b873-1fd2f921b973"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom" rotation="None">
+					<font fontName="Verdana" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Gerenciamento de Vendas de Ingressos no Cinema]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="20" width="557" height="3" uuid="770a5c89-8749-4c04-a450-c262a79c64a4">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</line>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="39" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Transparent" x="0" y="3" width="220" height="20" backcolor="#ED332F" uuid="f3da388c-5ecb-493a-b260-9faeae73102f"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None">
+					<font fontName="Verdana" size="16" isBold="false" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[Relatório Funcionário]]></text>
+			</staticText>
+			<textField pattern="dd/mm/yyyy" isBlankWhenNull="false">
+				<reportElement x="330" y="3" width="220" height="20" uuid="c19b8714-a1ac-40b1-8c38-5485f735e896">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Impresso em: " + new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(new Date())]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="23" width="557" height="1" uuid="ef3ad3e5-1380-4110-b0a0-b856c93e97a7">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</line>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="24" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="24" uuid="0aa0d1cd-5dbd-4bd1-890a-afc01e2f3c71">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="882ff0a5-397e-47c0-91f4-9ac698583bd2"/>
+				</reportElement>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Nome]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="0" width="140" height="24" uuid="0d50d7eb-d79b-462c-9c73-b0c0e03f85bd">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="882ff0a5-397e-47c0-91f4-9ac698583bd2"/>
+				</reportElement>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Matrícula]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="100" height="30" uuid="53d1cfc3-2e35-421a-a0ed-5de638db7235">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="8ca14db8-0836-44ae-b33a-3e5b494cd5d6"/>
+				</reportElement>
+				<box>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="0.15"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="0" width="140" height="30" uuid="295bb70c-22c7-476b-ae1e-c6a463f201b9">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="8ca14db8-0836-44ae-b33a-3e5b494cd5d6"/>
+				</reportElement>
+				<box>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="0.15"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{matricula}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="29" splitType="Stretch">
+			<textField>
+				<reportElement x="175" y="5" width="210" height="19" uuid="ffaa88ca-5f77-4c8e-b454-2f1f4acba12a"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER} + " de " + $V{PAGE_COUNT}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="2" width="557" height="1" uuid="c596c289-2e90-4b4c-afb9-513dacba81c6">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</line>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="26" splitType="Stretch">
+			<textField>
+				<reportElement x="402" y="4" width="148" height="18" uuid="e6da6369-4363-4367-b94f-fcacdaeb50af"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Total de funcionário: " + $V{CONT_FUNCIONARIOS}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

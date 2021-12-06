@@ -5,21 +5,36 @@
  */
 package view;
 
+import controller.Conexao;
 import controller.fichario.SalaFichario;
 import java.awt.Color;
 import java.awt.Component;
+import static java.awt.Frame.MAXIMIZED_BOTH;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 import model.Sala;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.swing.JRViewer;
 
 /**
  *
@@ -28,7 +43,7 @@ import model.Sala;
 public class DialogGerSala extends javax.swing.JDialog {
 
     private ArrayList<Sala> listSala;
-    private Border borderDefalt;
+    private Border borderDefault;
     private SalaFichario fixSala;
 
     /**
@@ -38,7 +53,7 @@ public class DialogGerSala extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        borderDefalt = tfQtdPoltronas.getBorder();
+        borderDefault = tfQtdPoltronas.getBorder();
         tfNumero.addKeyListener(listenerTfNumber);
         tfQtdPoltronas.addKeyListener(listenerTfNumber);
 
@@ -84,6 +99,7 @@ public class DialogGerSala extends javax.swing.JDialog {
         btnCancelar = new javax.swing.JButton();
         CheckBoxVipSim = new javax.swing.JCheckBox();
         lbVip = new javax.swing.JLabel();
+        btnRelatorio = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Sala");
@@ -237,6 +253,13 @@ public class DialogGerSala extends javax.swing.JDialog {
                 .addContainerGap())
         );
 
+        btnRelatorio.setText("Relatório");
+        btnRelatorio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRelatorioActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -256,7 +279,8 @@ public class DialogGerSala extends javax.swing.JDialog {
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jiformativo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(cbxEscolher, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(cbxEscolher, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(btnRelatorio))
                 .addGap(25, 25, 25)
                 .addComponent(pnIncluir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
@@ -284,9 +308,11 @@ public class DialogGerSala extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(rbConsultar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnConcluido))
+                        .addComponent(btnConcluido)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnRelatorio))
                     .addComponent(pnIncluir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         pack();
@@ -341,7 +367,7 @@ public class DialogGerSala extends javax.swing.JDialog {
                 if (c instanceof JTextField) {
                     JTextField field = (JTextField) c;
 
-                    field.setBorder(borderDefalt);
+                    field.setBorder(borderDefault);
                 }
             }
         } else
@@ -479,6 +505,34 @@ public class DialogGerSala extends javax.swing.JDialog {
 
     }//GEN-LAST:event_tfNumeroKeyTyped
 
+    private void btnRelatorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRelatorioActionPerformed
+        try {
+            listSala = fixSala.relatorio();
+            
+            JasperReport relCompilado = JasperCompileManager.compileReport("src/main/java/rel/Sala.jrxml");
+            
+            JasperPrint relPreenchido = JasperFillManager.fillReport(relCompilado, null, new JRBeanCollectionDataSource(listSala));
+
+            JDialog tela = new JDialog(this, "Relatório Sala", true);
+            tela.setSize(1000, 700);
+            
+            JRViewer painelRel = new JRViewer(relPreenchido);
+            
+            tela.getContentPane().add(painelRel);
+            
+            tela.setVisible(true);
+            
+        } catch (JRException ex) {
+            JOptionPane.showMessageDialog(null, "Erro gerar relatório [ JasperReport ] " + ex.getMessage(), "ERROR SALA", JOptionPane.ERROR_MESSAGE);
+            ex.printStackTrace();
+        }
+        catch (SQLException sqlex) //Retorna um erro caso exista erro de query SQL
+        {
+            JOptionPane.showMessageDialog(null, "Erro na query [RELATÓRIO], ERRO: " + sqlex.getMessage(), "ERROR SALA", JOptionPane.ERROR_MESSAGE);
+            sqlex.printStackTrace();
+        }
+    }//GEN-LAST:event_btnRelatorioActionPerformed
+
     KeyListener listenerTfNumber = new KeyListener() {
         @Override
         public void keyTyped(KeyEvent e) {
@@ -492,7 +546,7 @@ public class DialogGerSala extends javax.swing.JDialog {
                 field.setBorder(lineBorder);
             } else {
                 Border lineBorder = BorderFactory.createLineBorder(Color.GRAY);
-                field.setBorder(borderDefalt);
+                field.setBorder(borderDefault);
             }
 
         }
@@ -545,7 +599,7 @@ public class DialogGerSala extends javax.swing.JDialog {
             if (c instanceof JTextField) {
                 JTextField field = (JTextField) c;
 
-                field.setBorder(borderDefalt);
+                field.setBorder(borderDefault);
                 field.setText("");
                 field.setEditable(true);
             }
@@ -603,6 +657,7 @@ public class DialogGerSala extends javax.swing.JDialog {
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnConcluido;
     private javax.swing.JButton btnIncluir;
+    private javax.swing.JButton btnRelatorio;
     private javax.swing.JComboBox<String> cbxEscolher;
     private javax.swing.JLabel jiformativo;
     private javax.swing.JLabel jiformativo1;

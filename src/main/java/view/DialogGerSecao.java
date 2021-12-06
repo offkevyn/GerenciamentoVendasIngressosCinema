@@ -5,6 +5,7 @@
  */
 package view;
 
+import controller.Conexao;
 import controller.fichario.FilmeFichario;
 import controller.fichario.SalaFichario;
 import controller.fichario.SecaoFichario;
@@ -12,19 +13,30 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 import model.Filme;
 import model.Sala;
 import model.Secao;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.swing.JRViewer;
 
 /**
  *
@@ -38,9 +50,8 @@ public class DialogGerSecao extends javax.swing.JDialog {
     private FilmeFichario fixFilme;
     private SalaFichario fixSala;
     private SecaoFichario fixSecao;
-    
-    private Border borderDefalt;
 
+    private Border borderDefault;
 
     /**
      * Creates new form DialogGerSecao
@@ -49,7 +60,7 @@ public class DialogGerSecao extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
-        borderDefalt = tfAno.getBorder();
+        borderDefault = tfAno.getBorder();
         tfAno.addKeyListener(listenerTfNumber);
         tfDia.addKeyListener(listenerTfNumber);
         tfMes.addKeyListener(listenerTfNumber);
@@ -110,6 +121,8 @@ public class DialogGerSecao extends javax.swing.JDialog {
         lbNumPoltronaOucupada = new javax.swing.JLabel();
         cbxMinuto = new javax.swing.JComboBox<>();
         cbxHora = new javax.swing.JComboBox<>();
+        btnTabelaSecao = new javax.swing.JButton();
+        btnRelatorio = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -250,6 +263,7 @@ public class DialogGerSecao extends javax.swing.JDialog {
         lbNumPoltronaOucupada.setText(" poltronas ouculpadas");
 
         cbxMinuto.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59" }));
+        cbxMinuto.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         cbxMinuto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbxMinutoActionPerformed(evt);
@@ -307,15 +321,15 @@ public class DialogGerSecao extends javax.swing.JDialog {
                 .addComponent(lbNumPoltronaOucupada, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnIncluirLayout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(lbHora, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(cbxHora, 0, 46, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
-                .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(lbMinutos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(cbxMinuto, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(86, 86, 86))
+                    .addComponent(lbHora, javax.swing.GroupLayout.DEFAULT_SIZE, 54, Short.MAX_VALUE)
+                    .addComponent(cbxHora, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lbMinutos)
+                    .addComponent(cbxMinuto, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(78, 78, 78))
         );
         pnIncluirLayout.setVerticalGroup(
             pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -352,8 +366,8 @@ public class DialogGerSecao extends javax.swing.JDialog {
                     .addComponent(lbHora))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cbxMinuto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cbxHora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cbxHora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbxMinuto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnVisualizarPoltronas)
@@ -365,6 +379,20 @@ public class DialogGerSecao extends javax.swing.JDialog {
                 .addContainerGap())
         );
 
+        btnTabelaSecao.setText("Tabela Seção");
+        btnTabelaSecao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTabelaSecaoActionPerformed(evt);
+            }
+        });
+
+        btnRelatorio.setText("Relatório");
+        btnRelatorio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRelatorioActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -373,16 +401,20 @@ public class DialogGerSecao extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jiformativo1, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(rbIncluir, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(rbExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(rbAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(rbConsultar)
-                    .addComponent(btnConcluido))
-                .addGap(6, 6, 6)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jiformativo)
-                    .addComponent(cbxEscolher, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jiformativo1, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(rbIncluir, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(rbExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(rbAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(rbConsultar)
+                            .addComponent(btnConcluido))
+                        .addGap(6, 6, 6)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jiformativo)
+                            .addComponent(cbxEscolher, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(btnTabelaSecao)
+                    .addComponent(btnRelatorio))
                 .addGap(6, 6, 6)
                 .addComponent(pnIncluir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -403,7 +435,11 @@ public class DialogGerSecao extends javax.swing.JDialog {
                         .addGap(0, 0, 0)
                         .addComponent(rbConsultar)
                         .addGap(7, 7, 7)
-                        .addComponent(btnConcluido))
+                        .addComponent(btnConcluido)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnTabelaSecao)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnRelatorio))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(19, 19, 19)
                         .addComponent(jiformativo)
@@ -435,7 +471,7 @@ public class DialogGerSecao extends javax.swing.JDialog {
         if (qtdSecao() > 0) {
             popularJComboBoxSala();
             popularJComboBoxFilme();
-            
+
             restart();
             configSecao();
             cbxEscolher.setVisible(true);
@@ -506,9 +542,9 @@ public class DialogGerSecao extends javax.swing.JDialog {
                 cbxFilme.setEnabled(true);
                 tfAno.setEditable(true);
                 tfDia.setEditable(true);
-                cbxHora.setEditable(true);
                 tfMes.setEditable(true);
-                cbxMinuto.setEditable(true);
+                cbxHora.setEnabled(true);
+                cbxMinuto.setEnabled(true);
 
                 lbNumPoltronaOucupada.setVisible(true);
                 btnVisualizarPoltronas.setVisible(true);
@@ -521,9 +557,9 @@ public class DialogGerSecao extends javax.swing.JDialog {
                 cbxFilme.setEnabled(false);
                 tfAno.setEditable(false);
                 tfDia.setEditable(false);
-                cbxHora.setEditable(false);
                 tfMes.setEditable(false);
-                cbxMinuto.setEditable(false);
+                cbxHora.setEnabled(false);
+                cbxMinuto.setEnabled(false);
 
                 lbNumPoltronaOucupada.setVisible(true);
                 btnVisualizarPoltronas.setVisible(true);
@@ -535,9 +571,9 @@ public class DialogGerSecao extends javax.swing.JDialog {
                 cbxFilme.setEnabled(false);
                 tfAno.setEditable(false);
                 tfDia.setEditable(false);
-                cbxHora.setEditable(false);
                 tfMes.setEditable(false);
-                cbxMinuto.setEditable(false);
+                cbxHora.setEnabled(false);
+                cbxMinuto.setEnabled(false);
 
                 lbNumPoltronaOucupada.setVisible(true);
                 btnVisualizarPoltronas.setVisible(true);
@@ -549,7 +585,7 @@ public class DialogGerSecao extends javax.swing.JDialog {
         Secao session = new Secao();
         Filme filme = listFilme.get(cbxFilme.getSelectedIndex());
         Sala sala = listSala.get(cbxSala.getSelectedIndex());
-        
+
         if ((tfAno.getText().isEmpty() || tfDia.getText().isEmpty() || tfMes.getText().isEmpty())) {
             JOptionPane.showMessageDialog(null, "Preencha os campos obrigatórios", "ERROR CAMPO VAZIO", JOptionPane.ERROR_MESSAGE);
             mostrarCamposObrigatorio();
@@ -646,9 +682,52 @@ public class DialogGerSecao extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_tfDiaActionPerformed
 
+    private void btnTabelaSecaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTabelaSecaoActionPerformed
+        try {
+            listSecao = fixSecao.relatorio();
+        } catch (SQLException sqlex) //Retorna um erro caso exista erro de query SQL
+        {
+            JOptionPane.showMessageDialog(null, "Erro na query [RELATÓRIO - Enviar para a tebela], ERRO: " + sqlex.getMessage(), "ERROR SEÇÃO", JOptionPane.ERROR_MESSAGE);
+            sqlex.printStackTrace();
+        }
+        DialogTabelaSecao dialogTabelaSecao = new DialogTabelaSecao(null, true, listSecao);
+        dialogTabelaSecao.setVisible(true);
+    }//GEN-LAST:event_btnTabelaSecaoActionPerformed
+
     private void cbxMinutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxMinutoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cbxMinutoActionPerformed
+
+    private void btnRelatorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRelatorioActionPerformed
+        try {
+            Connection conn = Conexao.getConexao();
+            
+            Map parameters = new HashMap();
+            parameters.put("REPORT_CONNECTION", conn);
+
+            JasperReport relCompilado = JasperCompileManager.compileReport("src/main/java/rel/Secao.jrxml");
+
+            JasperPrint relPreenchido = JasperFillManager.fillReport(relCompilado, parameters, conn);
+
+            JDialog tela = new JDialog(this, "Relatório Seção", true);
+            tela.setSize(1000, 700);
+
+            JRViewer painelRel = new JRViewer(relPreenchido);
+
+            tela.getContentPane().add(painelRel);
+
+            tela.setVisible(true);
+
+        } catch (JRException ex) {
+            JOptionPane.showMessageDialog(null, "Erro gerar relatório [ JasperReport ] " + ex.getMessage(), "ERROR SEÇÃO", JOptionPane.ERROR_MESSAGE);
+            ex.printStackTrace();
+        }
+        catch (SQLException sqlex) //Retorna um erro caso exista erro de query SQL
+        {
+            JOptionPane.showMessageDialog(null, "Erro na query [RELATÓRIO], ERRO: " + sqlex.getMessage(), "ERROR SEÇÃO", JOptionPane.ERROR_MESSAGE);
+            sqlex.printStackTrace();
+        }
+    }//GEN-LAST:event_btnRelatorioActionPerformed
 
     KeyListener listenerTfNumber = new KeyListener() {
         @Override
@@ -663,7 +742,7 @@ public class DialogGerSecao extends javax.swing.JDialog {
                 field.setBorder(lineBorder);
             } else {
                 Border lineBorder = BorderFactory.createLineBorder(Color.GRAY);
-                field.setBorder(borderDefalt);
+                field.setBorder(borderDefault);
             }
 
         }
@@ -676,7 +755,7 @@ public class DialogGerSecao extends javax.swing.JDialog {
         public void keyReleased(KeyEvent arg0) {
         }
     };
-    
+
     private void mostrarCamposObrigatorio() {
         Border lineBorder = BorderFactory.createLineBorder(Color.getColor(null, 0XEC2E2E));
 
@@ -692,7 +771,7 @@ public class DialogGerSecao extends javax.swing.JDialog {
             }
         }
     }
-    
+
     private int qtdSecao() {
         int cont = 0;
         try {
@@ -739,8 +818,8 @@ public class DialogGerSecao extends javax.swing.JDialog {
 //        tfAno.setEditable(true);
 //        tfDia.setEditable(true);
 //        tfMes.setEditable(true);
-        cbxHora.setEditable(true);
-        cbxHora.setEditable(true);
+        cbxHora.setEnabled(true);
+        cbxMinuto.setEnabled(true);
 
         cbxSala.setSelectedIndex(0);
         cbxFilme.setSelectedIndex(0);
@@ -752,14 +831,14 @@ public class DialogGerSecao extends javax.swing.JDialog {
 
         popularJComboBoxSala();
         popularJComboBoxFilme();
-        
+
         for (int i = 0; i < pnIncluir.getComponentCount(); i++) {
             Component c = pnIncluir.getComponent(i);
 
             if (c instanceof JTextField) {
                 JTextField field = (JTextField) c;
 
-                field.setBorder(borderDefalt);
+                field.setBorder(borderDefault);
                 field.setText("");
                 field.setEditable(true);
             }
@@ -862,6 +941,8 @@ public class DialogGerSecao extends javax.swing.JDialog {
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnConcluido;
     private javax.swing.JButton btnIncluir;
+    private javax.swing.JButton btnRelatorio;
+    private javax.swing.JButton btnTabelaSecao;
     private javax.swing.JButton btnVisualizarPoltronas;
     private javax.swing.JComboBox<String> cbxEscolher;
     private javax.swing.JComboBox<String> cbxFilme;

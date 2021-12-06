@@ -32,24 +32,29 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="btnConcluido" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="rbIncluir" alignment="0" max="32767" attributes="0"/>
-                          <Component id="jiformativo1" alignment="0" max="32767" attributes="0"/>
-                          <Component id="rbExcluir" alignment="0" max="32767" attributes="0"/>
-                          <Component id="rbAlterar" alignment="0" max="32767" attributes="0"/>
-                          <Component id="rbConsultar" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnRelatorio" min="-2" max="-2" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="btnConcluido" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="rbIncluir" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="jiformativo1" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="rbExcluir" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="rbAlterar" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="rbConsultar" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="jiformativo" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="cbxEscolher" alignment="0" max="32767" attributes="0"/>
+                              </Group>
+                          </Group>
                       </Group>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="jiformativo" alignment="0" max="32767" attributes="0"/>
-                          <Component id="cbxEscolher" alignment="0" max="32767" attributes="0"/>
-                      </Group>
+                      <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
+                      <Component id="pnIncluir" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
-              <Component id="pnIncluir" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
@@ -84,7 +89,9 @@
                   </Group>
                   <Component id="pnIncluir" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="btnRelatorio" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="13" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -303,5 +310,13 @@
         </Component>
       </SubComponents>
     </Container>
+    <Component class="javax.swing.JButton" name="btnRelatorio">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Relat&#xf3;rio"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRelatorioActionPerformed"/>
+      </Events>
+    </Component>
   </SubComponents>
 </Form>

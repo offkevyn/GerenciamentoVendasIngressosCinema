@@ -47,6 +47,7 @@
                           <Component id="cbxEscolher" max="32767" attributes="0"/>
                       </Group>
                   </Group>
+                  <Component id="btnRelatorio" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
               <Component id="pnIncluir" min="-2" max="-2" attributes="0"/>
@@ -81,10 +82,12 @@
                       <Component id="rbConsultar" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="btnConcluido" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="btnRelatorio" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Component id="pnIncluir" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace pref="22" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -316,5 +319,13 @@
         </Component>
       </SubComponents>
     </Container>
+    <Component class="javax.swing.JButton" name="btnRelatorio">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Relat&#xf3;rio"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRelatorioActionPerformed"/>
+      </Events>
+    </Component>
   </SubComponents>
 </Form>

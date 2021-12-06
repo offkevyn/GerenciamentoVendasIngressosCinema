@@ -5,20 +5,31 @@
  */
 package view;
 
+import controller.Conexao;
 import controller.fichario.FilmeFichario;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 import model.Filme;
 import model.Sala;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.swing.JRViewer;
 
 /**
  *
@@ -28,7 +39,7 @@ public class DialogGerFilme extends javax.swing.JDialog {
 
     private ArrayList<Filme> listFilme;
     private FilmeFichario fixFilme;
-    private Border borderDefalt;
+    private Border borderDefault;
     private int qtdCaracterSinopse;
 
     /**
@@ -40,7 +51,7 @@ public class DialogGerFilme extends javax.swing.JDialog {
 
         qtdCaracterSinopse = 0;
 
-        borderDefalt = tfDuracaoMin.getBorder();
+        borderDefault = tfDuracaoMin.getBorder();
         tfDuracaoMin.addKeyListener(listenerTfNumber);
 
         cbxEscolher.setVisible(false);
@@ -78,6 +89,7 @@ public class DialogGerFilme extends javax.swing.JDialog {
         taTextASinopse = new javax.swing.JTextArea();
         lbSinopse = new javax.swing.JLabel();
         lbqtdCaracter = new javax.swing.JLabel();
+        btnArquivo = new javax.swing.JButton();
         lbTitulo = new javax.swing.JLabel();
         jiformativo = new javax.swing.JLabel();
         cbxEscolher = new javax.swing.JComboBox<>();
@@ -87,6 +99,7 @@ public class DialogGerFilme extends javax.swing.JDialog {
         rbAlterar = new javax.swing.JRadioButton();
         rbConsultar = new javax.swing.JRadioButton();
         btnConcluido = new javax.swing.JButton();
+        btnRelatorio = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Filme");
@@ -143,6 +156,14 @@ public class DialogGerFilme extends javax.swing.JDialog {
         lbqtdCaracter.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         lbqtdCaracter.setText("/1000");
 
+        btnArquivo.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        btnArquivo.setText("Arquivo");
+        btnArquivo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnArquivoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnIncluirLayout = new javax.swing.GroupLayout(pnIncluir);
         pnIncluir.setLayout(pnIncluirLayout);
         pnIncluirLayout.setHorizontalGroup(
@@ -153,23 +174,23 @@ public class DialogGerFilme extends javax.swing.JDialog {
                     .addComponent(jScrollPane, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(pnIncluirLayout.createSequentialGroup()
                         .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnIncluirLayout.createSequentialGroup()
-                                .addComponent(btnIncluir)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnCancelar))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnIncluirLayout.createSequentialGroup()
-                                .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lbTituloFilme, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(tfTituloFilme, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lbDuracaoMin)
-                                    .addComponent(tfDuracaoMin, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(0, 8, Short.MAX_VALUE))
+                            .addComponent(lbTituloFilme, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(tfTituloFilme, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lbDuracaoMin)
+                            .addComponent(tfDuracaoMin, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(pnIncluirLayout.createSequentialGroup()
                         .addComponent(lbSinopse)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lbqtdCaracter)))
+                        .addComponent(lbqtdCaracter))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnIncluirLayout.createSequentialGroup()
+                        .addComponent(btnArquivo)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnIncluir)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnCancelar)))
                 .addContainerGap())
         );
         pnIncluirLayout.setVerticalGroup(
@@ -192,7 +213,8 @@ public class DialogGerFilme extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnIncluir, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnArquivo, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -254,6 +276,13 @@ public class DialogGerFilme extends javax.swing.JDialog {
             }
         });
 
+        btnRelatorio.setText("Relatório");
+        btnRelatorio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRelatorioActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -272,10 +301,11 @@ public class DialogGerFilme extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jiformativo)
-                            .addComponent(cbxEscolher, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(cbxEscolher, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(btnRelatorio))
                 .addGap(37, 37, 37)
                 .addComponent(pnIncluir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(18, Short.MAX_VALUE))
             .addComponent(lbTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
@@ -303,7 +333,9 @@ public class DialogGerFilme extends javax.swing.JDialog {
                         .addComponent(rbConsultar)
                         .addGap(7, 7, 7)
                         .addComponent(btnConcluido)
-                        .addGap(81, 81, 81))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnRelatorio)
+                        .addGap(52, 52, 52))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(pnIncluir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
@@ -406,6 +438,7 @@ public class DialogGerFilme extends javax.swing.JDialog {
 
             if (rbAlterar.isSelected()) {
                 btnIncluir.setText("ALTERAR");
+                btnArquivo.setVisible(false);
 
                 tfTituloFilme.setEditable(true);
                 tfDuracaoMin.setEditable(true);
@@ -414,6 +447,7 @@ public class DialogGerFilme extends javax.swing.JDialog {
             } else if (rbExcluir.isSelected()) {
                 btnCancelar.setVisible(true);
                 btnIncluir.setVisible(true);
+                btnArquivo.setVisible(false);
                 btnIncluir.setText("EXCLUIR");
 
                 tfTituloFilme.setEditable(false);
@@ -423,6 +457,7 @@ public class DialogGerFilme extends javax.swing.JDialog {
             } else if (rbConsultar.isSelected()) {
                 btnCancelar.setVisible(false);
                 btnIncluir.setVisible(false);
+                btnArquivo.setVisible(true);
 
                 tfTituloFilme.setEditable(false);
                 tfDuracaoMin.setEditable(false);
@@ -479,7 +514,7 @@ public class DialogGerFilme extends javax.swing.JDialog {
                 if (c instanceof JTextField) {
                     JTextField field = (JTextField) c;
 
-                    field.setBorder(borderDefalt);
+                    field.setBorder(borderDefault);
                 }
             }
         } else
@@ -509,8 +544,73 @@ public class DialogGerFilme extends javax.swing.JDialog {
     }//GEN-LAST:event_taTextASinopseKeyTyped
 
     private void tfTituloFilmeKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfTituloFilmeKeyTyped
-        tfTituloFilme.setBorder(borderDefalt);
+        tfTituloFilme.setBorder(borderDefault);
     }//GEN-LAST:event_tfTituloFilmeKeyTyped
+
+    private void btnArquivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnArquivoActionPerformed
+        try {
+            Connection conn = Conexao.getConexao();
+            
+            Filme movie = listFilme.get(cbxEscolher.getSelectedIndex());
+            
+            Map parameters = new HashMap();
+            parameters.put("REPORT_CONNECTION", conn);
+            parameters.put("ID_FILME", movie.getCodigo());
+
+            JasperReport relCompilado = JasperCompileManager.compileReport("src/main/java/rel/FilmePeloID.jrxml");
+
+            JasperPrint relPreenchido = JasperFillManager.fillReport(relCompilado, parameters, conn);
+
+            JDialog tela = new JDialog(this, "Relatório filme", true);
+            tela.setSize(1000, 700);
+
+            JRViewer painelRel = new JRViewer(relPreenchido);
+
+            tela.getContentPane().add(painelRel);
+
+            tela.setVisible(true);
+
+        } catch (JRException ex) {
+            JOptionPane.showMessageDialog(null, "Erro gerar relatório [ JasperReport ] " + ex.getMessage(), "ERROR SEÇÃO", JOptionPane.ERROR_MESSAGE);
+            ex.printStackTrace();
+        }
+        catch (SQLException sqlex) //Retorna um erro caso exista erro de query SQL
+        {
+            JOptionPane.showMessageDialog(null, "Erro na query [RELATÓRIO], ERRO: " + sqlex.getMessage(), "ERROR SEÇÃO", JOptionPane.ERROR_MESSAGE);
+            sqlex.printStackTrace();
+        }
+    }//GEN-LAST:event_btnArquivoActionPerformed
+
+    private void btnRelatorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRelatorioActionPerformed
+        try {
+            Connection conn = Conexao.getConexao();
+            
+            Map parameters = new HashMap();
+            parameters.put("REPORT_CONNECTION", conn);
+
+            JasperReport relCompilado = JasperCompileManager.compileReport("src/main/java/rel/Filme.jrxml");
+
+            JasperPrint relPreenchido = JasperFillManager.fillReport(relCompilado, parameters, conn);
+
+            JDialog tela = new JDialog(this, "Relatório Filme", true);
+            tela.setSize(1000, 700);
+
+            JRViewer painelRel = new JRViewer(relPreenchido);
+
+            tela.getContentPane().add(painelRel);
+
+            tela.setVisible(true);
+
+        } catch (JRException ex) {
+            JOptionPane.showMessageDialog(null, "Erro gerar relatório [ JasperReport ] " + ex.getMessage(), "ERROR FILME", JOptionPane.ERROR_MESSAGE);
+            ex.printStackTrace();
+        }
+        catch (SQLException sqlex) //Retorna um erro caso exista erro de query SQL
+        {
+            JOptionPane.showMessageDialog(null, "Erro na query [RELATÓRIO], ERRO: " + sqlex.getMessage(), "ERROR FILME", JOptionPane.ERROR_MESSAGE);
+            sqlex.printStackTrace();
+        }
+    }//GEN-LAST:event_btnRelatorioActionPerformed
 
     KeyListener listenerTfNumber = new KeyListener() {
         @Override
@@ -524,7 +624,7 @@ public class DialogGerFilme extends javax.swing.JDialog {
                 Border lineBorder = BorderFactory.createLineBorder(Color.getColor(null, 0XEC2E2E));
                 field.setBorder(lineBorder);
             } else {
-                field.setBorder(borderDefalt);
+                field.setBorder(borderDefault);
             }
 
         }
@@ -559,6 +659,8 @@ public class DialogGerFilme extends javax.swing.JDialog {
         rbConsultar.setEnabled(false);
         rbExcluir.setEnabled(false);
         rbIncluir.setEnabled(false);
+        
+        btnArquivo.setVisible(false);
 
         pnIncluir.setVisible(true);
         btnIncluir.setVisible(true);
@@ -580,7 +682,7 @@ public class DialogGerFilme extends javax.swing.JDialog {
             if (c instanceof JTextField) {
                 JTextField field = (JTextField) c;
 
-                field.setBorder(borderDefalt);
+                field.setBorder(borderDefault);
                 field.setText("");
                 field.setEditable(true);
             }
@@ -636,9 +738,11 @@ public class DialogGerFilme extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup GroupBtnCrudFilme;
+    private javax.swing.JButton btnArquivo;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnConcluido;
     private javax.swing.JButton btnIncluir;
+    private javax.swing.JButton btnRelatorio;
     private javax.swing.JComboBox<String> cbxEscolher;
     private javax.swing.JScrollPane jScrollPane;
     private javax.swing.JLabel jiformativo;
